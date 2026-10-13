@@ -1,16 +1,26 @@
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class GasExtractor : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    public UnityEvent myEvent;
+    public float duration = 100f;
+    private float timer;
+
     void Start()
     {
-        
+        timer = duration;
     }
 
-    // Update is called once per frame
     void Update()
     {
-        
+        timer -= Time.deltaTime;
+
+        if (timer < 0)
+        {
+            myEvent.Invoke();
+            timer = duration;
+        }
     }
 }
