@@ -278,8 +278,8 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 854389591}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -330,8 +330,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 28
+  m_fontSizeBase: 28
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -416,9 +416,9 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 854389591}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 0, y: -225}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &745407972
@@ -428,7 +428,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 745407970}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 59f8146938fff824cb5fd77236b75775, type: 3}
   m_Name: 
@@ -441,7 +441,7 @@ MonoBehaviour:
   m_ChildAlignment: 0
   m_Spacing: 10
   m_ChildForceExpandWidth: 1
-  m_ChildForceExpandHeight: 1
+  m_ChildForceExpandHeight: 0
   m_ChildControlWidth: 1
   m_ChildControlHeight: 1
   m_ChildScaleWidth: 0
@@ -617,7 +617,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 854389587}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 59f8146938fff824cb5fd77236b75775, type: 3}
   m_Name: 
@@ -739,6 +739,10 @@ GameObject:
   m_Component:
   - component: {fileID: 1216785528}
   - component: {fileID: 1216785527}
+  - component: {fileID: 1216785529}
+  - component: {fileID: 1216785530}
+  - component: {fileID: 1216785533}
+  - component: {fileID: 1216785534}
   m_Layer: 0
   m_Name: TowerGrid
   m_TagString: Untagged
@@ -780,8 +784,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-<<<<<<< Updated upstream
-=======
 --- !u!114 &1216785529
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -794,16 +796,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d8b79524a5704747bc92cfe9a71fe6f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TowerGridSpawner
-  grid: {fileID: 1216785527}
-  defaultPrefab: {fileID: 4689510960488641632, guid: 308c3620ebbc28b4cb76525aaa9d7b95, type: 3}
-  spawnParent: {fileID: 0}
-  predefinedSpawns: []
-  randomCount: 5
-  randomPrefabs: []
-  limitRandomToLayer: 0
-  randomLayer: 0
-  useFixedSeed: 0
-  seed: 12345
 --- !u!114 &1216785530
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -816,16 +808,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d8b79524a5704747bc92cfe9a71fe6f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TowerGridSpawner
-  grid: {fileID: 1216785527}
-  defaultPrefab: {fileID: 6297167743783780973, guid: 3e8a8d52f7f479d43a989d26d38f4acb, type: 3}
-  spawnParent: {fileID: 0}
-  predefinedSpawns: []
-  randomCount: 15
-  randomPrefabs: []
-  limitRandomToLayer: 0
-  randomLayer: 0
-  useFixedSeed: 0
-  seed: 12345
 --- !u!114 &1216785533
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -838,24 +820,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b9b47e4d3c401b4eb8c4484ebf4b5d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TowerGridPathSpawner
-  grid: {fileID: 1216785527}
-  pathPrefab: {fileID: 8270878465617315978, guid: 771e0f45290dcd8438b16adbe7bd6013, type: 3}
-  startPrefab: {fileID: 2929206337197729129, guid: 28b779d9f46df9844818084ea3a6fd2a, type: 3}
-  endPrefab: {fileID: 2473282765803871693, guid: d318a24d8673ab44b9795e127ea53b30, type: 3}
-  spawnParent: {fileID: 0}
-  randomEndpoints: 0
-  minEndpointDistance: 8
-  startCell: {x: 20, y: 1, z: 5}
-  endCell: {x: 0, y: 1, z: 5}
-  waypointCount: 2
-  waypointMinSeparation: 5
-  straightPenalty: 1.5
-  wander: 3
-  allowVerticalMoves: 1
-  orientAlongPath: 1
-  maxAttempts: 40
-  useFixedSeed: 0
-  seed: 12345
 --- !u!114 &1216785534
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -868,13 +832,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fae0b2609108b3944b19bd6a9af84af5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PathEnemySpawner
-  grid: {fileID: 1216785527}
-  pathSource: {fileID: 1216785533}
-  enemyPrefab: {fileID: 265521279942974316, guid: 8bc9c108054f14b4aa99f3097b027c55, type: 3}
-  enemyCount: 5
-  spawnInterval: 1.5
-  startDelay: 1
-  heightOffset: 0.05
 --- !u!1 &1350661114 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1767192433, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
@@ -924,7 +881,6 @@ MonoBehaviour:
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
   m_Version: 2
->>>>>>> Stashed changes
 --- !u!1 &1449319643
 GameObject:
   m_ObjectHideFlags: 0
