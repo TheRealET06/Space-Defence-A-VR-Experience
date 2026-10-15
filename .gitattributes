@@ -85,6 +85,8 @@ Packages/packages-lock.json linguist-generated
 *.dxf                   lfs
 *.FBX                   lfs
 *.fbx                   lfs
+*.glb                   lfs
+*.bin                   lfs
 *.jas                   lfs
 *.lws                   lfs
 *.lxo                   lfs
@@ -169,3 +171,6 @@ Packages/packages-lock.json linguist-generated
 
 # Exceptions for .asset files such as lightning pre-baking
 LightingData.asset     binary
+
+# Small generated texture stored directly (not LFS)
+grid_cell.png -filter -diff -merge -text

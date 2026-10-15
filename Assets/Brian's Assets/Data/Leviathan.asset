@@ -1,0 +1,42 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2edb670670b4b37b7653e36abca201d, type: 3}
+  m_Name: Leviathan
+  m_EditorClassIdentifier: Assembly-CSharp::Brian.TowerData
+  displayName: Leviathan
+  icon: {fileID: 0}
+  prefab: {fileID: 4635083163222650566, guid: 785179eeb446f1f46922073e5518f52b, type: 3}
+  cost: 100
+  attack: 0
+  attackSpeed: 0
+  range: 1.4
+  attackPerLevel: 0
+  attackSpeedPerLevel: 0
+  rangePerLevel: 0
+  maxLevel: 5
+  upgradeCost: 70
+  upgradeCostGrowth: 1.5
+  refundFraction: 0.7
+  projectilePrefab: {fileID: 0}
+  projectileSpeed: 4
+  pulsePrefab: {fileID: 0}
+  pulseDuration: 0.6
+  buffPercent: 0.2
+  buffPercentPerLevel: 0.05
+  infantPrefab: {fileID: 61646396243688825, guid: ed879174aaca41f4ba2be63e3338cc5c, type: 3}
+  infantCount: 2
+  infantsPerLevel: 1
+  infantAttack: 6
+  infantAttackSpeed: 1.5
+  infantMoveSpeed: 1.2
+  infantMeleeRange: 0.12
+  infantStatPerLevel: 0.15

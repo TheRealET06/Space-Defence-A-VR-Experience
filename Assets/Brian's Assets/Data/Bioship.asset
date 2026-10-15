@@ -1,0 +1,42 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2edb670670b4b37b7653e36abca201d, type: 3}
+  m_Name: Bioship
+  m_EditorClassIdentifier: Assembly-CSharp::Brian.TowerData
+  displayName: Bioship
+  icon: {fileID: 0}
+  prefab: {fileID: 8776404016266839738, guid: 7754d4047b09f51499c9fc44ef091642, type: 3}
+  cost: 50
+  attack: 10
+  attackSpeed: 1
+  range: 1.5
+  attackPerLevel: 5
+  attackSpeedPerLevel: 0.2
+  rangePerLevel: 0
+  maxLevel: 5
+  upgradeCost: 40
+  upgradeCostGrowth: 1.5
+  refundFraction: 0.7
+  projectilePrefab: {fileID: 490335942653549193, guid: 156beb8ba62cc9b4c9f88c462df77bf2, type: 3}
+  projectileSpeed: 4
+  pulsePrefab: {fileID: 0}
+  pulseDuration: 0.6
+  buffPercent: 0.2
+  buffPercentPerLevel: 0.05
+  infantPrefab: {fileID: 0}
+  infantCount: 2
+  infantsPerLevel: 1
+  infantAttack: 6
+  infantAttackSpeed: 1.5
+  infantMoveSpeed: 1.2
+  infantMeleeRange: 0.12
+  infantStatPerLevel: 0.15
