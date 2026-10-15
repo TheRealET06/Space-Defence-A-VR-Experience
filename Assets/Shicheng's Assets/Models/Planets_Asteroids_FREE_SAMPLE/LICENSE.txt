@@ -1,9 +1,0 @@
-APPEAL FOUNDRY - PACK LICENSE (plain language)
-
-1. You MAY use these assets (meshes, textures and files in this pack) in commercial games and projects.
-2. You may NOT resell or redistribute the raw asset files themselves.
-3. Unlimited seats within a single company or studio.
-4. You may NOT train AI/ML models on these assets.
-5. Need custom or extended terms? Contact us.
-
-(c) Appeal Foundry(TM). Full terms available on request.
