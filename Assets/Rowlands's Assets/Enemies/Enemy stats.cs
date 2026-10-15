@@ -10,6 +10,7 @@ public class Enemystats : MonoBehaviour
     private float sustained_dmg = 0;
     public bool IsDead = false;
     public Vector3 AimPoint => aimPoint != null ? aimPoint.position : transform.position + Vector3.up;
+    public float danger = 10f;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()

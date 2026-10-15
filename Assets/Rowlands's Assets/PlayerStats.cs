@@ -1,8 +1,10 @@
 using UnityEngine;
 
-public class NewMonoBehaviourScript : MonoBehaviour
+public class PlayerStats : MonoBehaviour
 {
     private double money = 0;
+    private double crystals = 0;
+    private double gas = 0;
     private double moneyUpdate = 0.1;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -15,4 +17,7 @@ public class NewMonoBehaviourScript : MonoBehaviour
     {
         money = Time.deltaTime * moneyUpdate;
     }
+
+    public void changeCrystals(double _crystals) { crystals += _crystals; }
+    public void changeGas(double _gas) { gas += _gas; }
 }

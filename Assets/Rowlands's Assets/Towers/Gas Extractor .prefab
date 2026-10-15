@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 787796850051357433}
+  - component: {fileID: 1668982831992617659}
   m_Layer: 0
   m_Name: 'Gas Extractor '
   m_TagString: Untagged
@@ -33,6 +34,22 @@ Transform:
   - {fileID: 7763080374757508384}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1668982831992617659
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7162953846413079229}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6afa2cf87bd5f4f48a2305bd208cf522, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GasExtractor
+  myEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  duration: 100
 --- !u!1 &8351642379955188273
 GameObject:
   m_ObjectHideFlags: 0
@@ -61,7 +78,7 @@ Transform:
   m_GameObject: {fileID: 8351642379955188273}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.24000001, z: 0}
+  m_LocalPosition: {x: 0, y: 0.6, z: 0}
   m_LocalScale: {x: 0.06, y: 0.005, z: 0.06}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -175,8 +192,8 @@ Transform:
   m_GameObject: {fileID: 8513193459372087803}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.12, z: 0}
-  m_LocalScale: {x: 0.01, y: 0.12, z: 0.01}
+  m_LocalPosition: {x: 0, y: 0.3, z: 0}
+  m_LocalScale: {x: 0.01, y: 0.3, z: 0.01}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 787796850051357433}
