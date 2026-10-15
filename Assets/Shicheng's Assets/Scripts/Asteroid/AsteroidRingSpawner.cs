@@ -136,12 +136,12 @@ public class AsteroidRingSpawner : MonoBehaviour
                 maxAliveAsteroids
             )
             {
-                Debug.Log(
-                    $"[AsteroidSpawner] Spawn skipped. " +
-                    $"Alive asteroids = {spawnedAsteroids.Count}/" +
-                    $"{maxAliveAsteroids}",
-                    gameObject
-                );
+                // Debug.Log(
+                //     $"[AsteroidSpawner] Spawn skipped. " +
+                //     $"Alive asteroids = {spawnedAsteroids.Count}/" +
+                //     $"{maxAliveAsteroids}",
+                //     gameObject
+                // );
 
                 continue;
             }
@@ -186,13 +186,13 @@ public class AsteroidRingSpawner : MonoBehaviour
 
         if (spawned != null)
         {
-            Debug.Log(
-                $"[AsteroidSpawner] INTERMITTENT SPAWN\n" +
-                $"Asteroid = {spawned.name}\n" +
-                $"Alive = {spawnedAsteroids.Count}/" +
-                $"{maxAliveAsteroids}",
-                spawned
-            );
+            // Debug.Log(
+            //     $"[AsteroidSpawner] INTERMITTENT SPAWN\n" +
+            //     $"Asteroid = {spawned.name}\n" +
+            //     $"Alive = {spawnedAsteroids.Count}/" +
+            //     $"{maxAliveAsteroids}",
+            //     spawned
+            // );
         }
     }
 

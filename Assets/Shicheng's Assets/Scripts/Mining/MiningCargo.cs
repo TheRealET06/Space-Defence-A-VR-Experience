@@ -6,14 +6,16 @@ public class MiningCargo : MonoBehaviour
     [SerializeField] GameObject meteorVisual;
 
     bool isLoaded;
+
     int storedBarrelYield;
+    AsteroidFamily storedFamily;
 
     Vector3 defaultMeteorScale;
 
     public bool IsLoaded => isLoaded;
-
-    // This value also represents the CargoLoad stat.
+    public bool HasCargo => storedBarrelYield > 0;
     public int StoredBarrelYield => storedBarrelYield;
+    public AsteroidFamily StoredFamily => storedFamily;
 
     void Awake()
     {
@@ -26,7 +28,10 @@ public class MiningCargo : MonoBehaviour
         }
     }
 
-    public bool TryLoad(int barrelYield)
+    public bool TryLoad(
+        int barrelYield,
+        AsteroidFamily family
+    )
     {
         if (isLoaded)
         {
@@ -41,6 +46,9 @@ public class MiningCargo : MonoBehaviour
         storedBarrelYield =
             Mathf.Clamp(barrelYield, 1, 64);
 
+        storedFamily =
+            family;
+
         isLoaded = true;
 
         if (meteorVisual != null)
@@ -53,14 +61,17 @@ public class MiningCargo : MonoBehaviour
 
         Debug.Log(
             $"[MiningCargo] LOAD SUCCESS\n" +
-            $"CargoLoad = {storedBarrelYield}",
+            $"Resource = {storedFamily}\n" +
+            $"Barrel Yield = {storedBarrelYield}",
             gameObject
         );
 
         return true;
     }
 
-    public void SetProcessingProgress01(float progress01)
+    public void SetProcessingProgress01(
+        float progress01
+    )
     {
         if (meteorVisual == null)
             return;

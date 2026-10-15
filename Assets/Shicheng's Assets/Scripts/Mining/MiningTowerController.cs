@@ -917,12 +917,13 @@ public class MiningTowerController : MonoBehaviour
             int yield =
                 carriedChunk.BarrelYield;
 
-            if (cargo != null)
-            {
-                cargo.TryLoad(
-                    yield
-                );
-            }
+            AsteroidFamily family =
+                carriedChunk.Family;
+
+            cargo.TryLoad(
+                yield,
+                family
+            );
 
             Destroy(
                 carriedChunk.gameObject

@@ -13,6 +13,7 @@ public class OrbitalAnchorProcessor : MonoBehaviour
     [SerializeField] float processingProgress;
 
     MiningCargo activeCargo;
+    AsteroidFamily activeFamily;
 
     int totalBarrels;
     int producedBarrels;
@@ -26,6 +27,9 @@ public class OrbitalAnchorProcessor : MonoBehaviour
 
     public bool IsProcessing =>
         isProcessing;
+    
+    public float BarrelsPerSecond =>
+        barrelsPerSecond;
 
     public void BeginProcessing(
         MiningCargo cargo,
@@ -60,6 +64,8 @@ public class OrbitalAnchorProcessor : MonoBehaviour
 
         totalBarrels =
             cargo.StoredBarrelYield;
+        activeFamily =
+            cargo.StoredFamily;
 
         producedBarrels = 0;
         processingProgress = 0f;
@@ -75,6 +81,7 @@ public class OrbitalAnchorProcessor : MonoBehaviour
 
         Debug.Log(
             $"[AnchorProcessor] PROCESSING START\n" +
+            $"Resource = {activeFamily}\n" +
             $"Target barrel count = {totalBarrels}",
             gameObject
         );
@@ -131,7 +138,9 @@ public class OrbitalAnchorProcessor : MonoBehaviour
         )
         {
             bool stored =
-                barrelHub.TryStoreOneBarrel();
+                barrelHub.TryStoreOneBarrel(
+                    activeFamily
+                );
 
             if (!stored)
             {
@@ -223,5 +232,21 @@ public class OrbitalAnchorProcessor : MonoBehaviour
         isProcessing = false;
         activeCargo = null;
         completionCallback = null;
+    }
+
+    public void IncreaseProcessingSpeed(
+        float amount
+    )
+    {
+        barrelsPerSecond =
+            Mathf.Max(
+                0.1f,
+                barrelsPerSecond + amount
+            );
+
+        Debug.Log(
+            $"[OrbitalAnchorProcessor] Processing speed = {barrelsPerSecond:F1} barrels/s.",
+            gameObject
+        );
     }
 }

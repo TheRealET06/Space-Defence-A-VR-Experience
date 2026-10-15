@@ -136,14 +136,14 @@ public class MiningTowerTargetSelector : MonoBehaviour
                     currentTarget.transform.position
                 );
 
-            Debug.Log(
-                $"Mining Target Selected: {currentTarget.name}\n" +
-                $"Family: {currentTarget.Family}\n" +
-                $"Yield: {currentTarget.BarrelYield} barrels\n" +
-                $"Distance: {bestDistance:F2} m\n" +
-                $"Required Arm X: {requiredArmX:F1}°",
-                currentTarget.gameObject
-            );
+            // Debug.Log(
+            //     $"Mining Target Selected: {currentTarget.name}\n" +
+            //     $"Family: {currentTarget.Family}\n" +
+            //     $"Yield: {currentTarget.BarrelYield} barrels\n" +
+            //     $"Distance: {bestDistance:F2} m\n" +
+            //     $"Required Arm X: {requiredArmX:F1}°",
+            //     currentTarget.gameObject
+            // );
         }
         else
         {
@@ -200,5 +200,14 @@ public class MiningTowerTargetSelector : MonoBehaviour
             origin,
             captureRange
         );
+    }
+
+    public void IncreaseCaptureRange(float amount)
+    {
+        captureRange =
+            Mathf.Max(
+                0f,
+                captureRange + amount
+            );
     }
 }

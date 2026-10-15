@@ -11,9 +11,21 @@ public class BarrelHub : MonoBehaviour
     [Range(1, 8)]
     [SerializeField] int unlockedRepositoryCount = 1;
 
-    [Header("Economy")]
-    [SerializeField] int creditsPerBarrel = 10;
+    [Header("Barrel Materials")]
+    [SerializeField] Material slateMaterial;
+    [SerializeField] Material frostMaterial;
+    [SerializeField] Material basaltMaterial;
+    [SerializeField] Material abyssalMaterial;
+    [SerializeField] Material crystalMaterial;
 
+    [Header("Barrel Prices")]
+    [SerializeField] int slateCreditsPerBarrel = 5;
+    [SerializeField] int frostCreditsPerBarrel = 6;
+    [SerializeField] int basaltCreditsPerBarrel = 8;
+    [SerializeField] int abyssalCreditsPerBarrel = 10;
+    [SerializeField] int crystalCreditsPerBarrel = 12;
+
+    [Header("Economy")]
     [SerializeField] CurrencyManager currency;
 
     [Header("Testing")]
@@ -22,9 +34,21 @@ public class BarrelHub : MonoBehaviour
     readonly List<GameObject> barrelSlots =
         new List<GameObject>();
 
-    int barrelCount;
+    readonly List<AsteroidFamily> storedBarrels =
+        new List<AsteroidFamily>();
 
-    public int BarrelCount => barrelCount;
+    public event Action OnResourcesChanged;
+
+    public int UnlockedRepositoryCount =>
+        unlockedRepositoryCount;
+
+    public int MaxRepositoryCount =>
+        repositories != null
+            ? repositories.Length
+            : 0;
+
+    public int BarrelCount =>
+        storedBarrels.Count;
 
     public int Capacity =>
         Mathf.Clamp(
@@ -34,16 +58,48 @@ public class BarrelHub : MonoBehaviour
         ) * 4;
 
     public int FreeSlots =>
-        Capacity - barrelCount;
+        Capacity - BarrelCount;
 
     public bool IsFull =>
-        barrelCount >= Capacity;
+        BarrelCount >= Capacity;
+
+    public int SlateBarrels =>
+        GetResourceCount(AsteroidFamily.Slate);
+
+    public int FrostBarrels =>
+        GetResourceCount(AsteroidFamily.Frost);
+
+    public int BasaltBarrels =>
+        GetResourceCount(AsteroidFamily.Basalt);
+
+    public int AbyssalBarrels =>
+        GetResourceCount(AsteroidFamily.Abyssal);
+
+    public int CrystalBarrels =>
+        GetResourceCount(AsteroidFamily.Crystal);
+
+    public int TotalStoredValue =>
+        CalculateStoredValue();
 
     void Awake()
     {
+        if (currency == null)
+        {
+            currency =
+                FindFirstObjectByType<CurrencyManager>();
+
+            if (currency == null)
+            {
+                Debug.LogWarning(
+                    "[BarrelHub] CurrencyManager was not found.",
+                    gameObject
+                );
+            }
+        }
+
         BuildBarrelSlotList();
 
-        barrelCount = 0;
+        storedBarrels.Clear();
 
         RefreshVisuals();
     }
@@ -96,12 +152,14 @@ public class BarrelHub : MonoBehaviour
         }
 
         Debug.Log(
-            $"[BarrelHub] Found {barrelSlots.Count} barrel visual slots.",
+            $"[BarrelHub] Found {barrelSlots.Count} barrel slots.",
             gameObject
         );
     }
 
-    public bool TryStoreOneBarrel()
+    public bool TryStoreOneBarrel(
+        AsteroidFamily family
+    )
     {
         if (IsFull)
         {
@@ -113,22 +171,94 @@ public class BarrelHub : MonoBehaviour
             return false;
         }
 
-        barrelCount++;
+        storedBarrels.Add(
+            family
+        );
 
         RefreshVisuals();
 
+        OnResourcesChanged?.Invoke();
+
         Debug.Log(
-            $"[BarrelHub] Barrel stored: " +
-            $"{barrelCount}/{Capacity}",
+            $"[BarrelHub] STORED\n" +
+            $"Type = {family}\n" +
+            $"Unit Value = {GetPriceForFamily(family)}\n" +
+            $"Storage = {BarrelCount}/{Capacity}\n" +
+            $"Total Stored Value = {TotalStoredValue}",
             gameObject
         );
 
         return true;
     }
 
+    public int GetResourceCount(
+        AsteroidFamily family
+    )
+    {
+        int count = 0;
+
+        foreach (
+            AsteroidFamily storedFamily
+            in storedBarrels
+        )
+        {
+            if (
+                storedFamily ==
+                family
+            )
+            {
+                count++;
+            }
+        }
+
+        return count;
+    }
+
+    public int GetPriceForFamily(
+        AsteroidFamily family
+    )
+    {
+        switch (family)
+        {
+            case AsteroidFamily.Slate:
+                return slateCreditsPerBarrel;
+
+            case AsteroidFamily.Frost:
+                return frostCreditsPerBarrel;
+
+            case AsteroidFamily.Basalt:
+                return basaltCreditsPerBarrel;
+
+            case AsteroidFamily.Abyssal:
+                return abyssalCreditsPerBarrel;
+
+            case AsteroidFamily.Crystal:
+                return crystalCreditsPerBarrel;
+
+            default:
+                return 0;
+        }
+    }
+
+    int CalculateStoredValue()
+    {
+        int totalValue = 0;
+
+        foreach (
+            AsteroidFamily family
+            in storedBarrels
+        )
+        {
+            totalValue +=
+                GetPriceForFamily(family);
+        }
+
+        return totalValue;
+    }
+
     public void SellAll()
     {
-        if (barrelCount <= 0)
+        if (BarrelCount <= 0)
         {
             Debug.Log(
                 "[BarrelHub] Sell ignored. No barrels stored.",
@@ -138,13 +268,28 @@ public class BarrelHub : MonoBehaviour
             return;
         }
 
+        int slateCount =
+            SlateBarrels;
+
+        int frostCount =
+            FrostBarrels;
+
+        int basaltCount =
+            BasaltBarrels;
+
+        int abyssalCount =
+            AbyssalBarrels;
+
+        int crystalCount =
+            CrystalBarrels;
+
         int sold =
-            barrelCount;
+            BarrelCount;
 
         int earnedCredits =
-            sold * creditsPerBarrel;
+            CalculateStoredValue();
 
-        barrelCount = 0;
+        storedBarrels.Clear();
 
         if (currency != null)
         {
@@ -155,9 +300,16 @@ public class BarrelHub : MonoBehaviour
 
         RefreshVisuals();
 
+        OnResourcesChanged?.Invoke();
+
         Debug.Log(
             $"[BarrelHub] SELL ALL\n" +
-            $"Barrels sold = {sold}\n" +
+            $"Slate = {slateCount} x {slateCreditsPerBarrel}\n" +
+            $"Frost = {frostCount} x {frostCreditsPerBarrel}\n" +
+            $"Basalt = {basaltCount} x {basaltCreditsPerBarrel}\n" +
+            $"Abyssal = {abyssalCount} x {abyssalCreditsPerBarrel}\n" +
+            $"Crystal = {crystalCount} x {crystalCreditsPerBarrel}\n" +
+            $"Total barrels sold = {sold}\n" +
             $"Credits earned = {earnedCredits}",
             gameObject
         );
@@ -198,7 +350,8 @@ public class BarrelHub : MonoBehaviour
                 continue;
 
             repositories[i].gameObject.SetActive(
-                i < unlockedRepositoryCount
+                i <
+                unlockedRepositoryCount
             );
         }
 
@@ -208,9 +361,84 @@ public class BarrelHub : MonoBehaviour
             i++
         )
         {
+            bool shouldBeVisible =
+                i < storedBarrels.Count;
+
             barrelSlots[i].SetActive(
-                i < barrelCount
+                shouldBeVisible
+            );
+
+            if (!shouldBeVisible)
+                continue;
+
+            AsteroidFamily family =
+                storedBarrels[i];
+
+            Material material =
+                GetMaterialForFamily(
+                    family
+                );
+
+            ApplyMaterial(
+                barrelSlots[i],
+                material
             );
         }
     }
+
+    Material GetMaterialForFamily(
+        AsteroidFamily family
+    )
+    {
+        switch (family)
+        {
+            case AsteroidFamily.Slate:
+                return slateMaterial;
+
+            case AsteroidFamily.Frost:
+                return frostMaterial;
+
+            case AsteroidFamily.Basalt:
+                return basaltMaterial;
+
+            case AsteroidFamily.Abyssal:
+                return abyssalMaterial;
+
+            case AsteroidFamily.Crystal:
+                return crystalMaterial;
+
+            default:
+                return slateMaterial;
+        }
+    }
+
+    void ApplyMaterial(
+        GameObject barrelObject,
+        Material material
+    )
+    {
+        if (
+            barrelObject == null ||
+            material == null
+        )
+        {
+            return;
+        }
+
+        Renderer[] renderers =
+            barrelObject.GetComponentsInChildren<Renderer>(
+                true
+            );
+
+        foreach (
+            Renderer barrelRenderer
+            in renderers
+        )
+        {
+            barrelRenderer.material =
+                material;
+        }
+    }
+
+    
 }
