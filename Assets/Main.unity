@@ -722,6 +722,7 @@ MonoBehaviour:
   moneyLabel: {fileID: 479168708}
   towers:
   - {fileID: 11400000, guid: 229056d00e57e2d4197ad6debc4c514e, type: 2}
+  - {fileID: 11400000, guid: 2e5079ac890d32048b387ff6673e2487, type: 2}
   placer: {fileID: 1051605017}
   currency: {fileID: 1051605016}
 --- !u!4 &1137252107 stripped
