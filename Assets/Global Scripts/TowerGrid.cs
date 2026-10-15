@@ -5,6 +5,8 @@ using UnityEngine;
 /// Move/rotate/scale this object to position the grid in your XR play space.
 public class TowerGrid : MonoBehaviour
 {
+    public static TowerGrid Instance { get; private set; }   // NEW
+
     [Header("Grid")]
     [SerializeField] int columns = 10;        // X
     [SerializeField] int layers = 3;          // Y
@@ -24,7 +26,11 @@ public class TowerGrid : MonoBehaviour
     public int Layers => layers;
     public int Rows => rows;
 
-    void Awake() => Build();
+    void Awake()            // CHANGED: was "void Awake() => Build();"
+    {
+        Instance = this;
+        Build();
+    }
 
     public void Build()
     {
@@ -33,17 +39,17 @@ public class TowerGrid : MonoBehaviour
         markers = new GameObject[columns, layers, rows];
 
         for (int x = 0; x < columns; x++)
-        for (int y = 0; y < layers; y++)
-        for (int z = 0; z < rows; z++)
-        {
-            points[x, y, z] = GridToWorld(x, y, z);
+            for (int y = 0; y < layers; y++)
+                for (int z = 0; z < rows; z++)
+                {
+                    points[x, y, z] = GridToWorld(x, y, z);
 
-            if (pointMarkerPrefab != null)
-            {
-                markers[x, y, z] = Instantiate(pointMarkerPrefab, points[x, y, z],
-                                               transform.rotation, transform);
-            }
-        }
+                    if (pointMarkerPrefab != null)
+                    {
+                        markers[x, y, z] = Instantiate(pointMarkerPrefab, points[x, y, z],
+                                                       transform.rotation, transform);
+                    }
+                }
     }
 
     Vector3 GridToWorld(int x, int y, int z)
@@ -86,28 +92,31 @@ public class TowerGrid : MonoBehaviour
         bool found = false;
 
         for (int x = 0; x < columns; x++)
-        for (int y = 0; y < layers; y++)
-        for (int z = 0; z < rows; z++)
-        {
-            if (occupied[x, y, z]) continue;
+            for (int y = 0; y < layers; y++)
+                for (int z = 0; z < rows; z++)
+                {
+                    if (occupied[x, y, z]) continue;
 
-            Vector3 p = points[x, y, z];
-            float t = Vector3.Dot(p - ray.origin, ray.direction);
-            if (t < 0f || t > maxDistance || t >= bestT) continue;
+                    Vector3 p = points[x, y, z];
+                    float t = Vector3.Dot(p - ray.origin, ray.direction);
+                    if (t < 0f || t > maxDistance || t >= bestT) continue;
 
-            float dist = Vector3.Distance(p, ray.origin + ray.direction * t);
-            if (dist > pickRadius) continue;
+                    float dist = Vector3.Distance(p, ray.origin + ray.direction * t);
+                    if (dist > pickRadius) continue;
 
-            bestT = t;
-            cell = new Vector3Int(x, y, z);
-            snapped = p;
-            found = true;
-        }
+                    bestT = t;
+                    cell = new Vector3Int(x, y, z);
+                    snapped = p;
+                    found = true;
+                }
         return found;
     }
 
     public void SetOccupied(Vector3Int cell, bool value)
     {
+        // NEW: ignore invalid cells (e.g. a tower whose gridCell was never set)
+        if (cell.x < 0 || cell.x >= columns || cell.y < 0 || cell.y >= layers || cell.z < 0 || cell.z >= rows) return;
+
         occupied[cell.x, cell.y, cell.z] = value;
         if (markers[cell.x, cell.y, cell.z] != null)
             markers[cell.x, cell.y, cell.z].SetActive(!value);
@@ -118,9 +127,9 @@ public class TowerGrid : MonoBehaviour
         if (!drawGizmos) return;
         Gizmos.color = Color.cyan;
         for (int x = 0; x < columns; x++)
-        for (int y = 0; y < layers; y++)
-        for (int z = 0; z < rows; z++)
-            Gizmos.DrawWireSphere(GridToWorld(x, y, z), cellSize * 0.1f);
+            for (int y = 0; y < layers; y++)
+                for (int z = 0; z < rows; z++)
+                    Gizmos.DrawWireSphere(GridToWorld(x, y, z), cellSize * 0.1f);
     }
     public bool IsInside(Vector3Int c) =>
     c.x >= 0 && c.x < columns && c.y >= 0 && c.y < layers && c.z >= 0 && c.z < rows;

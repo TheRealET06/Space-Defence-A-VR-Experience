@@ -1,43 +1,70 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
- // XRI 2.x; in XRI 3.x you may also need ...Interactors
 
-/// Aim a controller ray at the 3D grid; a ghost tower snaps to the first free
-/// point the ray passes near, and the place action spawns the tower there.
 public class TowerPlacer : MonoBehaviour
 {
     [SerializeField] TowerGrid grid;
-    [SerializeField] UnityEngine.XR.Interaction.Toolkit.Interactors.XRRayInteractor rayInteractor;
+    [SerializeField] Transform rayOrigin;
     [SerializeField] InputActionReference placeAction;
-    [SerializeField] GameObject towerPrefab;
-    [SerializeField] GameObject ghostPrefab;   // semi-transparent, no colliders
+    [SerializeField] InputActionReference cancelAction;   // optional: deselect tower
+    [SerializeField] CurrencyManager currency;
+    [SerializeField] HandMenu menu;
 
     [Header("Aiming")]
-    [SerializeField] float pickRadius = 0.08f; // how close the ray must pass to a point (m)
+    [SerializeField] float pickRadius = 0.08f;
     [SerializeField] float maxDistance = 10f;
 
+    TowerData selected;
     GameObject ghost;
     Vector3Int currentCell;
     Vector3 currentPoint;
     bool hasValidPoint;
 
-    void OnEnable()  => placeAction.action.performed += OnPlace;
-    void OnDisable() => placeAction.action.performed -= OnPlace;
-
-    void Start()
+    void OnEnable()
     {
-        ghost = Instantiate(ghostPrefab);
+        placeAction.action.performed += OnPlace;
+        if (cancelAction != null) cancelAction.action.performed += OnCancel;
+    }
+    void OnDisable()
+    {
+        placeAction.action.performed -= OnPlace;
+        if (cancelAction != null) cancelAction.action.performed -= OnCancel;
+    }
+
+    public void SelectTower(TowerData data)
+    {
+        selected = data;
+        // TowerSelector.SelectionBlocked = true;
+        if (ghost) Destroy(ghost);
+        ghost = Instantiate(data.ghostPrefab);
+        foreach (var c in ghost.GetComponentsInChildren<Collider>()) c.enabled = false; //fix????
         ghost.SetActive(false);
+    }
+
+    void OnCancel(InputAction.CallbackContext _) => ClearSelection();
+
+    void ClearSelection()
+    {
+        selected = null;
+       // TowerSelector.SelectionBlocked = false;
+        hasValidPoint = false;
+        if (ghost) Destroy(ghost);
     }
 
     void Update()
     {
-        Transform origin = rayInteractor.rayOriginTransform;
-        Ray ray = new Ray(origin.position, origin.forward);
 
-        hasValidPoint = grid.TryGetFreePointAlongRay(ray, pickRadius, maxDistance,
-                                                     out currentCell, out currentPoint);
+        if (UnityEngine.InputSystem.XR.XRController.leftHand != null &&
+    UnityEngine.InputSystem.XR.XRController.leftHand.IsPressed())
+            Debug.Log("Left hand active");
 
+
+        if (selected == null || menu.IsOpen) { if (ghost) ghost.SetActive(false); hasValidPoint = false; return; }
+
+        Transform origin = rayOrigin;
+        var ray = new Ray(rayOrigin.position, rayOrigin.forward);
+
+        hasValidPoint = grid.TryGetFreePointAlongRay(ray, pickRadius, maxDistance,out currentCell, out currentPoint);
         ghost.SetActive(hasValidPoint);
         if (hasValidPoint)
             ghost.transform.SetPositionAndRotation(currentPoint, grid.transform.rotation);
@@ -45,9 +72,17 @@ public class TowerPlacer : MonoBehaviour
 
     void OnPlace(InputAction.CallbackContext _)
     {
-        if (!hasValidPoint) return;
+        if (selected == null || !hasValidPoint) return;
+        if (menu.IsOpen || Time.frameCount - menu.LastClosedFrame < 3) return; // the click that picked the tower
+        if (!currency.TrySpend(selected.cost)) return;                          // not enough money
 
-        Instantiate(towerPrefab, currentPoint, grid.transform.rotation);
+        GameObject obj = Instantiate(selected.towerPrefab, currentPoint, grid.transform.rotation);
+        Tower tower = obj.GetComponentInChildren<Tower>();   // also finds it on the root itself
+        tower.data = selected;
+        tower.gridCell = currentCell;
+        tower.root = obj;
         grid.SetOccupied(currentCell, true);
+
+        if (!currency.CanAfford(selected.cost)) ClearSelection(); // optional: auto-deselect when broke
     }
 }
