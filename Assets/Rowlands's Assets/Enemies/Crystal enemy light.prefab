@@ -12,8 +12,9 @@ GameObject:
   - component: {fileID: 6308127851013341932}
   - component: {fileID: 482448105629364135}
   - component: {fileID: 6415238377617965265}
-  m_Layer: 0
-  m_Name: Enemy
+  - component: {fileID: 3932699428812217973}
+  m_Layer: 6
+  m_Name: Crystal enemy light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -103,6 +104,24 @@ MonoBehaviour:
   faceDirection: 1
   turnSpeed: 360
   destroyOnArrival: 1
+--- !u!114 &3932699428812217973
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 265521279942974316}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3a45854f44d4744990503335bd019c1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Enemystats
+  health: 100
+  aimPoint: {fileID: 8032200358783437258}
+  myEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  IsDead: 0
 --- !u!1001 &561466692684383445
 PrefabInstance:
   m_ObjectHideFlags: 0
