@@ -447,64 +447,34 @@ public class MiningTowerInteractionHub : MonoBehaviour
                 : "EMPTY";
 
         towerStatusText.text =
-            "TOWER STATUS\n\n" +
+            // "<b>TOWER STATUS</b>\n\n" +
 
-            $"Cargo          {cargoState}\n" +
+            "<b>MINING</b>\n" +
+            $"Range Lv  {upgradeController.RangeLevel}/{upgradeController.MaxRangeLevel}" +
+            $"      Range  {upgradeController.CurrentMiningRange:F1}/{upgradeController.MaxPossibleMiningRange:F1} m\n" +
 
-            $"Range Upgrade  " +
-            $"{upgradeController.RangeLevel}/" +
-            $"{upgradeController.MaxRangeLevel}\n" +
+            $"Proc Lv   {upgradeController.ProcessingLevel}/{upgradeController.MaxProcessingLevel}" +
+            $"      Rate   {upgradeController.CurrentProcessingRate:F2}/{upgradeController.MaxPossibleProcessingRate:F2}/s\n" +
 
-            $"Range          " +
-            $"{upgradeController.CurrentMiningRange:F1} / " +
-            $"{upgradeController.MaxPossibleMiningRange:F1} m\n" +
+            "<b>STORAGE</b>\n" +
+            $"Barrels   {upgradeController.CurrentStoredBarrels}/{upgradeController.CurrentStorageCapacity}" +
+            $"      Capacity  {upgradeController.CurrentStorageCapacity}/{upgradeController.MaxStorageCapacity}\n" +
 
-            $"Processing Upg " +
-            $"{upgradeController.ProcessingLevel}/" +
-            $"{upgradeController.MaxProcessingLevel}\n" +
+            $"Repos     {upgradeController.CurrentRepositoryCount}/{upgradeController.MaxRepositoryCount}" +
+            $"      Cargo     {cargoState}\n" +
 
-            $"Processing     " +
-            $"{upgradeController.CurrentProcessingRate:F2} / " +
-            $"{upgradeController.MaxPossibleProcessingRate:F2} barrels/s\n" +
+            "<b>SYSTEMS</b>\n" +
+            $"Engineer  {upgradeController.ActiveEngineerCount}/{upgradeController.MaxEngineerCount}" +
+            $"      Power   {upgradeController.PowerLevel}/{upgradeController.MaxPowerLevel}\n" +
 
-            $"Storage        " +
-            $"{upgradeController.CurrentStoredBarrels} / " +
-            $"{upgradeController.CurrentStorageCapacity} barrels\n" +
+            $"Walls     {upgradeController.WallsLevel}/{upgradeController.MaxWallsLevel}" +
+            $"      Weapons {upgradeController.WeaponsLevel}/{upgradeController.MaxWeaponsLevel}\n" +
 
-            $"Storage Max    " +
-            $"{upgradeController.MaxStorageCapacity} barrels\n" +
+            "<b>DEFENSE</b>\n" +
+            $"HP        {upgradeController.CurrentHealth:F0}/{upgradeController.MaxHealth:F0}" +
+            $"      Shield  {upgradeController.CurrentShield:F0}/{upgradeController.MaxPossibleShield:F0}\n" +
 
-            $"Repositories   " +
-            $"{upgradeController.CurrentRepositoryCount}/" +
-            $"{upgradeController.MaxRepositoryCount}\n" +
-
-            $"Engineers      " +
-            $"{upgradeController.ActiveEngineerCount}/" +
-            $"{upgradeController.MaxEngineerCount}\n" +
-
-            $"Repair         " +
-            $"{upgradeController.CurrentRepairRate:F1} HP/s\n" +
-
-            $"Health         " +
-            $"{upgradeController.CurrentHealth:F0}/" +
-            $"{upgradeController.MaxHealth:F0}\n" +
-
-            $"Shield         " +
-            $"{upgradeController.CurrentShield:F0}/" +
-            $"{upgradeController.MaxShield:F0} " +
-            $"(Max {upgradeController.MaxPossibleShield:F0})\n" +
-
-            $"Power          " +
-            $"{upgradeController.PowerLevel}/" +
-            $"{upgradeController.MaxPowerLevel}\n" +
-
-            $"Walls          " +
-            $"{upgradeController.WallsLevel}/" +
-            $"{upgradeController.MaxWallsLevel}\n" +
-
-            $"Weapons        " +
-            $"{upgradeController.WeaponsLevel}/" +
-            $"{upgradeController.MaxWeaponsLevel}";
+            $"Repair    {upgradeController.CurrentRepairRate:F1} HP/s";
     }
 
     void SetCanvasVisible(
