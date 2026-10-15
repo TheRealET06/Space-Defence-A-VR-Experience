@@ -1017,7 +1017,7 @@
                     "name": "Scale Toggle",
                     "type": "Button",
                     "id": "80ed7d74-56de-473c-bf76-da3bdd16b562",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false,
@@ -1031,6 +1031,16 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true,
+                    "priority": 0
+                },
+                {
+                    "name": "XPressed",
+                    "type": "Button",
+                    "id": "7d83e640-4af4-4221-b1f6-2e276ed90116",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false,
                     "priority": 0
                 }
             ],
@@ -1406,6 +1416,28 @@
                     "processors": "ScaleVector2(x=0),StickDeadzone",
                     "groups": "",
                     "action": "Translate Manipulation",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "defad81a-bcf6-417a-9838-349dec575d0c",
+                    "path": "<XRController>{LeftHand}/{SecondaryButton}",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "XPressed",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d0e41945-17db-4639-b3c1-9a68818e27de",
+                    "path": "<XRController>{LeftHand}/{SecondaryButton}",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "XPressed",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
