@@ -131,4 +131,16 @@ public class TowerGrid : MonoBehaviour
                 for (int z = 0; z < rows; z++)
                     Gizmos.DrawWireSphere(GridToWorld(x, y, z), cellSize * 0.1f);
     }
+    public bool IsInside(Vector3Int c) =>
+    c.x >= 0 && c.x < columns && c.y >= 0 && c.y < layers && c.z >= 0 && c.z < rows;
+
+    public bool IsOccupied(Vector3Int c) => occupied[c.x, c.y, c.z];
+
+    public bool TryGetPoint(Vector3Int c, out Vector3 world)
+    {
+        world = default;
+        if (!IsInside(c)) return false;
+        world = points[c.x, c.y, c.z];
+        return true;
+    }
 }
