@@ -783,7 +783,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d92b1e6c201bbe46ac4ec853fe38d6f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CurrencyManager
-  startingMoney: 200
+  startingMoney: 1000
 --- !u!114 &1051605017
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -824,6 +824,10 @@ MonoBehaviour:
   towers:
   - {fileID: 11400000, guid: 229056d00e57e2d4197ad6debc4c514e, type: 2}
   - {fileID: 11400000, guid: 2e5079ac890d32048b387ff6673e2487, type: 2}
+  - {fileID: 11400000, guid: 84373f29c827a8741b684b61a3d23002, type: 2}
+  - {fileID: 11400000, guid: 77fd3105dcd9b3b4b9aef89d24f173c0, type: 2}
+  - {fileID: 11400000, guid: 58071b6de71ef4d478e2161a02fc66d8, type: 2}
+  - {fileID: 11400000, guid: 1dbb42fa913204f49af921d48d42405e, type: 2}
   placer: {fileID: 1051605017}
   currency: {fileID: 1051605016}
 --- !u!4 &1137252107 stripped
@@ -974,9 +978,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PathEnemySpawner
   grid: {fileID: 1216785527}
   pathSource: {fileID: 1216785533}
-  enemyPrefab: {fileID: 8139722959084268521, guid: 7c9679236699d6840b59956eca86c312, type: 3}
-  enemyCount: 5
-  spawnInterval: 1.5
+  enemyPool:
+  - prefab: {fileID: 8139722959084268521, guid: 7c9679236699d6840b59956eca86c312, type: 3}
+    weight: 20
+  - prefab: {fileID: 1960267823217012267, guid: c7757f2c2be95a242b9b75b64b499425, type: 3}
+    weight: 10
+  - prefab: {fileID: 5892239309728775559, guid: fca8bc725b00d524094b936b9e020e2f, type: 3}
+    weight: 15
+  - prefab: {fileID: 5844899492519364780, guid: a827c664df0e7cd44946ea9a0b21c86d, type: 3}
+    weight: 5
+  enemyCount: 15
+  spawnInterval: 3
   startDelay: 1
   heightOffset: 0.05
 --- !u!1 &1225217596
