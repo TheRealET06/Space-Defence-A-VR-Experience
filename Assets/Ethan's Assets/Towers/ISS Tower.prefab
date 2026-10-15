@@ -1103,7 +1103,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d921b7e43c1c0374aa34d7c936d68984, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Tower
-  range: 4
+  data: {fileID: 11400000, guid: 2e5079ac890d32048b387ff6673e2487, type: 2}
+  range: 6
   enemyLayer:
     serializedVersion: 2
     m_Bits: 256
@@ -1112,7 +1113,6 @@ MonoBehaviour:
   projectilePrefab: {fileID: 8163457388577279986, guid: c4a824eb1e6cd2d4baa9708cf1cd27fb, type: 3}
   firePoint: {fileID: 4683183803969457577}
   refundPercent: 0.7
-  data: {fileID: 0}
   gridCell: {x: -1, y: -1, z: -1}
   root: {fileID: 0}
 --- !u!65 &-5613415208769544296

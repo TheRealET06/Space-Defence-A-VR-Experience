@@ -2,6 +2,10 @@ using UnityEngine;
 
 public class Tower : MonoBehaviour
 {
+
+    [Header("TowerData Reference")]
+    public TowerData data;                      // assign this on every tower prefab
+
     [Header("Targeting")]
     public float range = 8f;
     public LayerMask enemyLayer;
@@ -15,7 +19,7 @@ public class Tower : MonoBehaviour
     [Header("Monitary")]
     [Range(0f, 1f)] public float refundPercent = 0.7f;
 
-    [HideInInspector] public TowerData data;                      // set by TowerPlacer
+    // [HideInInspector] public TowerData data;                      // set by TowerPlacer
     [HideInInspector] public Vector3Int gridCell = new Vector3Int(-1, -1, -1);
     [HideInInspector] public GameObject root;                     // set by TowerPlacer
     public TowerData Data => data;
@@ -26,9 +30,15 @@ public class Tower : MonoBehaviour
     float cooldown;
 
 
-    
 
-    void Start() => InvokeRepeating(nameof(FindTarget), 0f, 0.2f);
+
+    void Start()
+    {
+        if (enemyLayer.value == 0) Debug.LogWarning($"{name}: Enemy Layer is Nothing, so this tower can never find targets", this);
+        if (projectilePrefab == null) Debug.LogWarning($"{name}: Projectile Prefab not assigned", this);
+        if (firePoint == null) Debug.LogWarning($"{name}: Fire Point not assigned", this);
+        InvokeRepeating(nameof(FindTarget), 0f, 0.2f);
+    }
 
     void FindTarget()
     {
@@ -38,8 +48,10 @@ public class Tower : MonoBehaviour
         Transform nearest = null;
         foreach (var c in hits)
         {
-            float d = (c.transform.position - transform.position).sqrMagnitude;
-            if (d < best) { best = d; nearest = c.transform; }
+            var enemy = c.GetComponentInParent<Enemy>();   // the collider may be on a child mesh
+            if (enemy == null) continue;
+            float d = (enemy.transform.position - transform.position).sqrMagnitude;
+            if (d < best) { best = d; nearest = enemy.transform; }
         }
         target = nearest;
     }

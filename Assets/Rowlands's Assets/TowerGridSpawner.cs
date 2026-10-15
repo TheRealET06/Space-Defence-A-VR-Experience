@@ -105,6 +105,14 @@ public class TowerGridSpawner : MonoBehaviour
 
         Transform parent = spawnParent != null ? spawnParent : grid.transform;
         var go = Instantiate(prefab, pos, grid.transform.rotation, parent);
+
+        Tower tower = go.GetComponentInChildren<Tower>();
+        if (tower != null)
+        {
+            tower.gridCell = cell;     // so Sell can free this cell
+            tower.root = go;           // so Sell destroys the whole spawned object
+        }
+
         grid.SetOccupied(cell, true);   // hides the marker too, if one exists
         spawned.Add(go);
         return true;
