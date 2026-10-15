@@ -19,6 +19,8 @@ public class Tower : MonoBehaviour
     [Header("Monitary")]
     [Range(0f, 1f)] public float refundPercent = 0.7f;
 
+    [SerializeField] bool debugTargeting;
+
     // [HideInInspector] public TowerData data;                      // set by TowerPlacer
     [HideInInspector] public Vector3Int gridCell = new Vector3Int(-1, -1, -1);
     [HideInInspector] public GameObject root;                     // set by TowerPlacer
@@ -42,6 +44,7 @@ public class Tower : MonoBehaviour
 
     void FindTarget()
     {
+
         Collider[] hits = Physics.OverlapSphere(transform.position, range, enemyLayer);
 
         float best = float.MaxValue;
@@ -54,6 +57,9 @@ public class Tower : MonoBehaviour
             if (d < best) { best = d; nearest = enemy.transform; }
         }
         target = nearest;
+
+        if (debugTargeting)
+            Debug.Log($"{name}: {hits.Length} colliders within {range}m, target = {(nearest ? nearest.name : "none")}", this);
     }
 
     void Update()
@@ -79,6 +85,8 @@ public class Tower : MonoBehaviour
 
     void Shoot()
     {
+        if (debugTargeting) Debug.Log($"{name} firing at {target.name}", this);
+
         Projectile p = Instantiate(projectilePrefab, firePoint.position, firePoint.rotation);
         p.Seek(target);
     }

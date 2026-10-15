@@ -1113,6 +1113,7 @@ MonoBehaviour:
   projectilePrefab: {fileID: 8163457388577279986, guid: c4a824eb1e6cd2d4baa9708cf1cd27fb, type: 3}
   firePoint: {fileID: 4683183803969457577}
   refundPercent: 0.7
+  debugTargeting: 1
   gridCell: {x: -1, y: -1, z: -1}
   root: {fileID: 0}
 --- !u!65 &-5613415208769544296
