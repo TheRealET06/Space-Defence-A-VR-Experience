@@ -1,0 +1,36 @@
+Planets & Asteroids v2 - CERTIFICATION (free sample excerpt)
+
+Verdant World  -  PASS
+------------------------------------------------------------
+  Profile: Equirectangular world certification (equirect_world_v1)
+  [PASS] W1 File loads completely: the GLB parses and yields 65,024 triangles on 32,514 vertices
+  [PASS] W2 Textures are inside the file: 3 image(s) embedded, 2048x1024, 2048x1024, 2048x1024
+  [PASS] W3 Full PBR material: baseColour present, normal present
+  [PASS] W4 Equirectangular maps (2:1): every embedded map is twice as wide as it is tall
+  [PASS] W5 Closed sphere: 0 open boundary edges and 0 non-manifold edges, after welding by position
+  [PASS] W6 One hollow shell: 1 connected shell(s); no second shell nested inside
+  [PASS] W7 Relief inside the declared envelope: radial relief band 3.57% of radius, measured as (rmax-rmin)/rmean; declared envelope for class 'terrestrial' is 2.0-13.0% (Earth's real mountain-to-trench range is 0.31% of its radius, the Moon's 1.15%, so game worlds are deliberately exaggerated)
+  [PASS] W8 Faces wound consistently: measured on the triangles as shipped, not after a weld
+  [PASS] W9 UVs inside the texture: UV layer present; 0.00% of vertices outside the 0-1 range
+  Notes (reported, not failures):
+    - How this body was made: procedurally generated sphere with displacement driven by the same height field that coloured the albedo - the mountains are coloured where the mountains are, and the albedo carries no baked-in lighting, so it lights correctly under your own sun
+    - Shape: bounding box 1.007 x 1.015 x 1.009 units; axis ratio 0.992 - a displaced world is deliberately not a perfect sphere - see W7
+  Files:
+    ebdec7c851aac4ebf8cc3fee19b2ffe40cbe4e3da1d9fe75e97b00402c13c940  Verdant_World.glb
+
+Cratered Potato  -  PASS
+------------------------------------------------------------
+  Profile: Solid body certification (solid_body_v1)
+  [PASS] S1 File loads completely: the GLB parses and yields 51,932 triangles on 25,968 vertices
+  [PASS] S2 Textures are inside the file: 3 image(s) embedded, 2048x2048, 2048x2048, 2048x2048; no external file links
+  [PASS] S3 Full PBR material: baseColour present, normal present, metallic-roughness present
+  [PASS] S4 Surface is closed - no holes: 0 open boundary edges, 0 hole(s), after welding vertices by position (glTF splits a vertex at every UV seam; those splits are not holes)
+  [PASS] S5 Manifold - no pinched edges: 0 edges shared by more than two faces
+  [PASS] S6 One solid body: 1 connected shell(s); enclosed volume 1.5123 cubic units
+  [PASS] S7 Faces wound consistently: measured on the triangles as shipped, not after a weld - a weld fuses coincident back-to-back surfaces and reports false failures
+  [PASS] S8 UVs inside the texture: UV layer present; 0.00% of vertices outside the 0-1 range
+  Notes (reported, not failures):
+    - No repair needed: the generated mesh passed every gate above with no edit - what the generator produced is what you are downloading.
+    - Scale and pivot: bounding box 1.894 x 1.223 x 1.289 units; longest-to-shortest axis ratio 0.646 - rescale to your world units and set the pivot where your engine expects it
+  Files:
+    14144ce57de1a6a749fa74491d00d3b2d6722b18a3718f0f6a8821a0c58a4335  Cratered_Potato.glb
