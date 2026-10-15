@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ead7b86a8c0b42c6a448bc38c7450d0c, type: 3}
+  m_Name: BlackHole
+  m_EditorClassIdentifier: Assembly-CSharp::Brian.EnemyData
+  displayName: Black hole
+  prefab: {fileID: 1940512916095094059, guid: 95c7a1a024edb194a9e7ccfac15966b1, type: 3}
+  maxHealth: 450
+  maxSpeed: 0.25
+  minSpeedFraction: 0.6
+  homeDamage: 5
+  killReward: 20
