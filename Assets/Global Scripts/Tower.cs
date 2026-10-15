@@ -12,8 +12,21 @@ public class Tower : MonoBehaviour
     public Projectile projectilePrefab;
     public Transform firePoint;
 
+    [Header("Monitary")]
+    [Range(0f, 1f)] public float refundPercent = 0.7f;
+
+    [HideInInspector] public TowerData data;                      // set by TowerPlacer
+    [HideInInspector] public Vector3Int gridCell = new Vector3Int(-1, -1, -1);
+    [HideInInspector] public GameObject root;                     // set by TowerPlacer
+    public TowerData Data => data;
+    public GameObject Root => root != null ? root : gameObject;
+    public int SellValue => Mathf.RoundToInt(data.cost * refundPercent);
+
     Transform target;
     float cooldown;
+
+
+    
 
     void Start() => InvokeRepeating(nameof(FindTarget), 0f, 0.2f);
 

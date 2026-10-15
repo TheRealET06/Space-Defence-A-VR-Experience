@@ -19,7 +19,7 @@ public class CurrencyManager : MonoBehaviour
         return true;
     }
 
-    public void Add(int amount)
+    public void AddMoney(int amount)
     {
         Money += amount;
         OnMoneyChanged?.Invoke(Money);

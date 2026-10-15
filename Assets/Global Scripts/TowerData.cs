@@ -8,4 +8,5 @@ public class TowerData : ScriptableObject
     public GameObject towerPrefab;
     public GameObject ghostPrefab;   // semi-transparent, no colliders
     public Sprite icon;
+
 }
