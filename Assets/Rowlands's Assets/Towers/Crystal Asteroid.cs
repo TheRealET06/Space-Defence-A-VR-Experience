@@ -21,7 +21,10 @@ public class CrystalAsteroid : MonoBehaviour
         { 
             gems -= Time.deltaTime * gemUpdate; 
             depleated = gems <= 0;
-            gemsGone.Invoke();
+            if (depleated)
+            {
+                gemsGone.Invoke();
+            }
         }
     }
 

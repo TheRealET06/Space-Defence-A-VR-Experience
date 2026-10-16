@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 /// 3D grid of tower placement points (X = columns, Y = layers, Z = rows),
@@ -25,6 +26,8 @@ public class TowerGrid : MonoBehaviour
     public int Columns => columns;
     public int Layers => layers;
     public int Rows => rows;
+    readonly Dictionary<Vector3Int, TowerNode> nodes = new Dictionary<Vector3Int, TowerNode>();
+    public void RegisterNode(Vector3Int cell, TowerNode node) => nodes[cell] = node;
 
     void Awake()            // CHANGED: was "void Awake() => Build();"
     {
@@ -142,5 +145,28 @@ public class TowerGrid : MonoBehaviour
         if (!IsInside(c)) return false;
         world = points[c.x, c.y, c.z];
         return true;
+    }
+
+    /// Nearest node of the given type along the ray (within pickRadius) that doesn't already have a tower.
+    public bool TryGetFreeNodeAlongRay(Ray ray, float pickRadius, float maxDistance,
+                                       NodeType requiredType, out TowerNode best)
+    {
+        best = null;
+        float bestT = float.MaxValue;
+
+        foreach (var n in nodes.Values)
+        {
+            if (n == null || n.HasTower || n.Type != requiredType) continue;
+
+            Vector3 p = n.SnapPoint;
+            float t = Vector3.Dot(p - ray.origin, ray.direction);
+            if (t < 0f || t > maxDistance || t >= bestT) continue;
+
+            if (Vector3.Distance(p, ray.origin + ray.direction * t) > pickRadius) continue;
+
+            bestT = t;
+            best = n;
+        }
+        return best != null;
     }
 }

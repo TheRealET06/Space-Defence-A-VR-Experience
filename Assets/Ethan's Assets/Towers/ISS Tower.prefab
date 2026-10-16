@@ -1104,18 +1104,32 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Tower
   data: {fileID: 11400000, guid: 2e5079ac890d32048b387ff6673e2487, type: 2}
+  towerType: 0
+  placement: 0
+  requiredNodeType: 0
   range: 6
   enemyLayer:
     serializedVersion: 2
-    m_Bits: 256
+    m_Bits: 0
   rotatingPart: {fileID: 0}
+  retargetInterval: 0.2
   fireRate: 1
   projectilePrefab: {fileID: 8163457388577279986, guid: c4a824eb1e6cd2d4baa9708cf1cd27fb, type: 3}
   firePoint: {fileID: 4683183803969457577}
+  laserLine: {fileID: 0}
+  damagePerSecond: 20
+  turnSpeed: 360
+  fireAngleTolerance: 5
+  incomePerTick: 10
+  incomeInterval: 5
+  onIncome:
+    m_PersistentCalls:
+      m_Calls: []
   refundPercent: 0.7
   debugTargeting: 1
   gridCell: {x: -1, y: -1, z: -1}
   root: {fileID: 0}
+  node: {fileID: 0}
 --- !u!65 &-5613415208769544296
 BoxCollider:
   m_ObjectHideFlags: 0

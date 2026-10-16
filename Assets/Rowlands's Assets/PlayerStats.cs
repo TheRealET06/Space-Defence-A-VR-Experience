@@ -3,8 +3,8 @@ using UnityEngine;
 public class PlayerStats : MonoBehaviour
 {
     private double money = 0;
-    private double crystals = 0;
-    private double gas = 0;
+    public double crystals = 0;
+    public double gas = 0;
     private double moneyUpdate = 0.1;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()

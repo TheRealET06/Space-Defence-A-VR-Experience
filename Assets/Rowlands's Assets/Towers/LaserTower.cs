@@ -6,6 +6,9 @@ using UnityEngine;
 /// </summary>
 public class LaserTower : MonoBehaviour
 {
+    [Header("TowerData Reference")]
+    public TowerData data;                      // assign this on every tower prefab
+
     [Header("Targeting")]
     [SerializeField] private float range = 12f;
     [SerializeField] private LayerMask enemyLayer;          // Put enemies on their own layer
@@ -20,6 +23,16 @@ public class LaserTower : MonoBehaviour
     [SerializeField] private Transform firePoint;           // Where the laser starts (child of turretHead)
     [SerializeField] private LineRenderer laserLine;
     [SerializeField] private float damagePerSecond = 20f;   // Applied as dps * deltaTime each frame
+
+    [Header("Monitary")]
+    [Range(0f, 1f)] public float refundPercent = 0.7f;
+
+    // [HideInInspector] public TowerData data;                      // set by TowerPlacer
+    [HideInInspector] public Vector3Int gridCell = new Vector3Int(-1, -1, -1);
+    [HideInInspector] public GameObject root;                     // set by TowerPlacer
+    public TowerData Data => data;
+    public GameObject Root => root != null ? root : gameObject;
+    public int SellValue => Mathf.RoundToInt(data.cost * refundPercent);
 
     private Enemystats currentTarget;
     private float retargetTimer;
@@ -150,32 +163,3 @@ public class LaserTower : MonoBehaviour
         Gizmos.DrawWireSphere(transform.position, range);
     }
 }
-
-/*
- * ---- EnemyHealth.cs (put in its own file, or adapt your existing health script) ----
- *
- * using UnityEngine;
- *
- * public class EnemyHealth : MonoBehaviour
- * {
- *     [SerializeField] private float maxHealth = 100f;
- *     [SerializeField] private Transform aimPoint; // Optional: chest/center so the laser doesn't hit the feet
- *
- *     private float health;
- *     public bool IsDead { get; private set; }
- *     public Vector3 AimPoint => aimPoint != null ? aimPoint.position : transform.position + Vector3.up;
- *
- *     private void Awake() => health = maxHealth;
- *
- *     public void TakeDamage(float amount)
- *     {
- *         if (IsDead) return;
- *         health -= amount;
- *         if (health <= 0f)
- *         {
- *             IsDead = true;
- *             Destroy(gameObject);
- *         }
- *     }
- * }
- */

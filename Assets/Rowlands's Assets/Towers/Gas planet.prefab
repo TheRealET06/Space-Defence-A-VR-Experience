@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 6167579982750744495}
   - component: {fileID: 6072357386395105526}
   - component: {fileID: 3892218384301848856}
+  - component: {fileID: 8587361267899112408}
   m_Layer: 0
   m_Name: Gas planet
   m_TagString: Untagged
@@ -32,8 +33,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.4, y: 0.4, z: 0.4}
   m_ConstrainProportionsScale: 1
-  m_Children:
-  - {fileID: 6340223271207712659}
+  m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &8323076758665355986
@@ -130,65 +130,18 @@ MonoBehaviour:
   max: 24
   speed: 2
   maxBrightness: 200
---- !u!1001 &6706473881856355690
-PrefabInstance:
+--- !u!114 &8587361267899112408
+MonoBehaviour:
   m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 2910285383543421903}
-    m_Modifications:
-    - target: {fileID: 787796850051357433, guid: c45c50465e2b42743b890a20bcc564eb, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 787796850051357433, guid: c45c50465e2b42743b890a20bcc564eb, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 787796850051357433, guid: c45c50465e2b42743b890a20bcc564eb, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 787796850051357433, guid: c45c50465e2b42743b890a20bcc564eb, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 787796850051357433, guid: c45c50465e2b42743b890a20bcc564eb, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 787796850051357433, guid: c45c50465e2b42743b890a20bcc564eb, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 787796850051357433, guid: c45c50465e2b42743b890a20bcc564eb, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 787796850051357433, guid: c45c50465e2b42743b890a20bcc564eb, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 787796850051357433, guid: c45c50465e2b42743b890a20bcc564eb, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 787796850051357433, guid: c45c50465e2b42743b890a20bcc564eb, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7162953846413079229, guid: c45c50465e2b42743b890a20bcc564eb, type: 3}
-      propertyPath: m_Name
-      value: 'Gas Extractor '
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: c45c50465e2b42743b890a20bcc564eb, type: 3}
---- !u!4 &6340223271207712659 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 787796850051357433, guid: c45c50465e2b42743b890a20bcc564eb, type: 3}
-  m_PrefabInstance: {fileID: 6706473881856355690}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4689510960488641632}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e4438fc313129df4794cc6246e34c957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TowerNode
+  nodeType: 2
+  snapPoint: {fileID: 2910285383543421903}
+  cell: {x: 0, y: 0, z: 0}

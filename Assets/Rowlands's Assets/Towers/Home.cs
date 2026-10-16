@@ -8,11 +8,14 @@ public class Home : MonoBehaviour
     public float degPerS = 0.0f;
     public UnityEvent myEvent;
     public bool gameOver = false;
+    private PlayerStats pStats;
+    public CurrencyManager currency;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    //void Start()
-    //{
-        
-    //}
+    void Start()
+    {
+        pStats = UnityEngine.Object.FindAnyObjectByType<PlayerStats>();
+        currency = UnityEngine.Object.FindAnyObjectByType<CurrencyManager>();
+    }
 
     // Update is called once per frame
     void Update()
@@ -27,6 +30,11 @@ public class Home : MonoBehaviour
         {
             gameOver = true;
             myEvent.Invoke();
+            Application.Quit();
+
+            #if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+            #endif
         }
     }
 
@@ -35,9 +43,18 @@ public class Home : MonoBehaviour
         // Check if the overlapping object has a specific tag
         if (other.CompareTag("Enemy"))
         {
-            Enemystats enemy = other.GetComponentInParent<Enemystats>();
+            Enemy enemy = other.GetComponentInParent<Enemy>();
             health -= enemy.danger;
             Destroy(other);
+        }
+    }
+
+    public void trade()
+    {
+        if (pStats.crystals > 0)
+        {
+            pStats.changeCrystals(-1);
+            currency.AddMoney(50);
         }
     }
 }

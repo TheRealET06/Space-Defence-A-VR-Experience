@@ -9,9 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6484017073502128346}
-  - component: {fileID: 7422695912253051410}
+  - component: {fileID: 8220093909355982294}
   - component: {fileID: 6139471947054358631}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Laser Tower
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -35,7 +35,7 @@ Transform:
   - {fileID: 952352979525420000}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7422695912253051410
+--- !u!114 &8220093909355982294
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -44,20 +44,36 @@ MonoBehaviour:
   m_GameObject: {fileID: 1603545834640516993}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6d8d5b0329a80e44ebb96115110ae5c0, type: 3}
+  m_Script: {fileID: 11500000, guid: d921b7e43c1c0374aa34d7c936d68984, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::LaserTower
+  m_EditorClassIdentifier: Assembly-CSharp::Tower
+  data: {fileID: 11400000, guid: 40f4e072ad142144797d1c9a78ea8f27, type: 2}
+  towerType: 1
+  placement: 0
+  requiredNodeType: 0
   range: 2
   enemyLayer:
     serializedVersion: 2
     m_Bits: 64
+  rotatingPart: {fileID: 6484017073502128346}
   retargetInterval: 0.2
-  turretHead: {fileID: 6484017073502128346}
-  turnSpeed: 360
-  fireAngleTolerance: 5
+  fireRate: 1
+  projectilePrefab: {fileID: 0}
   firePoint: {fileID: 6484017073502128346}
   laserLine: {fileID: 6139471947054358631}
   damagePerSecond: 20
+  turnSpeed: 360
+  fireAngleTolerance: 5
+  incomePerTick: 10
+  incomeInterval: 5
+  onIncome:
+    m_PersistentCalls:
+      m_Calls: []
+  refundPercent: 0.7
+  debugTargeting: 0
+  gridCell: {x: -1, y: -1, z: -1}
+  root: {fileID: 0}
+  node: {fileID: 0}
 --- !u!120 &6139471947054358631
 LineRenderer:
   serializedVersion: 3

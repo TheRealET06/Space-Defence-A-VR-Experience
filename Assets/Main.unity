@@ -26,7 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 1
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 2100000, guid: 95ebf50189f880e4aa17c4fdba9007aa, type: 2}
+  m_SkyboxMaterial: {fileID: 2100000, guid: b13109bc4674dd24ebc04b7c12437ad6, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -136,6 +136,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34b8dab5c3ee69943b73e9faef609aff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NewMonoBehaviourScript
+  crystals: 0
+  gas: 0
 --- !u!1 &178443943
 GameObject:
   m_ObjectHideFlags: 0
@@ -839,8 +841,10 @@ MonoBehaviour:
   buttonPrefab: {fileID: 6393385243389822586, guid: cd6340f4458c16d48a853c9425f7a4d1, type: 3}
   moneyLabel: {fileID: 479168708}
   towers:
-  - {fileID: 11400000, guid: 229056d00e57e2d4197ad6debc4c514e, type: 2}
-  - {fileID: 11400000, guid: 2e5079ac890d32048b387ff6673e2487, type: 2}
+  - {fileID: 11400000, guid: 40f4e072ad142144797d1c9a78ea8f27, type: 2}
+  - {fileID: 11400000, guid: 88f34c7d869afab4e81a689ab030b4da, type: 2}
+  - {fileID: 11400000, guid: c5157d3d24cf454458b0f10326a5521f, type: 2}
+  - {fileID: 11400000, guid: 4cc842bf30e35954ea8968f423a479b0, type: 2}
   placer: {fileID: 1051605017}
   currency: {fileID: 1051605016}
 --- !u!4 &1137252107 stripped
@@ -884,8 +888,8 @@ MonoBehaviour:
   columns: 11
   layers: 4
   rows: 11
-  cellSize: 1
-  layerSpacing: 0.6
+  cellSize: 0.5
+  layerSpacing: 0.5
   pointMarkerPrefab: {fileID: 1451259725761665412, guid: cbdcb05a3bccbcb49a871ac55909cefd, type: 3}
   drawGizmos: 1
 --- !u!4 &1216785528
@@ -916,7 +920,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TowerGridSpawner
   grid: {fileID: 1216785527}
-  defaultPrefab: {fileID: 4040705715180596184, guid: 741f42a7211f85842841096e5215233a, type: 3}
+  defaultPrefab: {fileID: 6297167743783780973, guid: 3e8a8d52f7f479d43a989d26d38f4acb, type: 3}
   spawnParent: {fileID: 0}
   predefinedSpawns: []
   randomCount: 5
@@ -938,7 +942,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TowerGridSpawner
   grid: {fileID: 1216785527}
-  defaultPrefab: {fileID: 4040705715180596184, guid: 741f42a7211f85842841096e5215233a, type: 3}
+  defaultPrefab: {fileID: 4689510960488641632, guid: 308c3620ebbc28b4cb76525aaa9d7b95, type: 3}
   spawnParent: {fileID: 0}
   predefinedSpawns: []
   randomCount: 5
@@ -961,8 +965,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::TowerGridPathSpawner
   grid: {fileID: 1216785527}
   pathPrefab: {fileID: 8270878465617315978, guid: 771e0f45290dcd8438b16adbe7bd6013, type: 3}
-  startPrefab: {fileID: 0}
-  endPrefab: {fileID: 0}
+  startPrefab: {fileID: 2929206337197729129, guid: 28b779d9f46df9844818084ea3a6fd2a, type: 3}
+  endPrefab: {fileID: 2473282765803871693, guid: d318a24d8673ab44b9795e127ea53b30, type: 3}
   spawnParent: {fileID: 0}
   randomEndpoints: 0
   minEndpointDistance: 8
@@ -991,10 +995,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PathEnemySpawner
   grid: {fileID: 1216785527}
   pathSource: {fileID: 1216785533}
-  enemyPrefab: {fileID: 8139722959084268521, guid: 7c9679236699d6840b59956eca86c312, type: 3}
-  enemyCount: 5
+  enemyPrefab: {fileID: 265521279942974316, guid: 8bc9c108054f14b4aa99f3097b027c55, type: 3}
+  enemyCount: 100
   spawnInterval: 1.5
-  startDelay: 1
+  startDelay: 2
   heightOffset: 0.05
 --- !u!1 &1225217596
 GameObject:
@@ -1963,15 +1967,15 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 854389591}
     m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1717954561962503725, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 21409534}
     - targetCorrespondingSourceObject: {fileID: 1767192433, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1350661116}
     - targetCorrespondingSourceObject: {fileID: 1670256624, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2101667979}
-    - targetCorrespondingSourceObject: {fileID: 1717954561962503725, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 21409534}
   m_SourcePrefab: {fileID: 100100000, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
 --- !u!1 &1699455966
 GameObject:
