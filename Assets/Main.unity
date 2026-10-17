@@ -847,6 +847,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 4cc842bf30e35954ea8968f423a479b0, type: 2}
   placer: {fileID: 1051605017}
   currency: {fileID: 1051605016}
+  pStats: {fileID: 21409534}
 --- !u!4 &1137252107 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 202364688, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
