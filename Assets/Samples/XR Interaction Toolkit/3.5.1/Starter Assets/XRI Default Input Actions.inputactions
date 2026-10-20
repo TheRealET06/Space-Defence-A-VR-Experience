@@ -1017,7 +1017,7 @@
                     "name": "Scale Toggle",
                     "type": "Button",
                     "id": "80ed7d74-56de-473c-bf76-da3bdd16b562",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false,
@@ -1034,9 +1034,9 @@
                     "priority": 0
                 },
                 {
-                    "name": "Toggle Hand Menu",
+                    "name": "XPressed",
                     "type": "Button",
-                    "id": "dab51928-6f47-4c7d-ab6a-4b3a1626c737",
+                    "id": "7d83e640-4af4-4221-b1f6-2e276ed90116",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -1421,12 +1421,23 @@
                 },
                 {
                     "name": "",
-                    "id": "ca8126ba-da20-4b1a-ad8e-690f0b0fe4f9",
-                    "path": "<XRController>{LeftHand}/triggerPressed",
+                    "id": "defad81a-bcf6-417a-9838-349dec575d0c",
+                    "path": "<XRController>{LeftHand}/{SecondaryButton}",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Toggle Hand Menu",
+                    "action": "XPressed",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d0e41945-17db-4639-b3c1-9a68818e27de",
+                    "path": "<XRController>{LeftHand}/{SecondaryButton}",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "XPressed",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
@@ -2268,9 +2279,9 @@
                     "priority": 0
                 },
                 {
-                    "name": "Place Tower",
+                    "name": "BPressed",
                     "type": "Button",
-                    "id": "273624cc-f21e-4a37-8925-50394f4c411d",
+                    "id": "5a264067-30ca-4147-950b-c8b25023e00e",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -2677,12 +2688,23 @@
                 },
                 {
                     "name": "",
-                    "id": "4d3f3d3c-c420-42e1-8fc7-09de9226f098",
-                    "path": "<XRController>{RightHand}/triggerPressed",
+                    "id": "0df3773a-a6d1-4093-a195-858a01ef998b",
+                    "path": "<XRController>{RightHand}/{SecondaryButton}",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Place Tower",
+                    "action": "BPressed",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "3542e889-fec8-40ed-ab80-115635d2ff01",
+                    "path": "<XRController>{RightHand}/{SecondaryButton}",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "BPressed",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

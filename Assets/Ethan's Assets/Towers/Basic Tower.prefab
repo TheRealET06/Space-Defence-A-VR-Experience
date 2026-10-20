@@ -12,7 +12,8 @@ GameObject:
   - component: {fileID: 3894923205385449478}
   - component: {fileID: 8472150947763685029}
   - component: {fileID: 1641085510001189005}
-  m_Layer: 0
+  - component: {fileID: 5115086378246048212}
+  m_Layer: 10
   m_Name: Basic Tower
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -112,3 +113,27 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &5115086378246048212
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3895839468644178186}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d921b7e43c1c0374aa34d7c936d68984, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Tower
+  data: {fileID: 11400000, guid: 229056d00e57e2d4197ad6debc4c514e, type: 2}
+  range: 8
+  enemyLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  rotatingPart: {fileID: 0}
+  fireRate: 1
+  projectilePrefab: {fileID: 0}
+  firePoint: {fileID: 0}
+  refundPercent: 0.7
+  gridCell: {x: -1, y: -1, z: -1}
+  root: {fileID: 0}

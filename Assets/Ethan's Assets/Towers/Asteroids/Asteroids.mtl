@@ -1,0 +1,46 @@
+# Blender 3.6.0 MTL File: 'Asteroids.blend'
+# www.blender.org
+
+newmtl Blue
+Ka 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 1
+map_Kd tex/asterTex1_DefaultMaterial_BaseColor.jpg
+map_Ns tex/asterTex1_DefaultMaterial_Roughness.jpg
+map_Ke tex/asterTex1_DefaultMaterial_Emissive_Blue.jpg
+map_Bump -bm 1.000000 tex/asterTex1_DefaultMaterial_Normal.jpg
+
+newmtl Cyan
+Ka 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 1
+map_Kd tex/asterTex1_DefaultMaterial_BaseColor.jpg
+map_Ns tex/asterTex1_DefaultMaterial_Roughness.jpg
+map_Ke tex/asterTex1_DefaultMaterial_Emissive_Cyan.jpg
+map_Bump -bm 1.000000 tex/asterTex1_DefaultMaterial_Normal.jpg
+
+newmtl Orange
+Ka 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 1
+map_Kd tex/asterTex1_DefaultMaterial_Emissive_Default.jpg
+map_Ns tex/asterTex1_DefaultMaterial_Roughness.jpg
+map_Ke tex/asterTex1_DefaultMaterial_Emissive_Default.jpg
+map_Bump -bm 1.000000 tex/asterTex1_DefaultMaterial_Normal.jpg
+
+newmtl Purple
+Ka 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 1
+map_Kd tex/asterTex1_DefaultMaterial_BaseColor.jpg
+map_Ns tex/asterTex1_DefaultMaterial_Emissive_Purple.jpg
+map_Ke tex/asterTex1_DefaultMaterial_Emissive_Purple.jpg
+map_Bump -bm 1.000000 tex/asterTex1_DefaultMaterial_Normal.jpg

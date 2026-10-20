@@ -34,8 +34,10 @@ public class TowerPlacer : MonoBehaviour
     public void SelectTower(TowerData data)
     {
         selected = data;
+        // TowerSelector.SelectionBlocked = true;
         if (ghost) Destroy(ghost);
         ghost = Instantiate(data.ghostPrefab);
+        foreach (var c in ghost.GetComponentsInChildren<Collider>()) c.enabled = false; //fix????
         ghost.SetActive(false);
     }
 
@@ -44,6 +46,7 @@ public class TowerPlacer : MonoBehaviour
     void ClearSelection()
     {
         selected = null;
+       // TowerSelector.SelectionBlocked = false;
         hasValidPoint = false;
         if (ghost) Destroy(ghost);
     }
@@ -73,7 +76,11 @@ public class TowerPlacer : MonoBehaviour
         if (menu.IsOpen || Time.frameCount - menu.LastClosedFrame < 3) return; // the click that picked the tower
         if (!currency.TrySpend(selected.cost)) return;                          // not enough money
 
-        Instantiate(selected.towerPrefab, currentPoint, grid.transform.rotation);
+        GameObject obj = Instantiate(selected.towerPrefab, currentPoint, grid.transform.rotation);
+        Tower tower = obj.GetComponentInChildren<Tower>();   // also finds it on the root itself
+        tower.data = selected;
+        tower.gridCell = currentCell;
+        tower.root = obj;
         grid.SetOccupied(currentCell, true);
 
         if (!currency.CanAfford(selected.cost)) ClearSelection(); // optional: auto-deselect when broke
