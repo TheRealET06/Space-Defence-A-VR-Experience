@@ -305,7 +305,7 @@ public class MiningTowerInteractionHub : MonoBehaviour
 
         if (!applied)
         {
-            currency.Add(
+            currency.AddMoney(
                 definition.cost
             );
 

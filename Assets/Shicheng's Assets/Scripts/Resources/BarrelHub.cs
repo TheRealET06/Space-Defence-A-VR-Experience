@@ -293,7 +293,7 @@ public class BarrelHub : MonoBehaviour
 
         if (currency != null)
         {
-            currency.Add(
+            currency.AddMoney(
                 earnedCredits
             );
         }
