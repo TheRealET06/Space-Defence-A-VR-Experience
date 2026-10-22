@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -18,6 +19,22 @@ public class MiningTowerInteractionHub : MonoBehaviour
 
     [SerializeField]
     CanvasGroup actionCanvasGroup;
+
+    [Header("Feedback UI")]
+    [SerializeField]
+    CanvasGroup feedbackCanvasGroup;
+
+    [SerializeField]
+    CanvasGroup popupPanelGroup;
+
+    [SerializeField]
+    TMP_Text popupTitleText;
+
+    [SerializeField]
+    TMP_Text popupMessageText;
+
+    [SerializeField]
+    float popupDuration = 4f;
 
     [SerializeField]
     TMP_Text statusText;
@@ -65,6 +82,30 @@ public class MiningTowerInteractionHub : MonoBehaviour
 
     const float RefreshInterval = 0.15f;
 
+    Coroutine popupRoutine;
+
+    bool previousCargoLoaded;
+    int previousBarrelCount;
+
+    // These flags are shared by every MiningTower instance.
+    // Therefore each tutorial is shown only once per play session.
+    static bool harvestLessonShown;
+    static bool processingLessonShown;
+    static bool sellingLessonShown;
+    static bool upgradeLessonShown;
+
+    // This also resets the static flags correctly when
+    // Enter Play Mode Options disables domain reload.
+    [RuntimeInitializeOnLoadMethod(
+        RuntimeInitializeLoadType.SubsystemRegistration)]
+    static void ResetGlobalTutorialState()
+    {
+        harvestLessonShown = false;
+        processingLessonShown = false;
+        sellingLessonShown = false;
+        upgradeLessonShown = false;
+    }
+
     void Awake()
     {
         if (currency == null)
@@ -73,17 +114,43 @@ public class MiningTowerInteractionHub : MonoBehaviour
                 FindFirstObjectByType<CurrencyManager>();
         }
 
+        // ResourceCanvas is retained for MP2A,
+        // but MP2B never displays it.
         SetCanvasVisible(
             resourceCanvasGroup,
             false,
             false
         );
 
+        // ActionCanvas starts hidden.
         SetCanvasVisible(
             actionCanvasGroup,
             false,
             false
         );
+
+        // FeedbackCanvas is always available,
+        // but the temporary popup starts hidden.
+        SetCanvasVisible(
+            feedbackCanvasGroup,
+            true,
+            false
+        );
+
+        SetCanvasVisible(
+            popupPanelGroup,
+            false,
+            false
+        );
+
+        previousCargoLoaded =
+            cargo != null &&
+            cargo.IsLoaded;
+
+        previousBarrelCount =
+            barrelHub != null
+                ? barrelHub.BarrelCount
+                : 0;
     }
 
     void OnEnable()
@@ -93,6 +160,19 @@ public class MiningTowerInteractionHub : MonoBehaviour
             currency.OnMoneyChanged +=
                 HandleMoneyChanged;
         }
+
+        previousCargoLoaded =
+            cargo != null &&
+            cargo.IsLoaded;
+
+        previousBarrelCount =
+            barrelHub != null
+                ? barrelHub.BarrelCount
+                : 0;
+
+        // MiningTowerInteractionHub is expected to become enabled
+        // when tower construction is complete.
+        ShowHarvestLessonOnce();
     }
 
     void OnDisable()
@@ -102,10 +182,20 @@ public class MiningTowerInteractionHub : MonoBehaviour
             currency.OnMoneyChanged -=
                 HandleMoneyChanged;
         }
+
+        if (popupRoutine != null)
+        {
+            StopCoroutine(popupRoutine);
+            popupRoutine = null;
+        }
     }
 
     void Update()
     {
+        // Tutorial state detection must continue even while
+        // ActionCanvas is hidden.
+        CheckTutorialStateChanges();
+
         if (!uiVisible)
             return;
 
@@ -133,34 +223,44 @@ public class MiningTowerInteractionHub : MonoBehaviour
     }
 
     // Called by XR Simple Interactable -> Select Entered.
-    // Every Select controls the Mining Rocket, regardless
-    // of whether the UI was already visible.
+    // Select operates the tower. It does not control the UI.
     public void OnTowerSelected()
     {
-        ShowTowerUI();
-
-        ExecuteMiningRocketAction();
+        ExecutePrimarySelectAction();
     }
 
-    // No automatic hiding when the controller ray leaves.
+    // No automatic action when Select exits.
     public void OnTowerDeselected()
     {
     }
 
     // Called by XR Simple Interactable -> Activated.
-    // Activate is reserved for selling stored resources.
+    // Activate only opens or closes ActionCanvas.
     public void ActivatePrimaryAction()
     {
-        TrySellStoredResources();
+        ToggleActionCanvas();
+    }
+
+    public void ToggleActionCanvas()
+    {
+        if (uiVisible)
+        {
+            HideTowerUI();
+        }
+        else
+        {
+            ShowTowerUI();
+        }
     }
 
     public void ShowTowerUI()
     {
         uiVisible = true;
 
+        // ResourceCanvas intentionally remains hidden.
         SetCanvasVisible(
             resourceCanvasGroup,
-            true,
+            false,
             false
         );
 
@@ -177,6 +277,7 @@ public class MiningTowerInteractionHub : MonoBehaviour
     {
         uiVisible = false;
 
+        // ResourceCanvas intentionally remains hidden.
         SetCanvasVisible(
             resourceCanvasGroup,
             false,
@@ -190,6 +291,33 @@ public class MiningTowerInteractionHub : MonoBehaviour
         );
     }
 
+    // SELECT priority:
+    // 1. Loaded cargo -> Unload.
+    // 2. Stored barrels -> Sell.
+    // 3. Otherwise -> Harvest.
+    void ExecutePrimarySelectAction()
+    {
+        if (
+            cargo != null &&
+            cargo.IsLoaded
+        )
+        {
+            ExecuteMiningRocketAction();
+            return;
+        }
+
+        if (
+            barrelHub != null &&
+            barrelHub.BarrelCount > 0
+        )
+        {
+            TrySellStoredResources();
+            return;
+        }
+
+        ExecuteMiningRocketAction();
+    }
+
     void ExecuteMiningRocketAction()
     {
         if (
@@ -197,6 +325,11 @@ public class MiningTowerInteractionHub : MonoBehaviour
             cargo == null
         )
         {
+            ShowError(
+                "SYSTEM UNAVAILABLE",
+                "The Mining Rocket is not ready."
+            );
+
             return;
         }
 
@@ -210,8 +343,8 @@ public class MiningTowerInteractionHub : MonoBehaviour
             gameObject
         );
 
-        // Existing interaction already decides whether
-        // to start mining or unload loaded cargo.
+        // MiningTowerInteraction already decides whether
+        // to begin harvesting or unload loaded cargo.
         miningInteraction.Interact();
 
         onActionRequested?.Invoke(action);
@@ -222,13 +355,20 @@ public class MiningTowerInteractionHub : MonoBehaviour
     void TrySellStoredResources()
     {
         if (barrelHub == null)
+        {
             return;
+        }
 
         if (barrelHub.BarrelCount <= 0)
         {
             Debug.Log(
                 "[TowerInteraction] Sell ignored. No barrels stored.",
                 gameObject
+            );
+
+            ShowError(
+                "NOTHING TO SELL",
+                "Process asteroid cargo before selling resources."
             );
 
             onActionRejected?.Invoke(
@@ -249,6 +389,9 @@ public class MiningTowerInteractionHub : MonoBehaviour
             TowerActionType.Sell
         );
 
+        // The first successful sale introduces the upgrade system.
+        ShowUpgradeLessonOnce();
+
         RefreshUI();
     }
 
@@ -265,7 +408,13 @@ public class MiningTowerInteractionHub : MonoBehaviour
             upgradeController == null
         )
         {
+            ShowError(
+                "UPGRADE UNAVAILABLE",
+                "This upgrade is currently unavailable."
+            );
+
             onActionRejected?.Invoke(action);
+
             return false;
         }
 
@@ -274,6 +423,11 @@ public class MiningTowerInteractionHub : MonoBehaviour
             Debug.Log(
                 $"[TowerUpgrade] {definition.displayName} is MAX.",
                 gameObject
+            );
+
+            ShowError(
+                "UPGRADE UNAVAILABLE",
+                $"{definition.displayName} cannot be upgraded further."
             );
 
             onActionRejected?.Invoke(action);
@@ -289,6 +443,12 @@ public class MiningTowerInteractionHub : MonoBehaviour
                 $"[TowerUpgrade] Not enough Credits for " +
                 $"{definition.displayName}.",
                 gameObject
+            );
+
+            ShowError(
+                "NOT ENOUGH CREDITS",
+                $"Need {definition.cost} Credits for " +
+                $"{definition.displayName}. Sell more resources first."
             );
 
             onActionRejected?.Invoke(action);
@@ -307,6 +467,11 @@ public class MiningTowerInteractionHub : MonoBehaviour
         {
             currency.AddMoney(
                 definition.cost
+            );
+
+            ShowError(
+                "UPGRADE FAILED",
+                $"{definition.displayName} could not be applied."
             );
 
             onActionRejected?.Invoke(action);
@@ -344,6 +509,8 @@ public class MiningTowerInteractionHub : MonoBehaviour
         );
     }
 
+    // Kept for compatibility with the existing upgrade system.
+    // It does not need a visible button in the new six-button UI.
     public void BuyProcessingSpeedUpgrade()
     {
         TryPurchaseUpgrade(
@@ -403,6 +570,208 @@ public class MiningTowerInteractionHub : MonoBehaviour
         return null;
     }
 
+    void CheckTutorialStateChanges()
+    {
+        bool cargoLoaded =
+            cargo != null &&
+            cargo.IsLoaded;
+
+        // A transition from no cargo to loaded cargo means
+        // the first asteroid has been successfully collected.
+        if (
+            !previousCargoLoaded &&
+            cargoLoaded
+        )
+        {
+            ShowProcessingLessonOnce();
+        }
+
+        previousCargoLoaded =
+            cargoLoaded;
+
+        int barrelCount =
+            barrelHub != null
+                ? barrelHub.BarrelCount
+                : 0;
+
+        // The first produced barrel introduces selling.
+        if (
+            previousBarrelCount <= 0 &&
+            barrelCount > 0
+        )
+        {
+            ShowSellingLessonOnce();
+        }
+
+        previousBarrelCount =
+            barrelCount;
+    }
+
+    // Can also be called explicitly by the construction script
+    // if the InteractionHub remains enabled during construction.
+    public void NotifyConstructionComplete()
+    {
+        ShowHarvestLessonOnce();
+    }
+
+    void ShowHarvestLessonOnce()
+    {
+        if (harvestLessonShown)
+            return;
+
+        harvestLessonShown = true;
+
+        ShowLesson(
+            "MINING ONLINE",
+            "SELECT the Mining Tower to harvest the highest-value " +
+            "asteroid currently available within mining range."
+        );
+    }
+
+    void ShowProcessingLessonOnce()
+    {
+        if (processingLessonShown)
+            return;
+
+        processingLessonShown = true;
+
+        ShowLesson(
+            "CARGO ACQUIRED",
+            "Asteroid material is now stored in the Mining Rocket. " +
+            "SELECT the Mining Tower again to unload and process it."
+        );
+    }
+
+    void ShowSellingLessonOnce()
+    {
+        if (sellingLessonShown)
+            return;
+
+        sellingLessonShown = true;
+
+        ShowLesson(
+            "RESOURCE READY",
+            "Processing produced a resource barrel. " +
+            "SELECT the Mining Tower to sell stored resources for Credits."
+        );
+    }
+
+    void ShowUpgradeLessonOnce()
+    {
+        if (upgradeLessonShown)
+            return;
+
+        upgradeLessonShown = true;
+
+        ShowLesson(
+            "UPGRADES ONLINE",
+            "Your first sale earned Credits. ACTIVATE the Mining Tower " +
+            "to open the management panel and purchase upgrades."
+        );
+    }
+
+    public void ShowLesson(
+        string title,
+        string message
+    )
+    {
+        ShowPopup(
+            title,
+            message
+        );
+    }
+
+    public void ShowError(
+        string title,
+        string message
+    )
+    {
+        ShowPopup(
+            title,
+            message
+        );
+    }
+
+    public void ShowUnlock(
+        string title,
+        string message
+    )
+    {
+        ShowPopup(
+            title,
+            message
+        );
+    }
+
+    void ShowPopup(
+        string title,
+        string message
+    )
+    {
+        if (
+            popupPanelGroup == null ||
+            popupTitleText == null ||
+            popupMessageText == null
+        )
+        {
+            Debug.Log(
+                $"[TowerFeedback] {title}: {message}",
+                gameObject
+            );
+
+            return;
+        }
+
+        if (popupRoutine != null)
+        {
+            StopCoroutine(popupRoutine);
+        }
+
+        popupRoutine =
+            StartCoroutine(
+                PopupRoutine(
+                    title,
+                    message
+                )
+            );
+    }
+
+    IEnumerator PopupRoutine(
+        string title,
+        string message
+    )
+    {
+        popupTitleText.text =
+            title;
+
+        popupMessageText.text =
+            message;
+
+        SetCanvasVisible(
+            feedbackCanvasGroup,
+            true,
+            false
+        );
+
+        SetCanvasVisible(
+            popupPanelGroup,
+            true,
+            false
+        );
+
+        yield return new WaitForSecondsRealtime(
+            popupDuration
+        );
+
+        SetCanvasVisible(
+            popupPanelGroup,
+            false,
+            false
+        );
+
+        popupRoutine = null;
+    }
+
     void RefreshUI()
     {
         if (statusText != null)
@@ -423,8 +792,8 @@ public class MiningTowerInteractionHub : MonoBehaviour
         if (actionHintText != null)
         {
             actionHintText.text =
-                "SELECT: Harvest / Unload\n" +
-                "ACTIVATE: Sell stored resources";
+                "SELECT: Harvest / Unload / Sell\n" +
+                "ACTIVATE: Show / Hide Management";
         }
 
         RefreshTowerStatus();
@@ -447,8 +816,6 @@ public class MiningTowerInteractionHub : MonoBehaviour
                 : "EMPTY";
 
         towerStatusText.text =
-            // "<b>TOWER STATUS</b>\n\n" +
-
             "<b>MINING</b>\n" +
             $"Range Lv  {upgradeController.RangeLevel}/{upgradeController.MaxRangeLevel}" +
             $"      Range  {upgradeController.CurrentMiningRange:F1}/{upgradeController.MaxPossibleMiningRange:F1} m\n" +
