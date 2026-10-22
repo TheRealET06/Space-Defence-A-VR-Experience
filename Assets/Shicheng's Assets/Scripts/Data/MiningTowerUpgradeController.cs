@@ -2,79 +2,167 @@ using UnityEngine;
 
 public class MiningTowerUpgradeController : MonoBehaviour
 {
+    // =========================================================
+    // CORE SYSTEMS
+    // =========================================================
+
     [Header("Core Systems")]
-    [SerializeField] MiningTowerTargetSelector targetSelector;
-    [SerializeField] OrbitalAnchorProcessor processor;
-    [SerializeField] BarrelHub barrelHub;
-    [SerializeField] MiningTowerHealth health;
+    [SerializeField]
+    private MiningTowerTargetSelector targetSelector;
+
+    [SerializeField]
+    private OrbitalAnchorProcessor processor;
+
+    [SerializeField]
+    private BarrelHub barrelHub;
+
+    [SerializeField]
+    private MiningTowerHealth health;
+
+    // =========================================================
+    // VISUAL UPGRADE SEQUENCES
+    // =========================================================
+
+    [Header("Mining Head Upgrade Sequence")]
+    [Tooltip("Meshes for Mining Head Lv2 -> Lv5.")]
+    [SerializeField]
+    private GameObject[] miningHeadUpgradeMeshes;
 
     [Header("Engineer Upgrade Sequence")]
-    [SerializeField] GameObject[] engineerUpgradeMeshes;
+    [Tooltip("Meshes for Engineer Lv1 -> Lv3.")]
+    [SerializeField]
+    private GameObject[] engineerUpgradeMeshes;
 
-    [Header("Power System Upgrade Sequence")]
-    [SerializeField] GameObject[] powerSystemUpgradeMeshes;
+    [Header("Power Upgrade Sequence")]
+    [Tooltip("Meshes for Power Lv1 -> Lv4.")]
+    [SerializeField]
+    private GameObject[] powerUpgradeMeshes;
 
     [Header("Walls Upgrade Sequence")]
-    [SerializeField] GameObject[] wallsUpgradeMeshes;
+    [Tooltip("Meshes for Walls Lv1 -> Lv8.")]
+    [SerializeField]
+    private GameObject[] wallsUpgradeMeshes;
 
     [Header("Weapons Upgrade Sequence")]
-    [SerializeField] GameObject[] weaponsUpgradeMeshes;
+    [Tooltip("Meshes for Weapons Lv1 -> Lv8.")]
+    [SerializeField]
+    private GameObject[] weaponsUpgradeMeshes;
 
-    [Header("Mining Range")]
-    [SerializeField] float rangeIncreasePerLevel = 2f;
-    [SerializeField] int maxRangeLevel = 3;
+    // =========================================================
+    // MINING HEAD
+    // =========================================================
 
-    [Header("Processing")]
-    [SerializeField] float processingIncreasePerLevel = 0.5f;
-    [SerializeField] int maxProcessingLevel = 3;
+    [Header("Mining Head")]
+    [SerializeField]
+    private float miningHeadRangeIncreasePerLevel = 2f;
 
-    [Header("Engineer Effect")]
-    [SerializeField] int baseEngineerCount = 1;
-    [SerializeField] float repairPerEngineerPerSecond = 1f;
+    [SerializeField]
+    private int maxMiningHeadLevel = 5;
 
-    [Header("Power Effect")]
-    [SerializeField] float powerProcessingBonusPerLevel = 0.25f;
+    // Mining Head exists at Lv1 on the base tower.
+    private int miningHeadLevel = 1;
 
-    [Header("Walls Effect")]
-    [SerializeField] float shieldPerWallLevel = 25f;
+    // =========================================================
+    // ENGINEER
+    // =========================================================
 
-    int rangeLevel;
-    int processingLevel;
-    int engineerLevel;
-    int powerLevel;
-    int wallsLevel;
-    int weaponsLevel;
+    [Header("Engineer")]
+    [SerializeField]
+    private float repairPerEngineerPerSecond = 1f;
 
-    public int RangeLevel => rangeLevel;
-    public int ProcessingLevel => processingLevel;
-    public int EngineerLevel => engineerLevel;
-    public int PowerLevel => powerLevel;
-    public int WallsLevel => wallsLevel;
-    public int WeaponsLevel => weaponsLevel;
+    private int engineerLevel;
 
-    public int MaxRangeLevel => maxRangeLevel;
-    public int MaxProcessingLevel => maxProcessingLevel;
+    // =========================================================
+    // POWER
+    // =========================================================
+
+    [Header("Power")]
+    [SerializeField]
+    private float powerProcessingBonusPerLevel = 0.25f;
+
+    private int powerLevel;
+
+    // =========================================================
+    // WALLS
+    // =========================================================
+
+    [Header("Walls")]
+    [SerializeField]
+    private float shieldPerWallLevel = 25f;
+
+    private int wallsLevel;
+
+    // =========================================================
+    // WEAPONS
+    // =========================================================
+
+    private int weaponsLevel;
+
+    // =========================================================
+    // PUBLIC LEVELS
+    // =========================================================
+
+    public int MiningHeadLevel =>
+        miningHeadLevel;
+
+    public int StorageLevel =>
+        barrelHub != null
+            ? barrelHub.UnlockedRepositoryCount
+            : 0;
+
+    public int EngineerLevel =>
+        engineerLevel;
+
+    public int PowerLevel =>
+        powerLevel;
+
+    public int WallsLevel =>
+        wallsLevel;
+
+    public int WeaponsLevel =>
+        weaponsLevel;
+
+    // =========================================================
+    // MAX LEVELS
+    // =========================================================
+
+    public int MaxMiningHeadLevel =>
+        maxMiningHeadLevel;
+
+    public int MaxStorageLevel =>
+        barrelHub != null
+            ? barrelHub.MaxRepositoryCount
+            : 0;
 
     public int MaxEngineerLevel =>
-        GetSequenceLength(engineerUpgradeMeshes);
+        GetSequenceLength(
+            engineerUpgradeMeshes
+        );
 
     public int MaxPowerLevel =>
-        GetSequenceLength(powerSystemUpgradeMeshes);
+        GetSequenceLength(
+            powerUpgradeMeshes
+        );
 
     public int MaxWallsLevel =>
-        GetSequenceLength(wallsUpgradeMeshes);
+        GetSequenceLength(
+            wallsUpgradeMeshes
+        );
 
     public int MaxWeaponsLevel =>
-        GetSequenceLength(weaponsUpgradeMeshes);
+        GetSequenceLength(
+            weaponsUpgradeMeshes
+        );
+
+    // =========================================================
+    // CURRENT STATS
+    // =========================================================
 
     public int ActiveEngineerCount =>
-        baseEngineerCount + engineerLevel;
-
-    public int MaxEngineerCount =>
-        baseEngineerCount + MaxEngineerLevel;
+        engineerLevel;
 
     public float CurrentRepairRate =>
-        ActiveEngineerCount *
+        engineerLevel *
         repairPerEngineerPerSecond;
 
     public float CurrentMiningRange =>
@@ -82,19 +170,9 @@ public class MiningTowerUpgradeController : MonoBehaviour
             ? targetSelector.CaptureRange
             : 0f;
 
-    public float MaxPossibleMiningRange =>
-        CurrentMiningRange
-        - rangeLevel * rangeIncreasePerLevel
-        + maxRangeLevel * rangeIncreasePerLevel;
-
     public int CurrentStorageCapacity =>
         barrelHub != null
             ? barrelHub.Capacity
-            : 0;
-
-    public int MaxStorageCapacity =>
-        barrelHub != null
-            ? barrelHub.MaxRepositoryCount * 4
             : 0;
 
     public int CurrentStoredBarrels =>
@@ -102,27 +180,10 @@ public class MiningTowerUpgradeController : MonoBehaviour
             ? barrelHub.BarrelCount
             : 0;
 
-    public int CurrentRepositoryCount =>
-        barrelHub != null
-            ? barrelHub.UnlockedRepositoryCount
-            : 0;
-
-    public int MaxRepositoryCount =>
-        barrelHub != null
-            ? barrelHub.MaxRepositoryCount
-            : 0;
-
     public float CurrentProcessingRate =>
         processor != null
             ? processor.BarrelsPerSecond
             : 0f;
-
-    public float MaxPossibleProcessingRate =>
-        CurrentProcessingRate
-        - processingLevel * processingIncreasePerLevel
-        - powerLevel * powerProcessingBonusPerLevel
-        + maxProcessingLevel * processingIncreasePerLevel
-        + MaxPowerLevel * powerProcessingBonusPerLevel;
 
     public float CurrentHealth =>
         health != null
@@ -134,34 +195,42 @@ public class MiningTowerUpgradeController : MonoBehaviour
             ? health.MaxHealth
             : 0f;
 
-    public float CurrentShield =>
-        health != null
-            ? health.CurrentShield
-            : 0f;
+    // =========================================================
+    // UNITY
+    // =========================================================
 
-    public float MaxShield =>
-        health != null
-            ? health.MaxShield
-            : 0f;
-
-    public float MaxPossibleShield =>
-        MaxWallsLevel * shieldPerWallLevel;
-
-    void Awake()
+    private void Awake()
     {
-        HideUpgradeSequence(engineerUpgradeMeshes);
-        HideUpgradeSequence(powerSystemUpgradeMeshes);
-        HideUpgradeSequence(wallsUpgradeMeshes);
-        HideUpgradeSequence(weaponsUpgradeMeshes);
+        HideUpgradeSequence(
+            miningHeadUpgradeMeshes
+        );
+
+        HideUpgradeSequence(
+            engineerUpgradeMeshes
+        );
+
+        HideUpgradeSequence(
+            powerUpgradeMeshes
+        );
+
+        HideUpgradeSequence(
+            wallsUpgradeMeshes
+        );
+
+        HideUpgradeSequence(
+            weaponsUpgradeMeshes
+        );
     }
 
-    void Update()
+    private void Update()
     {
-        if (health == null)
+        if (
+            health == null ||
+            engineerLevel <= 0
+        )
+        {
             return;
-
-        if (ActiveEngineerCount <= 0)
-            return;
+        }
 
         health.Repair(
             CurrentRepairRate *
@@ -169,188 +238,272 @@ public class MiningTowerUpgradeController : MonoBehaviour
         );
     }
 
-    public bool CanUpgrade(
-        TowerActionType action
-    )
+    // =========================================================
+    // GENERIC LEVEL ACCESS
+    // =========================================================
+
+    public int GetLevel(
+        MiningTowerUpgradeType type)
     {
-        switch (action)
+        switch (type)
         {
-            case TowerActionType.UpgradeMiningRange:
-                return
-                    targetSelector != null &&
-                    rangeLevel < maxRangeLevel;
+            case MiningTowerUpgradeType.MiningHead:
+                return MiningHeadLevel;
 
-            case TowerActionType.UpgradeStorage:
-                return
-                    barrelHub != null &&
-                    barrelHub.UnlockedRepositoryCount <
-                    barrelHub.MaxRepositoryCount;
+            case MiningTowerUpgradeType.Storage:
+                return StorageLevel;
 
-            case TowerActionType.UpgradeProcessingSpeed:
-                return
-                    processor != null &&
-                    processingLevel <
-                    maxProcessingLevel;
+            case MiningTowerUpgradeType.Engineer:
+                return EngineerLevel;
 
-            case TowerActionType.UpgradeEngineer:
-                return engineerLevel <
-                       MaxEngineerLevel;
+            case MiningTowerUpgradeType.Power:
+                return PowerLevel;
 
-            case TowerActionType.UpgradePowerSystem:
-                return powerLevel <
-                       MaxPowerLevel;
+            case MiningTowerUpgradeType.Walls:
+                return WallsLevel;
 
-            case TowerActionType.UpgradeWalls:
-                return wallsLevel <
-                       MaxWallsLevel;
+            case MiningTowerUpgradeType.Weapons:
+                return WeaponsLevel;
 
-            case TowerActionType.UpgradeWeapons:
-                return weaponsLevel <
-                       MaxWeaponsLevel;
+            default:
+                return 0;
         }
-
-        return false;
     }
 
-    public bool ApplyUpgrade(
-        TowerActionType action
-    )
+    public int GetMaxLevel(
+        MiningTowerUpgradeType type)
     {
-        if (!CanUpgrade(action))
+        switch (type)
+        {
+            case MiningTowerUpgradeType.MiningHead:
+                return MaxMiningHeadLevel;
+
+            case MiningTowerUpgradeType.Storage:
+                return MaxStorageLevel;
+
+            case MiningTowerUpgradeType.Engineer:
+                return MaxEngineerLevel;
+
+            case MiningTowerUpgradeType.Power:
+                return MaxPowerLevel;
+
+            case MiningTowerUpgradeType.Walls:
+                return MaxWallsLevel;
+
+            case MiningTowerUpgradeType.Weapons:
+                return MaxWeaponsLevel;
+
+            default:
+                return 0;
+        }
+    }
+
+    // =========================================================
+    // CAN UPGRADE
+    // =========================================================
+
+    public bool CanUpgrade(
+        MiningTowerUpgradeType type)
+    {
+        switch (type)
+        {
+            case MiningTowerUpgradeType.MiningHead:
+                return
+                    targetSelector != null &&
+                    MiningHeadLevel <
+                    MaxMiningHeadLevel;
+
+            case MiningTowerUpgradeType.Storage:
+                return
+                    barrelHub != null &&
+                    StorageLevel <
+                    MaxStorageLevel;
+
+            case MiningTowerUpgradeType.Engineer:
+                return
+                    EngineerLevel <
+                    MaxEngineerLevel;
+
+            case MiningTowerUpgradeType.Power:
+                return
+                    PowerLevel <
+                    MaxPowerLevel;
+
+            case MiningTowerUpgradeType.Walls:
+                return
+                    WallsLevel <
+                    MaxWallsLevel;
+
+            case MiningTowerUpgradeType.Weapons:
+                return
+                    WeaponsLevel <
+                    MaxWeaponsLevel;
+
+            default:
+                return false;
+        }
+    }
+
+    // =========================================================
+    // APPLY UPGRADE
+    // =========================================================
+
+    public bool ApplyUpgrade(
+        MiningTowerUpgradeType type)
+    {
+        if (!CanUpgrade(type))
         {
             Debug.LogWarning(
-                $"[TowerUpgrade] Upgrade unavailable: {action}",
+                $"[TowerUpgrade] Upgrade unavailable: {type}",
                 gameObject
             );
 
             return false;
         }
 
-        switch (action)
+        switch (type)
         {
-            case TowerActionType.UpgradeMiningRange:
-                return UpgradeMiningRange();
+            case MiningTowerUpgradeType.MiningHead:
+                return UpgradeMiningHead();
 
-            case TowerActionType.UpgradeStorage:
+            case MiningTowerUpgradeType.Storage:
                 return UpgradeStorage();
 
-            case TowerActionType.UpgradeProcessingSpeed:
-                return UpgradeProcessing();
-
-            case TowerActionType.UpgradeEngineer:
+            case MiningTowerUpgradeType.Engineer:
                 return UpgradeEngineer();
 
-            case TowerActionType.UpgradePowerSystem:
-                return UpgradePowerSystem();
+            case MiningTowerUpgradeType.Power:
+                return UpgradePower();
 
-            case TowerActionType.UpgradeWalls:
+            case MiningTowerUpgradeType.Walls:
                 return UpgradeWalls();
 
-            case TowerActionType.UpgradeWeapons:
+            case MiningTowerUpgradeType.Weapons:
                 return UpgradeWeapons();
-        }
 
-        return false;
+            default:
+                return false;
+        }
     }
 
-    bool UpgradeMiningRange()
+    // =========================================================
+    // MINING HEAD
+    // =========================================================
+
+    private bool UpgradeMiningHead()
     {
         if (targetSelector == null)
+        {
             return false;
+        }
 
-        targetSelector.IncreaseCaptureRange(
-            rangeIncreasePerLevel
+        // Lv1 -> Lv2 uses mesh index 0.
+        int meshIndex =
+            MiningHeadLevel - 1;
+
+        ActivateOptionalMesh(
+            miningHeadUpgradeMeshes,
+            meshIndex,
+            "Mining Head"
         );
 
-        rangeLevel++;
+        targetSelector.IncreaseCaptureRange(
+            miningHeadRangeIncreasePerLevel
+        );
+
+        miningHeadLevel++;
 
         Debug.Log(
-            $"[TowerUpgrade] Range {rangeLevel}/{maxRangeLevel}, " +
-            $"{CurrentMiningRange:F1} m.",
+            "[TowerUpgrade] Mining Head = " +
+            $"Lv.{MiningHeadLevel}/{MaxMiningHeadLevel}, " +
+            $"Range = {CurrentMiningRange:F1} m.",
             gameObject
         );
 
         return true;
     }
 
-    bool UpgradeStorage()
+    // =========================================================
+    // STORAGE
+    // =========================================================
+
+    private bool UpgradeStorage()
     {
         if (barrelHub == null)
+        {
             return false;
+        }
 
         bool success =
             barrelHub.UnlockNextRepository();
 
         if (!success)
+        {
             return false;
+        }
 
         Debug.Log(
-            $"[TowerUpgrade] Storage = " +
-            $"{CurrentStorageCapacity}/{MaxStorageCapacity}.",
+            "[TowerUpgrade] Storage = " +
+            $"Lv.{StorageLevel}/{MaxStorageLevel}, " +
+            $"Capacity = {CurrentStorageCapacity}.",
             gameObject
         );
 
         return true;
     }
 
-    bool UpgradeProcessing()
-    {
-        if (processor == null)
-            return false;
+    // =========================================================
+    // ENGINEER
+    // =========================================================
 
-        processor.IncreaseProcessingSpeed(
-            processingIncreasePerLevel
-        );
-
-        processingLevel++;
-
-        Debug.Log(
-            $"[TowerUpgrade] Processing " +
-            $"{processingLevel}/{maxProcessingLevel}, " +
-            $"{CurrentProcessingRate:F2}/s.",
-            gameObject
-        );
-
-        return true;
-    }
-
-    bool UpgradeEngineer()
+    private bool UpgradeEngineer()
     {
         bool success =
-            ActivateNextMesh(
+            ActivateRequiredMesh(
                 engineerUpgradeMeshes,
                 engineerLevel,
                 "Engineer"
             );
 
         if (!success)
+        {
             return false;
+        }
 
         engineerLevel++;
 
         Debug.Log(
-            $"[TowerUpgrade] Engineers = " +
-            $"{ActiveEngineerCount}/{MaxEngineerCount}.",
+            "[TowerUpgrade] Engineer = " +
+            $"Lv.{EngineerLevel}/{MaxEngineerLevel}, " +
+            $"Repair = {CurrentRepairRate:F1} HP/s.",
             gameObject
         );
 
         return true;
     }
 
-    bool UpgradePowerSystem()
+    // =========================================================
+    // POWER
+    // =========================================================
+
+    private bool UpgradePower()
     {
         bool success =
-            ActivateNextMesh(
-                powerSystemUpgradeMeshes,
+            ActivateRequiredMesh(
+                powerUpgradeMeshes,
                 powerLevel,
-                "Power System"
+                "Power"
             );
 
         if (!success)
+        {
             return false;
+        }
 
         powerLevel++;
 
+        // Power is the only upgrade controlling
+        // processing speed.
         if (processor != null)
         {
             processor.IncreaseProcessingSpeed(
@@ -359,28 +512,36 @@ public class MiningTowerUpgradeController : MonoBehaviour
         }
 
         Debug.Log(
-            $"[TowerUpgrade] Power = " +
-            $"{powerLevel}/{MaxPowerLevel}.",
+            "[TowerUpgrade] Power = " +
+            $"Lv.{PowerLevel}/{MaxPowerLevel}, " +
+            $"Processing Rate = {CurrentProcessingRate:F2}/s.",
             gameObject
         );
 
         return true;
     }
 
-    bool UpgradeWalls()
+    // =========================================================
+    // WALLS
+    // =========================================================
+
+    private bool UpgradeWalls()
     {
         bool success =
-            ActivateNextMesh(
+            ActivateRequiredMesh(
                 wallsUpgradeMeshes,
                 wallsLevel,
                 "Walls"
             );
 
         if (!success)
+        {
             return false;
+        }
 
         wallsLevel++;
 
+        // This uses the currently available MiningTowerHealth API.
         if (health != null)
         {
             health.AddShieldCapacity(
@@ -389,85 +550,129 @@ public class MiningTowerUpgradeController : MonoBehaviour
         }
 
         Debug.Log(
-            $"[TowerUpgrade] Walls = " +
-            $"{wallsLevel}/{MaxWallsLevel}.",
+            "[TowerUpgrade] Walls = " +
+            $"Lv.{WallsLevel}/{MaxWallsLevel}.",
             gameObject
         );
 
         return true;
     }
 
-    bool UpgradeWeapons()
+    // =========================================================
+    // WEAPONS
+    // =========================================================
+
+    private bool UpgradeWeapons()
     {
         bool success =
-            ActivateNextMesh(
+            ActivateRequiredMesh(
                 weaponsUpgradeMeshes,
                 weaponsLevel,
                 "Weapons"
             );
 
         if (!success)
+        {
             return false;
+        }
 
         weaponsLevel++;
 
         Debug.Log(
-            $"[TowerUpgrade] Weapons = " +
-            $"{weaponsLevel}/{MaxWeaponsLevel}.",
+            "[TowerUpgrade] Weapons = " +
+            $"Lv.{WeaponsLevel}/{MaxWeaponsLevel}.",
             gameObject
         );
 
         return true;
     }
 
-    bool ActivateNextMesh(
+    // =========================================================
+    // VISUAL HELPERS
+    // =========================================================
+
+    private bool ActivateRequiredMesh(
         GameObject[] sequence,
-        int currentLevel,
-        string categoryName
-    )
+        int index,
+        string categoryName)
     {
         if (
             sequence == null ||
-            currentLevel < 0 ||
-            currentLevel >= sequence.Length
+            index < 0 ||
+            index >= sequence.Length
         )
         {
-            return false;
-        }
-
-        GameObject nextObject =
-            sequence[currentLevel];
-
-        if (nextObject == null)
-        {
-            Debug.LogError(
-                $"[TowerUpgrade] {categoryName} " +
-                $"element {currentLevel} is NULL.",
+            Debug.LogWarning(
+                $"[TowerUpgrade] Missing {categoryName} " +
+                $"mesh for target level {index + 1}.",
                 gameObject
             );
 
             return false;
         }
 
-        nextObject.SetActive(true);
+        GameObject obj =
+            sequence[index];
 
-        Debug.Log(
-            $"[TowerUpgrade] Activated " +
-            $"{categoryName}: {nextObject.name}.",
-            nextObject
-        );
+        if (obj == null)
+        {
+            Debug.LogError(
+                $"[TowerUpgrade] {categoryName} " +
+                $"mesh index {index} is NULL.",
+                gameObject
+            );
+
+            return false;
+        }
+
+        obj.SetActive(true);
 
         return true;
     }
 
-    void HideUpgradeSequence(
-        GameObject[] sequence
-    )
+    private void ActivateOptionalMesh(
+        GameObject[] sequence,
+        int index,
+        string categoryName)
+    {
+        if (
+            sequence == null ||
+            index < 0 ||
+            index >= sequence.Length
+        )
+        {
+            return;
+        }
+
+        GameObject obj =
+            sequence[index];
+
+        if (obj == null)
+        {
+            return;
+        }
+
+        obj.SetActive(true);
+
+        Debug.Log(
+            $"[TowerUpgrade] Activated " +
+            $"{categoryName}: {obj.name}.",
+            obj
+        );
+    }
+
+    private void HideUpgradeSequence(
+        GameObject[] sequence)
     {
         if (sequence == null)
+        {
             return;
+        }
 
-        foreach (GameObject obj in sequence)
+        foreach (
+            GameObject obj
+            in sequence
+        )
         {
             if (obj != null)
             {
@@ -476,9 +681,8 @@ public class MiningTowerUpgradeController : MonoBehaviour
         }
     }
 
-    int GetSequenceLength(
-        GameObject[] sequence
-    )
+    private int GetSequenceLength(
+        GameObject[] sequence)
     {
         return sequence != null
             ? sequence.Length

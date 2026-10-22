@@ -1,9 +1,9 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.Serialization;
 
 [Serializable]
 public class TowerActionEvent :
@@ -11,102 +11,354 @@ public class TowerActionEvent :
 {
 }
 
+[Serializable]
+public class MiningTowerUpgradeEvent :
+    UnityEvent<MiningTowerUpgradeType>
+{
+}
+
 public class MiningTowerInteractionHub : MonoBehaviour
 {
-    [Header("UI")]
+    private class UnlockReveal
+    {
+        public string title;
+        public string message;
+        public Action unlockAction;
+
+        public UnlockReveal(
+            string title,
+            string message,
+            Action unlockAction)
+        {
+            this.title = title;
+            this.message = message;
+            this.unlockAction = unlockAction;
+        }
+    }
+
+    // =========================================================
+    // UI
+    // =========================================================
+
+    [Header("Upgrade Panel")]
     [SerializeField]
-    CanvasGroup resourceCanvasGroup;
+    private GameObject upgradePanel;
+
+    [Header("Upgrade Button Objects")]
+    [SerializeField]
+    private GameObject miningHeadButton;
 
     [SerializeField]
-    CanvasGroup actionCanvasGroup;
-
-    [Header("Feedback UI")]
-    [SerializeField]
-    CanvasGroup feedbackCanvasGroup;
+    private GameObject storageButton;
 
     [SerializeField]
-    CanvasGroup popupPanelGroup;
+    private GameObject engineerButton;
 
     [SerializeField]
-    TMP_Text popupTitleText;
+    private GameObject powerButton;
 
     [SerializeField]
-    TMP_Text popupMessageText;
+    private GameObject wallsButton;
 
     [SerializeField]
-    float popupDuration = 4f;
+    private GameObject weaponsButton;
+
+    [Header("Upgrade Button Labels")]
+    [SerializeField]
+    private TMP_Text miningHeadButtonText;
 
     [SerializeField]
-    TMP_Text statusText;
-
-    [FormerlySerializedAs("nextActionText")]
-    [SerializeField]
-    TMP_Text towerStatusText;
+    private TMP_Text storageButtonText;
 
     [SerializeField]
-    TMP_Text actionHintText;
+    private TMP_Text engineerButtonText;
 
     [SerializeField]
-    TMP_Text creditsText;
+    private TMP_Text powerButtonText;
+
+    [SerializeField]
+    private TMP_Text wallsButtonText;
+
+    [SerializeField]
+    private TMP_Text weaponsButtonText;
+
+    [Header("Popup")]
+    [SerializeField]
+    private GameObject popupPanel;
+
+    [SerializeField]
+    private TMP_Text popupTitleText;
+
+    [SerializeField]
+    private TMP_Text popupMessageText;
+
+    [SerializeField]
+    private float temporaryMessageDuration = 3f;
+
+    [SerializeField]
+    private float unlockRevealDuration = 3f;
+
+    [SerializeField]
+    private float revealGapDuration = 0.2f;
+
+    // =========================================================
+    // UPGRADE PRICES
+    // =========================================================
+
+    [Header("Mining Head Costs")]
+    [SerializeField]
+    private int[] miningHeadCosts =
+    {
+        0,
+        5,
+        25,
+        80,
+        200
+    };
+
+    [Header("Storage Costs")]
+    [SerializeField]
+    private int[] storageCosts =
+    {
+        0,
+        10,
+        15,
+        25,
+        40,
+        60,
+        100,
+        160
+    };
+
+    [Header("Engineer Costs")]
+    [SerializeField]
+    private int[] engineerCosts =
+    {
+        5,
+        15,
+        60
+    };
+
+    [Header("Power Costs")]
+    [SerializeField]
+    private int[] powerCosts =
+    {
+        20,
+        40,
+        80,
+        160
+    };
+
+    [Header("Walls Costs")]
+    [SerializeField]
+    private int[] wallsCosts =
+    {
+        15,
+        20,
+        25,
+        35,
+        50,
+        70,
+        100,
+        140
+    };
+
+    [Header("Weapons Costs")]
+    [SerializeField]
+    private int[] weaponsCosts =
+    {
+        15,
+        25,
+        30,
+        40,
+        60,
+        80,
+        120,
+        160
+    };
+
+    // =========================================================
+    // GAMEPLAY
+    // =========================================================
 
     [Header("Gameplay")]
     [SerializeField]
-    MiningCargo cargo;
+    private MiningCargo cargo;
 
     [SerializeField]
-    MiningTowerInteraction miningInteraction;
+    private MiningTowerInteraction miningInteraction;
 
     [SerializeField]
-    BarrelHub barrelHub;
+    private BarrelHub barrelHub;
+
+    // =========================================================
+    // ECONOMY
+    // =========================================================
 
     [Header("Economy")]
     [SerializeField]
-    CurrencyManager currency;
+    private CurrencyManager currency;
+
+    // =========================================================
+    // UPGRADE SYSTEM
+    // =========================================================
 
     [Header("Upgrade System")]
     [SerializeField]
-    MiningTowerUpgradeController upgradeController;
+    private MiningTowerUpgradeController upgradeController;
 
-    [Header("Upgrade Definitions")]
     [SerializeField]
-    TowerUpgradeDefinition[] upgrades;
+    private MiningTowerProgression progression;
+
+    // =========================================================
+    // EVENTS
+    // =========================================================
 
     [Header("Events")]
     public TowerActionEvent onActionRequested;
-    public TowerActionEvent onUpgradePurchased;
+
     public TowerActionEvent onActionRejected;
 
-    bool uiVisible;
+    public MiningTowerUpgradeEvent onUpgradePurchased;
 
-    float refreshTimer;
+    public MiningTowerUpgradeEvent onUpgradeRejected;
 
-    const float RefreshInterval = 0.15f;
+    // =========================================================
+    // GAMEPLAY UNLOCK STATE
+    // =========================================================
 
-    Coroutine popupRoutine;
+    private bool processingUnlocked;
+    private bool sellingUnlocked;
+    private bool upgradeSystemUnlocked;
 
-    bool previousCargoLoaded;
-    int previousBarrelCount;
+    private bool miningHeadUnlocked;
+    private bool storageUnlocked;
+    private bool engineerUnlocked;
+    private bool powerUnlocked;
+    private bool wallsUnlocked;
+    private bool weaponsUnlocked;
 
-    // These flags are shared by every MiningTower instance.
-    // Therefore each tutorial is shown only once per play session.
-    static bool harvestLessonShown;
-    static bool processingLessonShown;
-    static bool sellingLessonShown;
-    static bool upgradeLessonShown;
+    // =========================================================
+    // INTERNAL STATE
+    // =========================================================
 
-    // This also resets the static flags correctly when
-    // Enter Play Mode Options disables domain reload.
-    [RuntimeInitializeOnLoadMethod(
-        RuntimeInitializeLoadType.SubsystemRegistration)]
-    static void ResetGlobalTutorialState()
+    private bool upgradePanelVisible;
+
+    private bool previousCargoLoaded;
+    private int previousBarrelCount;
+
+    private Coroutine temporaryMessageRoutine;
+    private Coroutine revealRoutine;
+
+    private readonly Queue<UnlockReveal> revealQueue =
+        new Queue<UnlockReveal>();
+
+    private bool isUnlockRevealPlaying;
+
+    // =========================================================
+    // UNITY
+    // =========================================================
+
+    private void Awake()
     {
-        harvestLessonShown = false;
-        processingLessonShown = false;
-        sellingLessonShown = false;
-        upgradeLessonShown = false;
+        FindMissingReferences();
+
+        HideAllUpgradeButtons();
+
+        upgradePanelVisible = false;
+
+        if (upgradePanel != null)
+        {
+            upgradePanel.SetActive(false);
+        }
+
+        if (popupPanel != null)
+        {
+            popupPanel.SetActive(false);
+        }
+
+        previousCargoLoaded =
+            cargo != null &&
+            cargo.IsLoaded;
+
+        previousBarrelCount =
+            barrelHub != null
+                ? barrelHub.BarrelCount
+                : 0;
+
+        progression?.BeginProgression();
+
+        RefreshUpgradeButtonLabels();
     }
 
-    void Awake()
+    private void OnEnable()
+    {
+        FindMissingReferences();
+
+        if (progression != null)
+        {
+            progression.ThresholdCompleted -=
+                HandleThresholdCompleted;
+
+            progression.ThresholdCompleted +=
+                HandleThresholdCompleted;
+        }
+
+        previousCargoLoaded =
+            cargo != null &&
+            cargo.IsLoaded;
+
+        previousBarrelCount =
+            barrelHub != null
+                ? barrelHub.BarrelCount
+                : 0;
+
+        SyncUnlockStateFromProgression();
+
+        ShowTemporaryMessage(
+            "MINING ONLINE",
+            "SELECT the Mining Tower to harvest the " +
+            "highest-value asteroid within range."
+        );
+    }
+
+    private void OnDisable()
+    {
+        if (progression != null)
+        {
+            progression.ThresholdCompleted -=
+                HandleThresholdCompleted;
+        }
+
+        if (temporaryMessageRoutine != null)
+        {
+            StopCoroutine(
+                temporaryMessageRoutine
+            );
+
+            temporaryMessageRoutine = null;
+        }
+
+        if (revealRoutine != null)
+        {
+            StopCoroutine(
+                revealRoutine
+            );
+
+            revealRoutine = null;
+        }
+    }
+
+    private void Update()
+    {
+        CheckGameplayStateChanges();
+    }
+
+    // =========================================================
+    // REFERENCES
+    // =========================================================
+
+    private void FindMissingReferences()
     {
         if (currency == null)
         {
@@ -114,211 +366,199 @@ public class MiningTowerInteractionHub : MonoBehaviour
                 FindFirstObjectByType<CurrencyManager>();
         }
 
-        // ResourceCanvas is retained for MP2A,
-        // but MP2B never displays it.
-        SetCanvasVisible(
-            resourceCanvasGroup,
-            false,
-            false
-        );
-
-        // ActionCanvas starts hidden.
-        SetCanvasVisible(
-            actionCanvasGroup,
-            false,
-            false
-        );
-
-        // FeedbackCanvas is always available,
-        // but the temporary popup starts hidden.
-        SetCanvasVisible(
-            feedbackCanvasGroup,
-            true,
-            false
-        );
-
-        SetCanvasVisible(
-            popupPanelGroup,
-            false,
-            false
-        );
-
-        previousCargoLoaded =
-            cargo != null &&
-            cargo.IsLoaded;
-
-        previousBarrelCount =
-            barrelHub != null
-                ? barrelHub.BarrelCount
-                : 0;
-    }
-
-    void OnEnable()
-    {
-        if (currency != null)
+        if (cargo == null)
         {
-            currency.OnMoneyChanged +=
-                HandleMoneyChanged;
+            cargo =
+                GetComponentInChildren<MiningCargo>(
+                    true
+                );
         }
 
-        previousCargoLoaded =
-            cargo != null &&
-            cargo.IsLoaded;
-
-        previousBarrelCount =
-            barrelHub != null
-                ? barrelHub.BarrelCount
-                : 0;
-
-        // MiningTowerInteractionHub is expected to become enabled
-        // when tower construction is complete.
-        ShowHarvestLessonOnce();
-    }
-
-    void OnDisable()
-    {
-        if (currency != null)
+        if (miningInteraction == null)
         {
-            currency.OnMoneyChanged -=
-                HandleMoneyChanged;
+            miningInteraction =
+                GetComponentInChildren<MiningTowerInteraction>(
+                    true
+                );
         }
 
-        if (popupRoutine != null)
+        if (barrelHub == null)
         {
-            StopCoroutine(popupRoutine);
-            popupRoutine = null;
+            barrelHub =
+                GetComponentInChildren<BarrelHub>(
+                    true
+                );
+        }
+
+        if (upgradeController == null)
+        {
+            upgradeController =
+                GetComponentInChildren<MiningTowerUpgradeController>(
+                    true
+                );
+        }
+
+        if (progression == null)
+        {
+            progression =
+                GetComponentInChildren<MiningTowerProgression>(
+                    true
+                );
         }
     }
 
-    void Update()
-    {
-        // Tutorial state detection must continue even while
-        // ActionCanvas is hidden.
-        CheckTutorialStateChanges();
+    // =========================================================
+    // XR INTERACTION
+    // =========================================================
 
-        if (!uiVisible)
-            return;
-
-        refreshTimer += Time.deltaTime;
-
-        if (refreshTimer <
-            RefreshInterval)
-        {
-            return;
-        }
-
-        refreshTimer = 0f;
-
-        RefreshUI();
-    }
-
-    void HandleMoneyChanged(
-        int newMoney
-    )
-    {
-        if (uiVisible)
-        {
-            RefreshUI();
-        }
-    }
-
-    // Called by XR Simple Interactable -> Select Entered.
-    // Select operates the tower. It does not control the UI.
     public void OnTowerSelected()
     {
+        if (isUnlockRevealPlaying)
+        {
+            return;
+        }
+
         ExecutePrimarySelectAction();
     }
 
-    // No automatic action when Select exits.
     public void OnTowerDeselected()
     {
     }
 
-    // Called by XR Simple Interactable -> Activated.
-    // Activate only opens or closes ActionCanvas.
     public void ActivatePrimaryAction()
     {
-        ToggleActionCanvas();
-    }
+        if (isUnlockRevealPlaying)
+        {
+            return;
+        }
 
-    public void ToggleActionCanvas()
-    {
-        if (uiVisible)
+        if (!upgradeSystemUnlocked)
+        {
+            ShowError(
+                "UPGRADES LOCKED",
+                "Sell your first processed resource to " +
+                "unlock the Engineering Console."
+            );
+
+            return;
+        }
+
+        if (upgradePanel == null)
+        {
+            return;
+        }
+
+        if (upgradePanelVisible)
         {
             HideTowerUI();
+            return;
         }
-        else
+
+        if (progression != null)
         {
-            ShowTowerUI();
+            if (
+                !progression.CanOpenUpgradePanel(
+                    out string errorTitle,
+                    out string errorMessage
+                )
+            )
+            {
+                ShowError(
+                    errorTitle,
+                    errorMessage
+                );
+
+                return;
+            }
         }
+
+        ShowTowerUI();
     }
 
     public void ShowTowerUI()
     {
-        uiVisible = true;
+        upgradePanelVisible = true;
 
-        // ResourceCanvas intentionally remains hidden.
-        SetCanvasVisible(
-            resourceCanvasGroup,
-            false,
-            false
-        );
+        if (upgradePanel != null)
+        {
+            upgradePanel.SetActive(true);
+        }
 
-        SetCanvasVisible(
-            actionCanvasGroup,
-            true,
-            true
-        );
-
-        RefreshUI();
+        RefreshUpgradeButtonLabels();
     }
 
     public void HideTowerUI()
     {
-        uiVisible = false;
+        upgradePanelVisible = false;
 
-        // ResourceCanvas intentionally remains hidden.
-        SetCanvasVisible(
-            resourceCanvasGroup,
-            false,
-            false
-        );
-
-        SetCanvasVisible(
-            actionCanvasGroup,
-            false,
-            false
-        );
+        if (upgradePanel != null)
+        {
+            upgradePanel.SetActive(false);
+        }
     }
 
-    // SELECT priority:
-    // 1. Loaded cargo -> Unload.
-    // 2. Stored barrels -> Sell.
-    // 3. Otherwise -> Harvest.
-    void ExecutePrimarySelectAction()
+    // =========================================================
+    // SELECT STATE MACHINE
+    // =========================================================
+
+    private void ExecutePrimarySelectAction()
     {
-        if (
+        int barrelCount =
+            barrelHub != null
+                ? barrelHub.BarrelCount
+                : 0;
+
+        bool cargoLoaded =
             cargo != null &&
-            cargo.IsLoaded
-        )
-        {
-            ExecuteMiningRocketAction();
-            return;
-        }
+            cargo.IsLoaded;
 
-        if (
-            barrelHub != null &&
-            barrelHub.BarrelCount > 0
-        )
+        // Sell has highest priority.
+        if (barrelCount > 0)
         {
+            if (!sellingUnlocked)
+            {
+                ShowError(
+                    "TRADE LINK OFFLINE",
+                    "Complete your first processing cycle " +
+                    "to unlock resource selling."
+                );
+
+                return;
+            }
+
             TrySellStoredResources();
+
             return;
         }
 
+        // Loaded cargo means the player intends to unload/process.
+        if (cargoLoaded)
+        {
+            if (!processingUnlocked)
+            {
+                ShowError(
+                    "PROCESSOR OFFLINE",
+                    "Complete the current unlock reveal before " +
+                    "unloading the harvested cargo."
+                );
+
+                return;
+            }
+
+            ExecuteMiningRocketAction();
+
+            return;
+        }
+
+        // Harvest is available from the beginning.
         ExecuteMiningRocketAction();
     }
 
-    void ExecuteMiningRocketAction()
+    // =========================================================
+    // HARVEST / PROCESSING
+    // =========================================================
+
+    private void ExecuteMiningRocketAction()
     {
         if (
             miningInteraction == null ||
@@ -338,37 +578,45 @@ public class MiningTowerInteractionHub : MonoBehaviour
                 ? TowerActionType.Unload
                 : TowerActionType.Harvest;
 
-        Debug.Log(
-            $"[TowerInteraction] {action} requested.",
-            gameObject
-        );
-
-        // MiningTowerInteraction already decides whether
-        // to begin harvesting or unload loaded cargo.
         miningInteraction.Interact();
 
-        onActionRequested?.Invoke(action);
-
-        RefreshUI();
+        onActionRequested?.Invoke(
+            action
+        );
     }
 
-    void TrySellStoredResources()
+    // =========================================================
+    // SELLING
+    // =========================================================
+
+    private void TrySellStoredResources()
     {
+        if (!sellingUnlocked)
+        {
+            ShowError(
+                "TRADE LINK OFFLINE",
+                "Complete your first processing cycle " +
+                "before selling resources."
+            );
+
+            return;
+        }
+
         if (barrelHub == null)
         {
+            ShowError(
+                "SELL SYSTEM UNAVAILABLE",
+                "The Mining Tower storage system is unavailable."
+            );
+
             return;
         }
 
         if (barrelHub.BarrelCount <= 0)
         {
-            Debug.Log(
-                "[TowerInteraction] Sell ignored. No barrels stored.",
-                gameObject
-            );
-
             ShowError(
                 "NOTHING TO SELL",
-                "Process asteroid cargo before selling resources."
+                "Process asteroid cargo into resource barrels first."
             );
 
             onActionRejected?.Invoke(
@@ -378,212 +626,33 @@ public class MiningTowerInteractionHub : MonoBehaviour
             return;
         }
 
-        Debug.Log(
-            "[TowerInteraction] SELL requested.",
-            gameObject
-        );
-
         barrelHub.SellAll();
 
         onActionRequested?.Invoke(
             TowerActionType.Sell
         );
 
-        // The first successful sale introduces the upgrade system.
-        ShowUpgradeLessonOnce();
+        progression?.NotifySaleCompleted();
 
-        RefreshUI();
+        RefreshUpgradeButtonLabels();
     }
 
-    public bool TryPurchaseUpgrade(
-        TowerActionType action
-    )
-    {
-        TowerUpgradeDefinition definition =
-            FindUpgrade(action);
+    // =========================================================
+    // GAMEPLAY STATE DETECTION
+    // =========================================================
 
-        if (
-            definition == null ||
-            currency == null ||
-            upgradeController == null
-        )
-        {
-            ShowError(
-                "UPGRADE UNAVAILABLE",
-                "This upgrade is currently unavailable."
-            );
-
-            onActionRejected?.Invoke(action);
-
-            return false;
-        }
-
-        if (!upgradeController.CanUpgrade(action))
-        {
-            Debug.Log(
-                $"[TowerUpgrade] {definition.displayName} is MAX.",
-                gameObject
-            );
-
-            ShowError(
-                "UPGRADE UNAVAILABLE",
-                $"{definition.displayName} cannot be upgraded further."
-            );
-
-            onActionRejected?.Invoke(action);
-
-            RefreshUI();
-
-            return false;
-        }
-
-        if (!currency.TrySpend(definition.cost))
-        {
-            Debug.Log(
-                $"[TowerUpgrade] Not enough Credits for " +
-                $"{definition.displayName}.",
-                gameObject
-            );
-
-            ShowError(
-                "NOT ENOUGH CREDITS",
-                $"Need {definition.cost} Credits for " +
-                $"{definition.displayName}. Sell more resources first."
-            );
-
-            onActionRejected?.Invoke(action);
-
-            RefreshUI();
-
-            return false;
-        }
-
-        bool applied =
-            upgradeController.ApplyUpgrade(
-                action
-            );
-
-        if (!applied)
-        {
-            currency.AddMoney(
-                definition.cost
-            );
-
-            ShowError(
-                "UPGRADE FAILED",
-                $"{definition.displayName} could not be applied."
-            );
-
-            onActionRejected?.Invoke(action);
-
-            RefreshUI();
-
-            return false;
-        }
-
-        Debug.Log(
-            $"[TowerUpgrade] Purchased " +
-            $"{definition.displayName} for " +
-            $"${definition.cost}.",
-            gameObject
-        );
-
-        onUpgradePurchased?.Invoke(action);
-
-        RefreshUI();
-
-        return true;
-    }
-
-    public void BuyMiningRangeUpgrade()
-    {
-        TryPurchaseUpgrade(
-            TowerActionType.UpgradeMiningRange
-        );
-    }
-
-    public void BuyStorageUpgrade()
-    {
-        TryPurchaseUpgrade(
-            TowerActionType.UpgradeStorage
-        );
-    }
-
-    // Kept for compatibility with the existing upgrade system.
-    // It does not need a visible button in the new six-button UI.
-    public void BuyProcessingSpeedUpgrade()
-    {
-        TryPurchaseUpgrade(
-            TowerActionType.UpgradeProcessingSpeed
-        );
-    }
-
-    public void BuyEngineerUpgrade()
-    {
-        TryPurchaseUpgrade(
-            TowerActionType.UpgradeEngineer
-        );
-    }
-
-    public void BuyPowerSystemUpgrade()
-    {
-        TryPurchaseUpgrade(
-            TowerActionType.UpgradePowerSystem
-        );
-    }
-
-    public void BuyWallsUpgrade()
-    {
-        TryPurchaseUpgrade(
-            TowerActionType.UpgradeWalls
-        );
-    }
-
-    public void BuyWeaponsUpgrade()
-    {
-        TryPurchaseUpgrade(
-            TowerActionType.UpgradeWeapons
-        );
-    }
-
-    TowerUpgradeDefinition FindUpgrade(
-        TowerActionType action
-    )
-    {
-        if (upgrades == null)
-            return null;
-
-        foreach (
-            TowerUpgradeDefinition definition
-            in upgrades
-        )
-        {
-            if (
-                definition != null &&
-                definition.action == action
-            )
-            {
-                return definition;
-            }
-        }
-
-        return null;
-    }
-
-    void CheckTutorialStateChanges()
+    private void CheckGameplayStateChanges()
     {
         bool cargoLoaded =
             cargo != null &&
             cargo.IsLoaded;
 
-        // A transition from no cargo to loaded cargo means
-        // the first asteroid has been successfully collected.
         if (
             !previousCargoLoaded &&
             cargoLoaded
         )
         {
-            ShowProcessingLessonOnce();
+            progression?.NotifyHarvestCompleted();
         }
 
         previousCargoLoaded =
@@ -594,99 +663,886 @@ public class MiningTowerInteractionHub : MonoBehaviour
                 ? barrelHub.BarrelCount
                 : 0;
 
-        // The first produced barrel introduces selling.
         if (
             previousBarrelCount <= 0 &&
             barrelCount > 0
         )
         {
-            ShowSellingLessonOnce();
+            progression?.NotifyProcessingCompleted();
         }
 
         previousBarrelCount =
             barrelCount;
     }
 
-    // Can also be called explicitly by the construction script
-    // if the InteractionHub remains enabled during construction.
-    public void NotifyConstructionComplete()
+    // =========================================================
+    // THRESHOLD -> REVEAL ROUTING
+    // =========================================================
+
+    private void HandleThresholdCompleted(
+        int completedThreshold)
     {
-        ShowHarvestLessonOnce();
+        switch (completedThreshold)
+        {
+            // -------------------------------------------------
+            // REVEAL 1: PROCESSING
+            // -------------------------------------------------
+
+            case 1:
+                QueueUnlockReveal(
+                    "PROCESSING ONLINE",
+                    "The Orbital Processor converts harvested " +
+                    "asteroid cargo into resource barrels. " +
+                    "SELECT the Mining Tower again while cargo " +
+                    "is loaded to unload and begin processing.",
+                    UnlockProcessing
+                );
+                break;
+
+            // -------------------------------------------------
+            // REVEAL 2: SELLING
+            // -------------------------------------------------
+
+            case 2:
+                QueueUnlockReveal(
+                    "TRADE LINK ONLINE",
+                    "Processed resource barrels can now be sold " +
+                    "for Credits. SELECT the Mining Tower while " +
+                    "barrels are stored to sell them.",
+                    UnlockSelling
+                );
+                break;
+
+            // -------------------------------------------------
+            // REVEALS 3-6
+            // -------------------------------------------------
+
+            case 3:
+                QueueUnlockReveal(
+                    "ENGINEERING CONSOLE ONLINE",
+                    "The Mining Tower can now be specialized. " +
+                    "ACTIVATE the tower to open its Engineering " +
+                    "Console and spend Credits on upgrades.",
+                    UnlockUpgradeSystem
+                );
+
+                QueueUnlockReveal(
+                    "MINING HEAD UNLOCKED",
+                    "The Mining Head controls extraction capability. " +
+                    "Higher levels extend mining reach and unlock " +
+                    "access to increasingly valuable asteroid families.",
+                    UnlockMiningHead
+                );
+
+                QueueUnlockReveal(
+                    "STORAGE UNLOCKED",
+                    "Repository Arrays increase the number of processed " +
+                    "resource barrels the Mining Tower can hold before " +
+                    "they must be sold.",
+                    UnlockStorage
+                );
+
+                QueueUnlockReveal(
+                    "ENGINEER UNLOCKED",
+                    "Engineers maintain the Mining Tower automatically. " +
+                    "Higher Engineer levels increase passive repair " +
+                    "capability.",
+                    UnlockEngineer
+                );
+                break;
+
+            // -------------------------------------------------
+            // REVEAL 7: POWER
+            // -------------------------------------------------
+
+            case 6:
+                QueueUnlockReveal(
+                    "POWER CORE UNLOCKED",
+                    "Power upgrades accelerate the Orbital Processor, " +
+                    "allowing harvested cargo to become resource " +
+                    "barrels more quickly.",
+                    UnlockPower
+                );
+                break;
+
+            // -------------------------------------------------
+            // REVEAL 8: WALLS
+            // -------------------------------------------------
+
+            case 9:
+                QueueUnlockReveal(
+                    "DEFENSIVE WALLS UNLOCKED",
+                    "Defensive Walls reinforce the Mining Tower. " +
+                    "Each level increases its shield capacity and " +
+                    "improves survivability.",
+                    UnlockWalls
+                );
+                break;
+
+            // -------------------------------------------------
+            // REVEAL 9: WEAPONS
+            // -------------------------------------------------
+
+            case 11:
+                QueueUnlockReveal(
+                    "WEAPON ARRAY UNLOCKED",
+                    "Weapon modules transform the Mining Tower into " +
+                    "an armed outpost. Higher levels construct " +
+                    "additional defensive weapon systems.",
+                    UnlockWeapons
+                );
+                break;
+        }
     }
 
-    void ShowHarvestLessonOnce()
-    {
-        if (harvestLessonShown)
-            return;
+    // =========================================================
+    // REVEAL QUEUE
+    // =========================================================
 
-        harvestLessonShown = true;
-
-        ShowLesson(
-            "MINING ONLINE",
-            "SELECT the Mining Tower to harvest the highest-value " +
-            "asteroid currently available within mining range."
-        );
-    }
-
-    void ShowProcessingLessonOnce()
-    {
-        if (processingLessonShown)
-            return;
-
-        processingLessonShown = true;
-
-        ShowLesson(
-            "CARGO ACQUIRED",
-            "Asteroid material is now stored in the Mining Rocket. " +
-            "SELECT the Mining Tower again to unload and process it."
-        );
-    }
-
-    void ShowSellingLessonOnce()
-    {
-        if (sellingLessonShown)
-            return;
-
-        sellingLessonShown = true;
-
-        ShowLesson(
-            "RESOURCE READY",
-            "Processing produced a resource barrel. " +
-            "SELECT the Mining Tower to sell stored resources for Credits."
-        );
-    }
-
-    void ShowUpgradeLessonOnce()
-    {
-        if (upgradeLessonShown)
-            return;
-
-        upgradeLessonShown = true;
-
-        ShowLesson(
-            "UPGRADES ONLINE",
-            "Your first sale earned Credits. ACTIVATE the Mining Tower " +
-            "to open the management panel and purchase upgrades."
-        );
-    }
-
-    public void ShowLesson(
+    private void QueueUnlockReveal(
         string title,
-        string message
-    )
+        string message,
+        Action unlockAction)
     {
-        ShowPopup(
-            title,
-            message
+        revealQueue.Enqueue(
+            new UnlockReveal(
+                title,
+                message,
+                unlockAction
+            )
+        );
+
+        if (revealRoutine == null)
+        {
+            revealRoutine =
+                StartCoroutine(
+                    ProcessRevealQueue()
+                );
+        }
+    }
+
+    private IEnumerator ProcessRevealQueue()
+    {
+        isUnlockRevealPlaying = true;
+
+        if (temporaryMessageRoutine != null)
+        {
+            StopCoroutine(
+                temporaryMessageRoutine
+            );
+
+            temporaryMessageRoutine = null;
+        }
+
+        HideTowerUI();
+
+        while (revealQueue.Count > 0)
+        {
+            UnlockReveal reveal =
+                revealQueue.Dequeue();
+
+            Debug.Log(
+                $"[Unlock Reveal] {reveal.title}: " +
+                reveal.message,
+                gameObject
+            );
+
+            if (
+                popupPanel != null &&
+                popupTitleText != null &&
+                popupMessageText != null
+            )
+            {
+                popupTitleText.text =
+                    reveal.title;
+
+                popupMessageText.text =
+                    reveal.message;
+
+                popupPanel.SetActive(true);
+
+                yield return new WaitForSecondsRealtime(
+                    unlockRevealDuration
+                );
+
+                // Critical rubric ordering:
+                // hide reveal first...
+                popupPanel.SetActive(false);
+            }
+
+            // ...then make the mechanic/UI available.
+            reveal.unlockAction?.Invoke();
+
+            RefreshUpgradeButtonLabels();
+
+            yield return new WaitForSecondsRealtime(
+                revealGapDuration
+            );
+        }
+
+        isUnlockRevealPlaying = false;
+        revealRoutine = null;
+    }
+
+    // =========================================================
+    // UNLOCK ACTIONS
+    // =========================================================
+
+    private void UnlockProcessing()
+    {
+        processingUnlocked = true;
+
+        Debug.Log(
+            "[Unlock] Processing available.",
+            gameObject
         );
     }
+
+    private void UnlockSelling()
+    {
+        sellingUnlocked = true;
+
+        Debug.Log(
+            "[Unlock] Selling available.",
+            gameObject
+        );
+    }
+
+    private void UnlockUpgradeSystem()
+    {
+        upgradeSystemUnlocked = true;
+
+        Debug.Log(
+            "[Unlock] Engineering Console available.",
+            gameObject
+        );
+    }
+
+    private void UnlockMiningHead()
+    {
+        miningHeadUnlocked = true;
+
+        SetButtonVisible(
+            miningHeadButton,
+            true
+        );
+    }
+
+    private void UnlockStorage()
+    {
+        storageUnlocked = true;
+
+        SetButtonVisible(
+            storageButton,
+            true
+        );
+    }
+
+    private void UnlockEngineer()
+    {
+        engineerUnlocked = true;
+
+        SetButtonVisible(
+            engineerButton,
+            true
+        );
+    }
+
+    private void UnlockPower()
+    {
+        powerUnlocked = true;
+
+        SetButtonVisible(
+            powerButton,
+            true
+        );
+    }
+
+    private void UnlockWalls()
+    {
+        wallsUnlocked = true;
+
+        SetButtonVisible(
+            wallsButton,
+            true
+        );
+    }
+
+    private void UnlockWeapons()
+    {
+        weaponsUnlocked = true;
+
+        SetButtonVisible(
+            weaponsButton,
+            true
+        );
+    }
+
+    // =========================================================
+    // RESTORE STATE
+    // =========================================================
+
+    private void SyncUnlockStateFromProgression()
+    {
+        if (progression == null)
+        {
+            return;
+        }
+
+        int stage =
+            progression.CurrentStage;
+
+        if (stage >= 2)
+        {
+            processingUnlocked = true;
+        }
+
+        if (stage >= 3)
+        {
+            sellingUnlocked = true;
+        }
+
+        if (stage >= 4)
+        {
+            upgradeSystemUnlocked = true;
+
+            miningHeadUnlocked = true;
+            storageUnlocked = true;
+            engineerUnlocked = true;
+
+            SetButtonVisible(
+                miningHeadButton,
+                true
+            );
+
+            SetButtonVisible(
+                storageButton,
+                true
+            );
+
+            SetButtonVisible(
+                engineerButton,
+                true
+            );
+        }
+
+        if (stage >= 7)
+        {
+            powerUnlocked = true;
+
+            SetButtonVisible(
+                powerButton,
+                true
+            );
+        }
+
+        if (stage >= 10)
+        {
+            wallsUnlocked = true;
+
+            SetButtonVisible(
+                wallsButton,
+                true
+            );
+        }
+
+        if (stage >= 12)
+        {
+            weaponsUnlocked = true;
+
+            SetButtonVisible(
+                weaponsButton,
+                true
+            );
+        }
+    }
+
+    // =========================================================
+    // BUTTON VISIBILITY
+    // =========================================================
+
+    private void HideAllUpgradeButtons()
+    {
+        SetButtonVisible(
+            miningHeadButton,
+            false
+        );
+
+        SetButtonVisible(
+            storageButton,
+            false
+        );
+
+        SetButtonVisible(
+            engineerButton,
+            false
+        );
+
+        SetButtonVisible(
+            powerButton,
+            false
+        );
+
+        SetButtonVisible(
+            wallsButton,
+            false
+        );
+
+        SetButtonVisible(
+            weaponsButton,
+            false
+        );
+    }
+
+    private void SetButtonVisible(
+        GameObject button,
+        bool visible)
+    {
+        if (button != null)
+        {
+            button.SetActive(
+                visible
+            );
+        }
+    }
+
+    // =========================================================
+    // PURCHASE
+    // =========================================================
+
+    public bool TryPurchaseUpgrade(
+        MiningTowerUpgradeType type)
+    {
+        if (!IsUpgradeUnlocked(type))
+        {
+            ShowError(
+                "UPGRADE NOT DISCOVERED",
+                $"{GetUpgradeDisplayName(type)} has not been " +
+                "unlocked yet. Complete the current objective first."
+            );
+
+            onUpgradeRejected?.Invoke(
+                type
+            );
+
+            return false;
+        }
+
+        if (
+            currency == null ||
+            upgradeController == null
+        )
+        {
+            ShowError(
+                "UPGRADE SYSTEM UNAVAILABLE",
+                "The Mining Tower upgrade system is unavailable."
+            );
+
+            onUpgradeRejected?.Invoke(
+                type
+            );
+
+            return false;
+        }
+
+        if (progression != null)
+        {
+            if (
+                !progression.TryValidateUpgrade(
+                    type,
+                    out string lockTitle,
+                    out string lockMessage
+                )
+            )
+            {
+                ShowError(
+                    lockTitle,
+                    lockMessage
+                );
+
+                onUpgradeRejected?.Invoke(
+                    type
+                );
+
+                return false;
+            }
+        }
+
+        if (!upgradeController.CanUpgrade(type))
+        {
+            progression?.RegisterMaxLevelCatch();
+
+            ShowError(
+                "MAXIMUM LEVEL",
+                $"{GetUpgradeDisplayName(type)} is already at " +
+                "its maximum level."
+            );
+
+            onUpgradeRejected?.Invoke(
+                type
+            );
+
+            return false;
+        }
+
+        int currentLevel =
+            upgradeController.GetLevel(
+                type
+            );
+
+        int targetLevel =
+            currentLevel + 1;
+
+        if (
+            !TryGetUpgradeCost(
+                type,
+                targetLevel,
+                out int cost
+            )
+        )
+        {
+            ShowError(
+                "PRICE NOT CONFIGURED",
+                $"{GetUpgradeDisplayName(type)} Lv.{targetLevel} " +
+                "does not have a valid price configured."
+            );
+
+            return false;
+        }
+
+        if (!currency.TrySpend(cost))
+        {
+            progression?.RegisterInsufficientCreditsCatch();
+
+            ShowError(
+                "NOT ENOUGH CREDITS",
+                $"{GetUpgradeDisplayName(type)} Lv.{targetLevel} " +
+                $"costs {cost} Credits. " +
+                "Sell more processed resources first."
+            );
+
+            onUpgradeRejected?.Invoke(
+                type
+            );
+
+            return false;
+        }
+
+        bool success =
+            upgradeController.ApplyUpgrade(
+                type
+            );
+
+        if (!success)
+        {
+            currency.AddMoney(
+                cost
+            );
+
+            ShowError(
+                "UPGRADE FAILED",
+                $"{GetUpgradeDisplayName(type)} could not be upgraded."
+            );
+
+            onUpgradeRejected?.Invoke(
+                type
+            );
+
+            return false;
+        }
+
+        Debug.Log(
+            "[TowerUpgrade] Purchased " +
+            $"{GetUpgradeDisplayName(type)} " +
+            $"Lv.{targetLevel} for {cost} Credits.",
+            gameObject
+        );
+
+        onUpgradePurchased?.Invoke(
+            type
+        );
+
+        progression?.NotifyUpgradePurchased(
+            type
+        );
+
+        RefreshUpgradeButtonLabels();
+
+        return true;
+    }
+
+    private bool IsUpgradeUnlocked(
+        MiningTowerUpgradeType type)
+    {
+        switch (type)
+        {
+            case MiningTowerUpgradeType.MiningHead:
+                return miningHeadUnlocked;
+
+            case MiningTowerUpgradeType.Storage:
+                return storageUnlocked;
+
+            case MiningTowerUpgradeType.Engineer:
+                return engineerUnlocked;
+
+            case MiningTowerUpgradeType.Power:
+                return powerUnlocked;
+
+            case MiningTowerUpgradeType.Walls:
+                return wallsUnlocked;
+
+            case MiningTowerUpgradeType.Weapons:
+                return weaponsUnlocked;
+
+            default:
+                return false;
+        }
+    }
+
+    // =========================================================
+    // SIX BUTTON METHODS
+    // =========================================================
+
+    public void BuyMiningHeadUpgrade()
+    {
+        TryPurchaseUpgrade(
+            MiningTowerUpgradeType.MiningHead
+        );
+    }
+
+    public void BuyStorageUpgrade()
+    {
+        TryPurchaseUpgrade(
+            MiningTowerUpgradeType.Storage
+        );
+    }
+
+    public void BuyEngineerUpgrade()
+    {
+        TryPurchaseUpgrade(
+            MiningTowerUpgradeType.Engineer
+        );
+    }
+
+    public void BuyPowerUpgrade()
+    {
+        TryPurchaseUpgrade(
+            MiningTowerUpgradeType.Power
+        );
+    }
+
+    public void BuyWallsUpgrade()
+    {
+        TryPurchaseUpgrade(
+            MiningTowerUpgradeType.Walls
+        );
+    }
+
+    public void BuyWeaponsUpgrade()
+    {
+        TryPurchaseUpgrade(
+            MiningTowerUpgradeType.Weapons
+        );
+    }
+
+    // =========================================================
+    // COSTS
+    // =========================================================
+
+    private bool TryGetUpgradeCost(
+        MiningTowerUpgradeType type,
+        int targetLevel,
+        out int cost)
+    {
+        cost = 0;
+
+        int[] table =
+            GetCostTable(type);
+
+        if (table == null)
+        {
+            return false;
+        }
+
+        int index =
+            targetLevel - 1;
+
+        if (
+            index < 0 ||
+            index >= table.Length
+        )
+        {
+            return false;
+        }
+
+        cost =
+            table[index];
+
+        return cost >= 0;
+    }
+
+    private int[] GetCostTable(
+        MiningTowerUpgradeType type)
+    {
+        switch (type)
+        {
+            case MiningTowerUpgradeType.MiningHead:
+                return miningHeadCosts;
+
+            case MiningTowerUpgradeType.Storage:
+                return storageCosts;
+
+            case MiningTowerUpgradeType.Engineer:
+                return engineerCosts;
+
+            case MiningTowerUpgradeType.Power:
+                return powerCosts;
+
+            case MiningTowerUpgradeType.Walls:
+                return wallsCosts;
+
+            case MiningTowerUpgradeType.Weapons:
+                return weaponsCosts;
+
+            default:
+                return null;
+        }
+    }
+
+    // =========================================================
+    // BUTTON LABELS
+    // =========================================================
+
+    private void RefreshUpgradeButtonLabels()
+    {
+        if (upgradeController == null)
+        {
+            return;
+        }
+
+        RefreshButtonLabel(
+            miningHeadButtonText,
+            MiningTowerUpgradeType.MiningHead
+        );
+
+        RefreshButtonLabel(
+            storageButtonText,
+            MiningTowerUpgradeType.Storage
+        );
+
+        RefreshButtonLabel(
+            engineerButtonText,
+            MiningTowerUpgradeType.Engineer
+        );
+
+        RefreshButtonLabel(
+            powerButtonText,
+            MiningTowerUpgradeType.Power
+        );
+
+        RefreshButtonLabel(
+            wallsButtonText,
+            MiningTowerUpgradeType.Walls
+        );
+
+        RefreshButtonLabel(
+            weaponsButtonText,
+            MiningTowerUpgradeType.Weapons
+        );
+    }
+
+    private void RefreshButtonLabel(
+        TMP_Text label,
+        MiningTowerUpgradeType type)
+    {
+        if (
+            label == null ||
+            upgradeController == null
+        )
+        {
+            return;
+        }
+
+        int currentLevel =
+            upgradeController.GetLevel(
+                type
+            );
+
+        int maxLevel =
+            upgradeController.GetMaxLevel(
+                type
+            );
+
+        string displayName =
+            GetUpgradeDisplayName(type);
+
+        if (currentLevel >= maxLevel)
+        {
+            label.text =
+                $"{displayName} Lv.{currentLevel}\nMAX";
+
+            return;
+        }
+
+        int targetLevel =
+            currentLevel + 1;
+
+        if (
+            TryGetUpgradeCost(
+                type,
+                targetLevel,
+                out int cost
+            )
+        )
+        {
+            label.text =
+                $"{displayName} Lv.{currentLevel}\n" +
+                $"Lv↑: {cost} C"; // .{targetLevel}
+        }
+        else
+        {
+            label.text =
+                $"{displayName} Lv.{currentLevel}";
+        }
+    }
+
+    private string GetUpgradeDisplayName(
+        MiningTowerUpgradeType type)
+    {
+        switch (type)
+        {
+            case MiningTowerUpgradeType.MiningHead:
+                return "Mining Head";
+
+            case MiningTowerUpgradeType.Storage:
+                return "Storage";
+
+            case MiningTowerUpgradeType.Engineer:
+                return "Engineer";
+
+            case MiningTowerUpgradeType.Power:
+                return "Power";
+
+            case MiningTowerUpgradeType.Walls:
+                return "Walls";
+
+            case MiningTowerUpgradeType.Weapons:
+                return "Weapons";
+
+            default:
+                return "Upgrade";
+        }
+    }
+
+    // =========================================================
+    // TEMPORARY POPUPS
+    // =========================================================
 
     public void ShowError(
         string title,
-        string message
-    )
+        string message)
     {
-        ShowPopup(
+        ShowTemporaryMessage(
             title,
             message
         );
@@ -694,52 +1550,57 @@ public class MiningTowerInteractionHub : MonoBehaviour
 
     public void ShowUnlock(
         string title,
-        string message
-    )
+        string message)
     {
-        ShowPopup(
+        ShowTemporaryMessage(
             title,
             message
         );
     }
 
-    void ShowPopup(
+    private void ShowTemporaryMessage(
         string title,
-        string message
-    )
+        string message)
     {
+        // Do not overwrite a rubric Unlock Reveal.
+        if (isUnlockRevealPlaying)
+        {
+            return;
+        }
+
         if (
-            popupPanelGroup == null ||
+            popupPanel == null ||
             popupTitleText == null ||
             popupMessageText == null
         )
         {
             Debug.Log(
-                $"[TowerFeedback] {title}: {message}",
+                $"[TowerPopup] {title}: {message}",
                 gameObject
             );
 
             return;
         }
 
-        if (popupRoutine != null)
+        if (temporaryMessageRoutine != null)
         {
-            StopCoroutine(popupRoutine);
+            StopCoroutine(
+                temporaryMessageRoutine
+            );
         }
 
-        popupRoutine =
+        temporaryMessageRoutine =
             StartCoroutine(
-                PopupRoutine(
+                TemporaryMessageRoutine(
                     title,
                     message
                 )
             );
     }
 
-    IEnumerator PopupRoutine(
+    private IEnumerator TemporaryMessageRoutine(
         string title,
-        string message
-    )
+        string message)
     {
         popupTitleText.text =
             title;
@@ -747,119 +1608,14 @@ public class MiningTowerInteractionHub : MonoBehaviour
         popupMessageText.text =
             message;
 
-        SetCanvasVisible(
-            feedbackCanvasGroup,
-            true,
-            false
-        );
-
-        SetCanvasVisible(
-            popupPanelGroup,
-            true,
-            false
-        );
+        popupPanel.SetActive(true);
 
         yield return new WaitForSecondsRealtime(
-            popupDuration
+            temporaryMessageDuration
         );
 
-        SetCanvasVisible(
-            popupPanelGroup,
-            false,
-            false
-        );
+        popupPanel.SetActive(false);
 
-        popupRoutine = null;
-    }
-
-    void RefreshUI()
-    {
-        if (statusText != null)
-        {
-            statusText.text =
-                "MINING TOWER";
-        }
-
-        if (
-            creditsText != null &&
-            currency != null
-        )
-        {
-            creditsText.text =
-                $"Credits: ${currency.Money}";
-        }
-
-        if (actionHintText != null)
-        {
-            actionHintText.text =
-                "SELECT: Harvest / Unload / Sell\n" +
-                "ACTIVATE: Show / Hide Management";
-        }
-
-        RefreshTowerStatus();
-    }
-
-    void RefreshTowerStatus()
-    {
-        if (
-            towerStatusText == null ||
-            upgradeController == null
-        )
-        {
-            return;
-        }
-
-        string cargoState =
-            cargo != null &&
-            cargo.IsLoaded
-                ? "LOADED"
-                : "EMPTY";
-
-        towerStatusText.text =
-            "<b>MINING</b>\n" +
-            $"Range Lv  {upgradeController.RangeLevel}/{upgradeController.MaxRangeLevel}" +
-            $"      Range  {upgradeController.CurrentMiningRange:F1}/{upgradeController.MaxPossibleMiningRange:F1} m\n" +
-
-            $"Proc Lv   {upgradeController.ProcessingLevel}/{upgradeController.MaxProcessingLevel}" +
-            $"      Rate   {upgradeController.CurrentProcessingRate:F2}/{upgradeController.MaxPossibleProcessingRate:F2}/s\n" +
-
-            "<b>STORAGE</b>\n" +
-            $"Barrels   {upgradeController.CurrentStoredBarrels}/{upgradeController.CurrentStorageCapacity}" +
-            $"      Capacity  {upgradeController.CurrentStorageCapacity}/{upgradeController.MaxStorageCapacity}\n" +
-
-            $"Repos     {upgradeController.CurrentRepositoryCount}/{upgradeController.MaxRepositoryCount}" +
-            $"      Cargo     {cargoState}\n" +
-
-            "<b>SYSTEMS</b>\n" +
-            $"Engineer  {upgradeController.ActiveEngineerCount}/{upgradeController.MaxEngineerCount}" +
-            $"      Power   {upgradeController.PowerLevel}/{upgradeController.MaxPowerLevel}\n" +
-
-            $"Walls     {upgradeController.WallsLevel}/{upgradeController.MaxWallsLevel}" +
-            $"      Weapons {upgradeController.WeaponsLevel}/{upgradeController.MaxWeaponsLevel}\n" +
-
-            "<b>DEFENSE</b>\n" +
-            $"HP        {upgradeController.CurrentHealth:F0}/{upgradeController.MaxHealth:F0}" +
-            $"      Shield  {upgradeController.CurrentShield:F0}/{upgradeController.MaxPossibleShield:F0}\n" +
-
-            $"Repair    {upgradeController.CurrentRepairRate:F1} HP/s";
-    }
-
-    void SetCanvasVisible(
-        CanvasGroup group,
-        bool visible,
-        bool interactive
-    )
-    {
-        if (group == null)
-            return;
-
-        group.alpha =
-            visible ? 1f : 0f;
-
-        group.interactable =
-            visible && interactive;
-
-        group.blocksRaycasts =
-            visible && interactive;
+        temporaryMessageRoutine = null;
     }
 }
