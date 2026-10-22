@@ -119,11 +119,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &43355146 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8118576969654157225, guid: 23eb94c7adceca34187f550338431b89, type: 3}
-  m_PrefabInstance: {fileID: 761910912}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &220239623
 GameObject:
   m_ObjectHideFlags: 0
@@ -446,49 +441,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 460435895677130610, guid: 23eb94c7adceca34187f550338431b89, type: 3}
-      propertyPath: m_RaycastTarget
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5202709433556119175, guid: 23eb94c7adceca34187f550338431b89, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -49
-      objectReference: {fileID: 0}
+    - target: {fileID: 1952152477286043, guid: 23eb94c7adceca34187f550338431b89, type: 3}
+      propertyPath: upgradeController
+      value: 
+      objectReference: {fileID: 1737818168}
     - target: {fileID: 5334816415982310083, guid: 23eb94c7adceca34187f550338431b89, type: 3}
       propertyPath: m_Name
       value: MiningTower
       objectReference: {fileID: 0}
     - target: {fileID: 6699208108267819595, guid: 23eb94c7adceca34187f550338431b89, type: 3}
-      propertyPath: powerButton
-      value: 
-      objectReference: {fileID: 1073045259}
+      propertyPath: unlockRevealDuration
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 6699208108267819595, guid: 23eb94c7adceca34187f550338431b89, type: 3}
-      propertyPath: progression
-      value: 
-      objectReference: {fileID: 1737818167}
-    - target: {fileID: 6699208108267819595, guid: 23eb94c7adceca34187f550338431b89, type: 3}
-      propertyPath: wallsButton
-      value: 
-      objectReference: {fileID: 1563301178}
-    - target: {fileID: 6699208108267819595, guid: 23eb94c7adceca34187f550338431b89, type: 3}
-      propertyPath: storageButton
-      value: 
-      objectReference: {fileID: 1538047304}
-    - target: {fileID: 6699208108267819595, guid: 23eb94c7adceca34187f550338431b89, type: 3}
-      propertyPath: weaponsButton
-      value: 
-      objectReference: {fileID: 43355146}
-    - target: {fileID: 6699208108267819595, guid: 23eb94c7adceca34187f550338431b89, type: 3}
-      propertyPath: engineerButton
-      value: 
-      objectReference: {fileID: 1970772528}
-    - target: {fileID: 6699208108267819595, guid: 23eb94c7adceca34187f550338431b89, type: 3}
-      propertyPath: miningHeadButton
-      value: 
-      objectReference: {fileID: 1980167362}
-    - target: {fileID: 6744812185745372240, guid: 23eb94c7adceca34187f550338431b89, type: 3}
-      propertyPath: m_RaycastTarget
-      value: 0
+      propertyPath: temporaryMessageDuration
+      value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -727,7 +694,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 929489889}
   m_LocalRotation: {x: 0, y: 0.38268343, z: 0, w: 0.92387956}
-  m_LocalPosition: {x: 0, y: 0, z: -2.31}
+  m_LocalPosition: {x: 0, y: 0, z: -3.212}
   m_LocalScale: {x: 0.0020000006, y: 0.002, z: 0.0020000006}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -737,7 +704,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 4.36, y: 1.13}
-  m_SizeDelta: {x: 800, y: 800}
+  m_SizeDelta: {x: 1400, y: 1000}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &979226071
 GameObject:
@@ -933,11 +900,6 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 1670256625, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
   m_PrefabInstance: {fileID: 1040917344}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &1073045259 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2443780227185532169, guid: 23eb94c7adceca34187f550338431b89, type: 3}
-  m_PrefabInstance: {fileID: 761910912}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1223247928
 GameObject:
@@ -1155,7 +1117,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: -27}
-  m_SizeDelta: {x: 500, y: 200}
+  m_SizeDelta: {x: 1000, y: 300}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1264518629
 MonoBehaviour:
@@ -1177,13 +1139,22 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "1 Wild \u2014 5 Families\n2 Intermittent \u2014 Random\n3 Select \u2014
-    Metaphor\n4 Pulse \u2014 Collision\n5 AST\u2192Chunk \u2014 Shatter/Death\n6
-    Chunk\u2192Cargo \u2014 Harvest\n7 Process \u2014 Passive\n8 Resources \u2014
-    6\n9 UV Motion \u2014 Texture\n10 Convert \u2014 21+\n11 Stats \u2014 13+\n12
-    Upgrades \u2014 7\n13 Caretaking \u2014 Credits\u2192Stats\n14 Tutorials \u2014
-    8\n15 Build \u2014 Affordance\n16 Ghost Snap \u2014 Grid\n17 Place \u2014 Credits\u2193\n18
-    Construction \u2014 Sequence\n19 Final Status \u2014 Max/Levels"
+  m_text: "MP2B \u2014 INDIVIDUAL RUBRIC EVIDENCE\r\n\r\nMASTERy THRESHOLDING \u2014
+    21 Thresholds \u2014 7 pts\r\n1  Harvest \u2192 Processing \u2192 Selling \u2192
+    Upgrade progression\r\n2  Mining Head Lv1\u20135 unlocks Slate / Frost / Basalt
+    / Abyssal / Crystal\r\n3  Storage Lv1\u20138, Engineer Lv0\u20133, Power Lv0\u20134\r\n4 
+    Walls Lv0\u20138, Weapons Lv0\u20138\r\n\r\nERROR TOLERANT LESSONS \u2014 21
+    Catches \u2014 7 pts\r\n5  Locked upgrades explain WHY they fail and HOW to progress\r\n6 
+    Includes threshold gates, insufficient credits, max level, locked mechanics\r\n\r\nTHRESHOLDS
+    ON THE HORIZON \u2014 2 pts\r\n7  Next objective appears only after the previous
+    threshold is cleared\r\n\r\nUNLOCK REVEALS \u2014 9 Reveals \u2014 4 pts\r\n8 
+    Processing / Selling / Engineering Console\r\n9  Mining Head / Storage / Engineer
+    / Power / Walls / Weapons\r\n10 Reveal text appears BEFORE the new button or
+    affordance becomes available\r\n\r\nGAMEPLAY EVIDENCE\r\n11 Mining Head level
+    determines which asteroid families can be targeted\r\n12 Highest-value valid
+    asteroid is automatically selected\r\n13 Credits \u2192 Upgrades \u2192 Stats
+    / Capacity / Modules / New Capabilities\r\n\r\nTOTAL TARGET: 20 pts + Interconnection
+    / Collaboration \u2192 22 pt cap"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1249,7 +1220,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 57.289627, y: -330.00937, z: -153.39052, w: -261.97513}
+  m_margin: {x: -147.75946, y: -330.00937, z: -153.39052, w: -261.97513}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   _SortingLayer: 0
@@ -1620,16 +1591,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1538047304 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5106991934006809559, guid: 23eb94c7adceca34187f550338431b89, type: 3}
-  m_PrefabInstance: {fileID: 761910912}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &1563301178 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6805756989774972686, guid: 23eb94c7adceca34187f550338431b89, type: 3}
-  m_PrefabInstance: {fileID: 761910912}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1610328749
 GameObject:
   m_ObjectHideFlags: 0
@@ -1692,17 +1653,17 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
---- !u!114 &1737818167 stripped
+--- !u!114 &1737818168 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3152717523426941216, guid: 23eb94c7adceca34187f550338431b89, type: 3}
+  m_CorrespondingSourceObject: {fileID: 6986105721216474747, guid: 23eb94c7adceca34187f550338431b89, type: 3}
   m_PrefabInstance: {fileID: 761910912}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e5b89bbde5bcc3b438403096a5540b74, type: 3}
+  m_Script: {fileID: 11500000, guid: ab1d1ff731c8ec74294aa366671296c9, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::MiningTowerProgression
+  m_EditorClassIdentifier: Assembly-CSharp::MiningTowerUpgradeController
 --- !u!1 &1757204511
 GameObject:
   m_ObjectHideFlags: 0
@@ -1781,16 +1742,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1757204511}
   m_CullTransparentMesh: 1
---- !u!1 &1970772528 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6332360395611496425, guid: 23eb94c7adceca34187f550338431b89, type: 3}
-  m_PrefabInstance: {fileID: 761910912}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &1980167362 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1135510194883574711, guid: 23eb94c7adceca34187f550338431b89, type: 3}
-  m_PrefabInstance: {fileID: 761910912}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2003486119
 GameObject:
   m_ObjectHideFlags: 0

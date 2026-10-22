@@ -2,36 +2,94 @@ using UnityEngine;
 
 public class MiningTowerTargetSelector : MonoBehaviour
 {
+    // =========================================================
+    // REFERENCES
+    // =========================================================
+
+    [Header("References")]
+    [SerializeField]
+    private MiningTowerUpgradeController upgradeController;
+
+    // =========================================================
+    // TARGETING
+    // =========================================================
+
     [Header("Targeting")]
-    [SerializeField] float captureRange = 8f;
+    [SerializeField]
+    private float captureRange = 8f;
 
     [Tooltip("Origin used for distance checks. If empty, this object is used.")]
-    [SerializeField] Transform scanOrigin;
+    [SerializeField]
+    private Transform scanOrigin;
 
-    [Tooltip("Arm pivot used to determine whether a target is inside the vertical aiming range.")]
-    [SerializeField] Transform aimOrigin;
+    [Tooltip(
+        "Arm pivot used to determine whether a target " +
+        "is inside the vertical aiming range."
+    )]
+    [SerializeField]
+    private Transform aimOrigin;
+
+    // =========================================================
+    // ARM LIMITS
+    // =========================================================
 
     [Header("Arm Vertical Limits")]
-    [SerializeField] float minArmAngleX = -90f;
-    [SerializeField] float maxArmAngleX = 45f;
+    [SerializeField]
+    private float minArmAngleX = -90f;
+
+    [SerializeField]
+    private float maxArmAngleX = 45f;
+
+    // =========================================================
+    // DEBUG
+    // =========================================================
 
     [Header("Debug")]
-    [SerializeField] bool autoSearchOnStart = false;
-    [SerializeField] bool drawCaptureRange = true;
-    [SerializeField] bool logRejectedTargets = false;
+    [SerializeField]
+    private bool autoSearchOnStart = false;
 
-    ResourceAsteroid currentTarget;
+    [SerializeField]
+    private bool drawCaptureRange = true;
 
-    public float CaptureRange => captureRange;
-    public ResourceAsteroid CurrentTarget => currentTarget;
+    [SerializeField]
+    private bool logRejectedTargets = false;
 
-    void Start()
+    // =========================================================
+    // STATE
+    // =========================================================
+
+    private ResourceAsteroid currentTarget;
+
+    public float CaptureRange =>
+        captureRange;
+
+    public ResourceAsteroid CurrentTarget =>
+        currentTarget;
+
+    // =========================================================
+    // UNITY
+    // =========================================================
+
+    private void Awake()
+    {
+        if (upgradeController == null)
+        {
+            upgradeController =
+                GetComponentInParent<MiningTowerUpgradeController>();
+        }
+    }
+
+    private void Start()
     {
         if (autoSearchOnStart)
         {
             FindBestTarget();
         }
     }
+
+    // =========================================================
+    // TARGET SEARCH
+    // =========================================================
 
     public ResourceAsteroid FindBestTarget()
     {
@@ -52,17 +110,57 @@ public class MiningTowerTargetSelector : MonoBehaviour
 
         ResourceAsteroid bestTarget = null;
 
-        int bestValue = int.MinValue;
-        float bestDistance = float.MaxValue;
+        int bestValue =
+            int.MinValue;
 
-        foreach (ResourceAsteroid asteroid in allAsteroids)
+        float bestDistance =
+            float.MaxValue;
+
+        int miningHeadLevel =
+            GetCurrentMiningHeadLevel();
+
+        foreach (
+            ResourceAsteroid asteroid
+            in allAsteroids
+        )
         {
             if (asteroid == null)
+            {
                 continue;
+            }
 
-            // Chunks are not initial mining targets.
+            // Chunks are never selected as initial mining targets.
             if (asteroid.IsChunk)
+            {
                 continue;
+            }
+
+            // Mining Head controls which asteroid families
+            // are currently harvestable.
+            if (
+                !CanMineFamily(
+                    asteroid.Family,
+                    miningHeadLevel
+                )
+            )
+            {
+                if (logRejectedTargets)
+                {
+                    Debug.Log(
+                        $"Rejected {asteroid.name}: " +
+                        $"{asteroid.Family} requires Mining Head " +
+                        $"Lv.{GetRequiredMiningHeadLevel(asteroid.Family)}, " +
+                        $"current level = Lv.{miningHeadLevel}.",
+                        asteroid.gameObject
+                    );
+                }
+
+                continue;
+            }
+
+            // -------------------------------------------------
+            // RANGE CHECK
+            // -------------------------------------------------
 
             float distance =
                 Vector3.Distance(
@@ -75,13 +173,19 @@ public class MiningTowerTargetSelector : MonoBehaviour
                 if (logRejectedTargets)
                 {
                     Debug.Log(
-                        $"Rejected {asteroid.name}: outside capture range.",
+                        $"Rejected {asteroid.name}: " +
+                        $"outside capture range " +
+                        $"({distance:F1} m > {captureRange:F1} m).",
                         asteroid.gameObject
                     );
                 }
 
                 continue;
             }
+
+            // -------------------------------------------------
+            // ARM ANGLE CHECK
+            // -------------------------------------------------
 
             float requiredArmAngleX =
                 CalculateRequiredArmAngleX(
@@ -101,7 +205,8 @@ public class MiningTowerTargetSelector : MonoBehaviour
                         $"Rejected {asteroid.name}: " +
                         $"required Arm X = {requiredArmAngleX:F1}°, " +
                         $"allowed range = " +
-                        $"{minArmAngleX:F1}° to {maxArmAngleX:F1}°.",
+                        $"{minArmAngleX:F1}° to " +
+                        $"{maxArmAngleX:F1}°.",
                         asteroid.gameObject
                     );
                 }
@@ -109,7 +214,12 @@ public class MiningTowerTargetSelector : MonoBehaviour
                 continue;
             }
 
-            int value = asteroid.PriorityValue;
+            // -------------------------------------------------
+            // VALUE SELECTION
+            // -------------------------------------------------
+
+            int value =
+                asteroid.PriorityValue;
 
             bool higherValue =
                 value > bestValue;
@@ -118,15 +228,28 @@ public class MiningTowerTargetSelector : MonoBehaviour
                 value == bestValue &&
                 distance < bestDistance;
 
-            if (higherValue || sameValueButCloser)
+            if (
+                higherValue ||
+                sameValueButCloser
+            )
             {
-                bestTarget = asteroid;
-                bestValue = value;
-                bestDistance = distance;
+                bestTarget =
+                    asteroid;
+
+                bestValue =
+                    value;
+
+                bestDistance =
+                    distance;
             }
         }
 
-        currentTarget = bestTarget;
+        currentTarget =
+            bestTarget;
+
+        // -----------------------------------------------------
+        // RESULT
+        // -----------------------------------------------------
 
         if (currentTarget != null)
         {
@@ -136,20 +259,25 @@ public class MiningTowerTargetSelector : MonoBehaviour
                     currentTarget.transform.position
                 );
 
-            // Debug.Log(
-            //     $"Mining Target Selected: {currentTarget.name}\n" +
-            //     $"Family: {currentTarget.Family}\n" +
-            //     $"Yield: {currentTarget.BarrelYield} barrels\n" +
-            //     $"Distance: {bestDistance:F2} m\n" +
-            //     $"Required Arm X: {requiredArmX:F1}°",
-            //     currentTarget.gameObject
-            // );
+            Debug.Log(
+                "[MiningTower Target]\n" +
+                $"Mining Head = Lv.{miningHeadLevel}\n" +
+                $"Target = {currentTarget.name}\n" +
+                $"Family = {currentTarget.Family}\n" +
+                $"Value = {currentTarget.PriorityValue}\n" +
+                $"Distance = {bestDistance:F2} m\n" +
+                $"Required Arm X = {requiredArmX:F1}°",
+                currentTarget.gameObject
+            );
         }
         else
         {
             Debug.Log(
-                $"MiningTower: No reachable asteroid found within " +
-                $"{captureRange:F1} m.",
+                "[MiningTower Target] No valid target found.\n" +
+                $"Mining Head = Lv.{miningHeadLevel}\n" +
+                $"Capture Range = {captureRange:F1} m\n" +
+                $"Highest Harvestable Family = " +
+                $"{GetHighestUnlockedFamilyName(miningHeadLevel)}",
                 gameObject
             );
         }
@@ -157,10 +285,116 @@ public class MiningTowerTargetSelector : MonoBehaviour
         return currentTarget;
     }
 
-    float CalculateRequiredArmAngleX(
+    // =========================================================
+    // MINING HEAD FAMILY RULES
+    // =========================================================
+
+    private int GetCurrentMiningHeadLevel()
+    {
+        if (upgradeController == null)
+        {
+            upgradeController =
+                GetComponentInParent<MiningTowerUpgradeController>();
+        }
+
+        // Base Mining Head is always Lv1.
+        if (upgradeController == null)
+        {
+            return 1;
+        }
+
+        return Mathf.Clamp(
+            upgradeController.MiningHeadLevel,
+            1,
+            5
+        );
+    }
+
+    public bool CanMineFamily(
+        AsteroidFamily family)
+    {
+        return CanMineFamily(
+            family,
+            GetCurrentMiningHeadLevel()
+        );
+    }
+
+    private bool CanMineFamily(
+        AsteroidFamily family,
+        int miningHeadLevel)
+    {
+        int requiredLevel =
+            GetRequiredMiningHeadLevel(
+                family
+            );
+
+        return
+            miningHeadLevel >= requiredLevel;
+    }
+
+    public int GetRequiredMiningHeadLevel(
+        AsteroidFamily family)
+    {
+        switch (family)
+        {
+            case AsteroidFamily.Slate:
+                return 1;
+
+            case AsteroidFamily.Frost:
+                return 2;
+
+            case AsteroidFamily.Basalt:
+                return 3;
+
+            case AsteroidFamily.Abyssal:
+                return 4;
+
+            case AsteroidFamily.Crystal:
+                return 5;
+
+            default:
+                return int.MaxValue;
+        }
+    }
+
+    private string GetHighestUnlockedFamilyName(
+        int miningHeadLevel)
+    {
+        switch (
+            Mathf.Clamp(
+                miningHeadLevel,
+                1,
+                5
+            )
+        )
+        {
+            case 1:
+                return "Slate";
+
+            case 2:
+                return "Frost";
+
+            case 3:
+                return "Basalt";
+
+            case 4:
+                return "Abyssal";
+
+            case 5:
+                return "Crystal";
+
+            default:
+                return "Slate";
+        }
+    }
+
+    // =========================================================
+    // ARM CALCULATION
+    // =========================================================
+
+    private float CalculateRequiredArmAngleX(
         Vector3 origin,
-        Vector3 targetPosition
-    )
+        Vector3 targetPosition)
     {
         Vector3 direction =
             targetPosition - origin;
@@ -175,21 +409,46 @@ public class MiningTowerTargetSelector : MonoBehaviour
             Mathf.Atan2(
                 direction.y,
                 horizontalDistance
-            ) * Mathf.Rad2Deg;
+            ) *
+            Mathf.Rad2Deg;
 
         // The model aims upward using negative local X rotation.
         return -elevationAngle;
     }
+
+    // =========================================================
+    // TARGET STATE
+    // =========================================================
 
     public void ClearTarget()
     {
         currentTarget = null;
     }
 
-    void OnDrawGizmosSelected()
+    // =========================================================
+    // RANGE UPGRADE
+    // =========================================================
+
+    public void IncreaseCaptureRange(
+        float amount)
+    {
+        captureRange =
+            Mathf.Max(
+                0f,
+                captureRange + amount
+            );
+    }
+
+    // =========================================================
+    // GIZMOS
+    // =========================================================
+
+    private void OnDrawGizmosSelected()
     {
         if (!drawCaptureRange)
+        {
             return;
+        }
 
         Vector3 origin =
             scanOrigin != null
@@ -200,14 +459,5 @@ public class MiningTowerTargetSelector : MonoBehaviour
             origin,
             captureRange
         );
-    }
-
-    public void IncreaseCaptureRange(float amount)
-    {
-        captureRange =
-            Mathf.Max(
-                0f,
-                captureRange + amount
-            );
     }
 }
