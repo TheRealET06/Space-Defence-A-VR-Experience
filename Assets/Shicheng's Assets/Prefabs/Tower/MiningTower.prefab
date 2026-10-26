@@ -1373,8 +1373,8 @@ MonoBehaviour:
   popupPanel: {fileID: 2215550131892179514}
   popupTitleText: {fileID: 6583842256197298983}
   popupMessageText: {fileID: 1847033835624004309}
-  temporaryMessageDuration: 3
-  unlockRevealDuration: 3
+  temporaryMessageDuration: 5
+  unlockRevealDuration: 5
   revealGapDuration: 0.2
   miningHeadCosts: 00000000050000001900000050000000c8000000
   storageCosts: 000000000a0000000f00000019000000280000003c00000064000000a0000000
@@ -1701,23 +1701,23 @@ MonoBehaviour:
   - {fileID: 2109008349795981145}
   - {fileID: 2944699515151629733}
   wallsUpgradeMeshes:
-  - {fileID: 732107852282908297}
-  - {fileID: 8265440933031499923}
-  - {fileID: 8367677599868328973}
-  - {fileID: 2042543224432085909}
-  - {fileID: 1543488893160636380}
-  - {fileID: 1397133337313446196}
-  - {fileID: 5166401614378369120}
-  - {fileID: 8316586539932053477}
-  weaponsUpgradeMeshes:
-  - {fileID: 8506631943362258175}
   - {fileID: 2497811489801792214}
   - {fileID: 784986778427343088}
   - {fileID: 6874121314961129670}
-  - {fileID: 3432595675459769778}
+  - {fileID: 8506631943362258175}
   - {fileID: 7945987341850867756}
   - {fileID: 2121129854558291252}
   - {fileID: 1042289364538153800}
+  - {fileID: 3432595675459769778}
+  weaponsUpgradeMeshes:
+  - {fileID: 8265440933031499923}
+  - {fileID: 8367677599868328973}
+  - {fileID: 2042543224432085909}
+  - {fileID: 732107852282908297}
+  - {fileID: 1397133337313446196}
+  - {fileID: 5166401614378369120}
+  - {fileID: 8316586539932053477}
+  - {fileID: 1543488893160636380}
   miningHeadRangeIncreasePerLevel: 2
   maxMiningHeadLevel: 5
   repairPerEngineerPerSecond: 1
@@ -3293,6 +3293,10 @@ PrefabInstance:
       propertyPath: processor
       value: 
       objectReference: {fileID: 4068549443731545047}
+    - target: {fileID: 4815138282842339143, guid: 80656d3f4c3dd9644892b3df49bbfc69, type: 3}
+      propertyPath: upgradeController
+      value: 
+      objectReference: {fileID: 6986105721216474747}
     - target: {fileID: 5744194612442714943, guid: 80656d3f4c3dd9644892b3df49bbfc69, type: 3}
       propertyPath: m_Name
       value: CapsuleCollider
