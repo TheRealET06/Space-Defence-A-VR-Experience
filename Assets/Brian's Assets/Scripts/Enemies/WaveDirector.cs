@@ -1,8 +1,42 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace Brian
 {
+    // ---------- Authoring data (shows up in the Inspector) ----------
+
+    [Serializable]
+    public class SpawnGroup
+    {
+        public EnemyData enemy;
+        public int minCount = 5;
+        public int maxCount = 5;          // random count in [min, max]
+        public float startOffset = 0f;    // seconds after the wave begins
+        public float interval = 1f;       // seconds between spawns in this group
+        [Range(0f, 1f)] public float intervalJitter = 0.3f;
+        public float healthMultiplier = 1f;
+    }
+
+    [Serializable]
+    public class WaveDefinition
+    {
+        public string name = "Wave";
+        public float delayBefore = 8f;    // countdown before this wave starts
+        public List<SpawnGroup> groups = new List<SpawnGroup>();
+    }
+
+    [Serializable]
+    public class EnemyPoolEntry
+    {
+        public EnemyData enemy;
+        public int cost = 1;              // how much of a wave's budget one enemy uses
+        public float weight = 1f;         // relative chance of being picked
+        public int firstWave = 1;         // 1-based wave where this enemy can first appear
+    }
+
+    public enum WavePhase { Waiting, Spawning, Clearing, Finished }   // Waiting = idle until the player starts the next wave
+
     [DefaultExecutionOrder(200)]
     public class WaveDirector : MonoBehaviour
     {
@@ -10,48 +44,97 @@ namespace Brian
 
         struct Entry
         {
-            public float time;
+            public float time;            // relative to wave start
             public EnemyData data;
             public float healthMultiplier;
+        }
+
+        class Wave
+        {
+            public string name;
+            public float delay;
+            public List<Entry> entries = new List<Entry>();
         }
 
         [Header("References")]
         [SerializeField] TowerGrid grid;
         [SerializeField] TowerGridPathSpawner pathSource;
-        [SerializeField] EnemyData basicEnemy;
-        [SerializeField] EnemyData hardEnemy;
         [SerializeField] Transform enemyParent;
         [SerializeField] float heightOffset = 0.05f;
 
-        [Header("Schedule")]
+        [Header("Legacy (only needed if other scripts read BasicEnemy / HardEnemy)")]
+        [SerializeField] EnemyData basicEnemy;
+        [SerializeField] EnemyData hardEnemy;
+
+        [Header("Flow")]
         [SerializeField] int seed = 1234;
-        [SerializeField] float startDelay = 10f;
-        [SerializeField] float duration = 300f;
-        [SerializeField] float startRate = 0.12f;
-        [SerializeField] float endRate = 1.3f;
-        [SerializeField, Range(0f, 1f)] float startHardRatio = 0f;
-        [SerializeField, Range(0f, 1f)] float endHardRatio = 0.7f;
-        [SerializeField, Range(0f, 1f)] float intervalJitter = 0.3f;
-        [SerializeField] float endHealthMultiplier = 2.5f;
 
-        readonly List<Entry> schedule = new List<Entry>();
+        [Header("Hand-authored waves (play first)")]
+        [SerializeField] List<WaveDefinition> manualWaves = new List<WaveDefinition>();
+
+        [Header("Generated waves (appended after the manual ones)")]
+        [SerializeField] bool generateWaves = true;
+        [SerializeField] int generatedWaveCount = 10;
+        [SerializeField] List<EnemyPoolEntry> pool = new List<EnemyPoolEntry>();
+        [SerializeField] float generatedWaveDelay = 10f;
+        [SerializeField] float baseBudget = 8f;
+        [SerializeField] float budgetPerWave = 4f;
+        [SerializeField] float baseInterval = 1.2f;
+        [SerializeField, Range(0.5f, 1f)] float intervalShrinkPerWave = 0.93f;
+        [SerializeField] float minInterval = 0.2f;
+        [SerializeField, Range(0f, 1f)] float intervalJitter = 0.4f;
+        [SerializeField, Range(0f, 1f)] float burstChance = 0.1f;
+        [SerializeField] int burstSize = 3;
+        [SerializeField] float healthGrowthPerWave = 0.15f;
+
+        readonly List<Wave> waves = new List<Wave>();
         List<Vector3> waypoints;
-        float clock;
-        int nextIndex;
 
-        public int TotalCount => schedule.Count;
-        public int SpawnedCount => nextIndex;
-        public int RemainingCount => TotalCount - SpawnedCount + Enemy.Active.Count;
-        public bool AllSpawned => nextIndex >= schedule.Count;
-        public float TimeUntilStart => Mathf.Max(0f, startDelay - clock);
-        public float Progress => duration > 0f ? Mathf.Clamp01((clock - startDelay) / duration) : 1f;
+        WavePhase phase = WavePhase.Waiting;
+        int waveIndex;
+        int nextInWave;
+        int spawnedTotal;
+        int totalCount;
+        float waveClock;
+
+        // ---------- Public API (old members kept so existing UI still compiles) ----------
+
+        public int TotalCount => totalCount;
+        public int SpawnedCount => spawnedTotal;
+        public int RemainingCount => totalCount - spawnedTotal + Enemy.Active.Count;
+        public bool AllSpawned => spawnedTotal >= totalCount;
+        public float TimeUntilStart => 0f;   // waves are player-triggered now; kept so old UI compiles
+        public float Progress => totalCount > 0 ? Mathf.Clamp01((float)spawnedTotal / totalCount) : 1f;
         public EnemyData BasicEnemy => basicEnemy;
         public EnemyData HardEnemy => hardEnemy;
+
+        // New wave-aware API for the HUD
+        public int CurrentWave => waveIndex + 1;
+        public int TotalWaves => waves.Count;
+        public WavePhase Phase => phase;
+        public float TimeUntilNextWave => 0f;
+
+        /// True only when no wave is active (nothing spawning, no enemies alive) and the game is running.
+        public bool CanStartWave =>
+            phase == WavePhase.Waiting &&
+            (GameManager.Instance == null || GameManager.Instance.IsPlaying);
+
+        /// Called by the control board button. Ignored unless CanStartWave, so waves can never overlap.
+        public void StartNextWave()
+        {
+            if (!CanStartWave) return;
+            BeginWave();
+        }
+        public string CurrentWaveName => waveIndex < waves.Count ? waves[waveIndex].name : "";
+
+        public event Action<int, int> WaveStarted;   // (waveNumber, totalWaves)
+
+        // ---------- Lifecycle ----------
 
         void Awake()
         {
             Instance = this;
-            BuildSchedule();
+            BuildAllWaves();
         }
 
         void OnDestroy()
@@ -64,9 +147,16 @@ namespace Brian
             if (grid == null) grid = FindAnyObjectByType<TowerGrid>();
             if (pathSource == null) pathSource = FindAnyObjectByType<TowerGridPathSpawner>();
 
-            if (grid == null || pathSource == null || basicEnemy == null || basicEnemy.prefab == null)
+            if (grid == null || pathSource == null)
             {
-                Debug.LogError("WaveDirector: missing grid, path spawner, or basic enemy (with prefab).", this);
+                Debug.LogError("WaveDirector: missing grid or path spawner.", this);
+                enabled = false;
+                return;
+            }
+
+            if (waves.Count == 0 || totalCount == 0)
+            {
+                Debug.LogError("WaveDirector: no waves to run. Add manual waves or fill the enemy pool (enemies need prefabs).", this);
                 enabled = false;
                 return;
             }
@@ -79,28 +169,108 @@ namespace Brian
             }
         }
 
-        void BuildSchedule()
+        // ---------- Schedule building ----------
+
+        static bool Usable(EnemyData d) => d != null && d.prefab != null;
+
+        void BuildAllWaves()
         {
-            schedule.Clear();
-            var rng = new System.Random(seed);
+            waves.Clear();
+            totalCount = 0;
+
+            // Hand-authored waves
+            for (int i = 0; i < manualWaves.Count; i++)
+                waves.Add(BuildManualWave(manualWaves[i], i));
+
+            // Generated waves
+            if (generateWaves)
+            {
+                for (int i = 0; i < generatedWaveCount; i++)
+                {
+                    int waveNumber = waves.Count + 1;   // 1-based, continues after manual waves
+                    waves.Add(BuildGeneratedWave(waveNumber, i));
+                }
+            }
+
+            foreach (var w in waves) totalCount += w.entries.Count;
+        }
+
+        Wave BuildManualWave(WaveDefinition def, int index)
+        {
+            var wave = new Wave { name = string.IsNullOrEmpty(def.name) ? $"Wave {index + 1}" : def.name, delay = def.delayBefore };
+            var rng = new System.Random(seed + index * 7919);
+
+            foreach (var g in def.groups)
+            {
+                if (!Usable(g.enemy)) continue;
+
+                int count = rng.Next(Mathf.Min(g.minCount, g.maxCount), Mathf.Max(g.minCount, g.maxCount) + 1);
+                float t = g.startOffset;
+                for (int i = 0; i < count; i++)
+                {
+                    wave.entries.Add(new Entry { time = t, data = g.enemy, healthMultiplier = g.healthMultiplier });
+                    float jitter = 1f + ((float)rng.NextDouble() * 2f - 1f) * g.intervalJitter;
+                    t += Mathf.Max(0.05f, g.interval * jitter);
+                }
+            }
+
+            wave.entries.Sort((a, b) => a.time.CompareTo(b.time));
+            return wave;
+        }
+
+        Wave BuildGeneratedWave(int waveNumber, int generatedIndex)
+        {
+            var wave = new Wave { name = $"Wave {waveNumber}", delay = generatedWaveDelay };
+            var rng = new System.Random(seed + waveNumber * 104729);   // per-wave seed: editing one wave doesn't reshuffle the others
+
+            float budget = baseBudget + budgetPerWave * generatedIndex;
+            float interval = Mathf.Max(minInterval, baseInterval * Mathf.Pow(intervalShrinkPerWave, generatedIndex));
+            float healthMult = 1f + healthGrowthPerWave * generatedIndex;
             float t = 0f;
 
             while (true)
             {
-                float rate = Mathf.Max(0.01f, Mathf.Lerp(startRate, endRate, t / duration));
-                float jitter = 1f + ((float)rng.NextDouble() * 2f - 1f) * intervalJitter;
-                t += jitter / rate;
-                if (t > duration) break;
+                int n = rng.NextDouble() < burstChance ? Mathf.Max(1, burstSize) : 1;
+                bool spawnedAny = false;
 
-                float k = t / duration;
-                bool hard = hardEnemy != null && rng.NextDouble() < Mathf.Lerp(startHardRatio, endHardRatio, k);
-                schedule.Add(new Entry
+                for (int i = 0; i < n; i++)
                 {
-                    time = startDelay + t,
-                    data = hard ? hardEnemy : basicEnemy,
-                    healthMultiplier = Mathf.Lerp(1f, endHealthMultiplier, k)
-                });
+                    var pick = PickAffordable(waveNumber, budget, rng);
+                    if (pick == null) break;
+                    budget -= pick.cost;
+                    wave.entries.Add(new Entry { time = t, data = pick.enemy, healthMultiplier = healthMult });
+                    spawnedAny = true;
+                }
+
+                if (!spawnedAny) break;
+
+                float jitter = 1f + ((float)rng.NextDouble() * 2f - 1f) * intervalJitter;
+                t += Mathf.Max(0.05f, interval * jitter);
             }
+
+            return wave;
+        }
+
+        EnemyPoolEntry PickAffordable(int waveNumber, float budget, System.Random rng)
+        {
+            var options = new List<EnemyPoolEntry>();
+            float total = 0f;
+            foreach (var p in pool)
+            {
+                if (p == null || !Usable(p.enemy) || p.weight <= 0f) continue;
+                if (p.firstWave > waveNumber || p.cost > budget) continue;
+                options.Add(p);
+                total += p.weight;
+            }
+            if (options.Count == 0) return null;
+
+            float r = (float)rng.NextDouble() * total;
+            foreach (var o in options)
+            {
+                r -= o.weight;
+                if (r <= 0f) return o;
+            }
+            return options[options.Count - 1];
         }
 
         List<Vector3> BuildWaypoints()
@@ -113,19 +283,57 @@ namespace Brian
             return points;
         }
 
+        // ---------- Runtime ----------
+
         void Update()
         {
             if (GameManager.Instance != null && !GameManager.Instance.IsPlaying) return;
-            clock += Time.deltaTime;
+            float dt = Time.deltaTime;
 
-            while (nextIndex < schedule.Count && schedule[nextIndex].time <= clock)
+            switch (phase)
             {
-                Spawn(schedule[nextIndex]);
-                nextIndex++;
-            }
+                case WavePhase.Waiting:
+                    break;   // idle until StartNextWave() is called
 
-            if (AllSpawned && Enemy.Active.Count == 0 && GameManager.Instance != null)
-                GameManager.Instance.Win();
+                case WavePhase.Spawning:
+                    waveClock += dt;
+                    var entries = waves[waveIndex].entries;
+                    while (nextInWave < entries.Count && entries[nextInWave].time <= waveClock)
+                    {
+                        Spawn(entries[nextInWave]);
+                        nextInWave++;
+                        spawnedTotal++;
+                    }
+                    if (nextInWave >= entries.Count) phase = WavePhase.Clearing;
+                    break;
+
+                case WavePhase.Clearing:
+                    bool isLast = waveIndex >= waves.Count - 1;
+                    if (isLast)
+                    {
+                        // Final wave: always wait until everything is dead, then win.
+                        if (Enemy.Active.Count == 0)
+                        {
+                            phase = WavePhase.Finished;
+                            if (GameManager.Instance != null) GameManager.Instance.Win();
+                        }
+                    }
+                    else if (Enemy.Active.Count == 0)
+                    {
+                        // Wave fully spawned AND fully dead: unlock the button for the next one.
+                        waveIndex++;
+                        phase = WavePhase.Waiting;
+                    }
+                    break;
+            }
+        }
+
+        void BeginWave()
+        {
+            waveClock = 0f;
+            nextInWave = 0;
+            phase = WavePhase.Spawning;
+            WaveStarted?.Invoke(waveIndex + 1, waves.Count);
         }
 
         void Spawn(Entry entry)
