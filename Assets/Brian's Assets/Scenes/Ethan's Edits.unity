@@ -426,6 +426,23 @@ MonoBehaviour:
       interval: 5
       intervalJitter: 0.173
       healthMultiplier: 1
+  - name: Wave 4
+    delayBefore: 0
+    groups:
+    - enemy: {fileID: 11400000, guid: fc86e46056368a747af2ec21f1f8914a, type: 2}
+      minCount: 3
+      maxCount: 5
+      startOffset: 0
+      interval: 1
+      intervalJitter: 0.335
+      healthMultiplier: 1
+    - enemy: {fileID: 11400000, guid: 2da1867940dd8fb46ab1ec62d290f0d3, type: 2}
+      minCount: 1
+      maxCount: 2
+      startOffset: 0
+      interval: 5
+      intervalJitter: 0.173
+      healthMultiplier: 1
   generateWaves: 0
   generatedWaveCount: 10
   pool: []
