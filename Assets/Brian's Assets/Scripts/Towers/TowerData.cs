@@ -26,7 +26,7 @@ namespace Brian
         public float upgradeCostGrowth = 1.5f;
         [Range(0f, 1f)] public float refundFraction = 0.7f;
 
-        [Header("Bioship")]
+        [Header("General Tower (i.e Legacy Bioship)")]
         public Projectile projectilePrefab;
         public float projectileSpeed = 4f;
 

@@ -74,7 +74,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 5155e2250ba9b37488896bb44887aea3, type: 3}
       propertyPath: m_Layer
-      value: 10
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1055092760018998632, guid: 5155e2250ba9b37488896bb44887aea3, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
@@ -97,46 +97,16 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 5155e2250ba9b37488896bb44887aea3, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 6655348983639568986}
+      addedObject: {fileID: -2629895985254334762}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 5155e2250ba9b37488896bb44887aea3, type: 3}
       insertIndex: -1
-      addedObject: {fileID: -2629895985254334762}
+      addedObject: {fileID: 649939168868733069}
   m_SourcePrefab: {fileID: 100100000, guid: 5155e2250ba9b37488896bb44887aea3, type: 3}
---- !u!4 &291087462834409631 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 5155e2250ba9b37488896bb44887aea3, type: 3}
-  m_PrefabInstance: {fileID: 252377484525172596}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1099430460651522597 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 5155e2250ba9b37488896bb44887aea3, type: 3}
   m_PrefabInstance: {fileID: 252377484525172596}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &6655348983639568986
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1099430460651522597}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d921b7e43c1c0374aa34d7c936d68984, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Tower
-  data: {fileID: 11400000, guid: 84373f29c827a8741b684b61a3d23002, type: 2}
-  range: 8
-  enemyLayer:
-    serializedVersion: 2
-    m_Bits: 256
-  rotatingPart: {fileID: 0}
-  fireRate: 2
-  projectilePrefab: {fileID: 8163457388577279986, guid: c4a824eb1e6cd2d4baa9708cf1cd27fb, type: 3}
-  firePoint: {fileID: 291087462834409631}
-  refundPercent: 0.7
-  debugTargeting: 0
-  gridCell: {x: -1, y: -1, z: -1}
-  root: {fileID: 0}
 --- !u!65 &-2629895985254334762
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -158,3 +128,17 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 5, y: 5, z: 40}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &649939168868733069
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1099430460651522597}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b2eb952c597bf64ea2526710b520e10, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Brian.GeneralTower
+  firePoint: {fileID: 0}
+  turnSpeed: 6
