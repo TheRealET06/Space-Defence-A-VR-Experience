@@ -76,6 +76,7 @@ namespace Brian
 
         void Pick(TowerData data)
         {
+            if (!data.IsUnlocked) return;
             if (BuildController.Instance != null) BuildController.Instance.Select(data);
         }
 
@@ -112,9 +113,9 @@ namespace Brian
             }
             else if (wave != null)
             {
-                waveText.text = wave.TimeUntilStart > 0f
-                    ? $"Enemies arrive in {wave.TimeUntilStart:0}s"
-                    : $"Wave {wave.Progress * 100f:0}%   ·   {wave.RemainingCount} enemies left";
+                waveText.text = wave.CanStartWave
+                    ? $"Wave {wave.CurrentWave}/{wave.TotalWaves} ready  ·  press START WAVE on the controls board"
+                    : $"Wave {wave.CurrentWave}/{wave.TotalWaves}   ·   {wave.WaveEnemiesLeft} enemies left";
             }
             if (wave != null)
             {
@@ -127,6 +128,13 @@ namespace Brian
             var building = BuildController.Instance != null ? BuildController.Instance.Selected : null;
             foreach (var (button, data) in buttons)
             {
+                if (!data.IsUnlocked)
+                {
+                    button.interactable = false;
+                    UIKit.SetLabel(button, $"LOCKED\n<size=13><color=#b8c0cc>Unlocks wave {data.unlockWave}</color></size>");
+                    continue;
+                }
+
                 bool afford = eco != null && eco.CanAfford(data.cost);
                 button.interactable = afford;
                 string mark = building == data ? "<color=#9fd7ff>> </color>" : "";

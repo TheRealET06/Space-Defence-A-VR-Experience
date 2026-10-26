@@ -47,5 +47,14 @@ namespace Brian
         public float infantMoveSpeed = 1.2f;
         public float infantMeleeRange = 0.12f;
         public float infantStatPerLevel = 0.15f;
+
+        [Header("Unlocking")]
+        [Tooltip("Becomes available before this wave. 1 = available from the start.")]
+        public int unlockWave = 1;
+        public string unlockHeadline;                  // e.g. "ISS Tower Unlocked" (blank = "<displayName> unlocked")
+        [TextArea(2, 4)] public string unlockText;     // e.g. "Humanity joins the fight. ..."
+
+        public bool IsUnlocked =>
+            unlockWave <= 1 || (WaveDirector.Instance != null && WaveDirector.Instance.CurrentWave >= unlockWave);
     }
 }

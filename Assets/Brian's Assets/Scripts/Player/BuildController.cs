@@ -33,6 +33,7 @@ namespace Brian
         public void Select(TowerData data)
         {
             Cancel();
+            if (data != null && !data.IsUnlocked) return;
             if (data == null || data.prefab == null) return;
             selected = data;
             ghost = MakeGhost(data.prefab.gameObject, ghostMaterial);

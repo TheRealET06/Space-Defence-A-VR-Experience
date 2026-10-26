@@ -15,6 +15,7 @@ namespace Brian
         public float startOffset = 0f;    // seconds after the wave begins
         public float interval = 1f;       // seconds between spawns in this group
         [Range(0f, 1f)] public float intervalJitter = 0.3f;
+        [Tooltip("1 = normal health. Values <= 0 are treated as 1.")]
         public float healthMultiplier = 1f;
     }
 
@@ -128,6 +129,11 @@ namespace Brian
         public string CurrentWaveName => waveIndex < waves.Count ? waves[waveIndex].name : "";
 
         public event Action<int, int> WaveStarted;   // (waveNumber, totalWaves)
+        public event Action<int> ReadyForWave;       // fired when a wave is cleared and the next one (number given) can be started
+
+        /// Enemies still to spawn in the active wave plus enemies alive on the field.
+        public int WaveEnemiesLeft =>
+            (phase == WavePhase.Spawning ? waves[waveIndex].entries.Count - nextInWave : 0) + Enemy.Active.Count;
 
         // ---------- Lifecycle ----------
 
@@ -323,6 +329,7 @@ namespace Brian
                         // Wave fully spawned AND fully dead: unlock the button for the next one.
                         waveIndex++;
                         phase = WavePhase.Waiting;
+                        ReadyForWave?.Invoke(waveIndex + 1);
                     }
                     break;
             }
@@ -338,8 +345,10 @@ namespace Brian
 
         void Spawn(Entry entry)
         {
+            // Inspector-created list elements can come through as 0; a 0 multiplier means 0 HP, so treat it as 1.
+            float mult = entry.healthMultiplier > 0f ? entry.healthMultiplier : 1f;
             Enemy enemy = Instantiate(entry.data.prefab, waypoints[0], grid.transform.rotation, enemyParent);
-            enemy.Init(entry.data, waypoints, grid.transform.up, entry.healthMultiplier);
+            enemy.Init(entry.data, waypoints, grid.transform.up, mult);
         }
     }
 }
