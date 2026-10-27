@@ -3,6 +3,7 @@ using UnityEngine;
 
 public static class MissingScriptFinder
 {
+    
     [MenuItem("Tools/Find Missing Scripts In Selection")]
     public static void FindMissingScriptsInSelection()
     {
@@ -107,4 +108,5 @@ public static class MissingScriptFinder
 
         return path;
     }
+    
 }
