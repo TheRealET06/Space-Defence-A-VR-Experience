@@ -29,7 +29,9 @@ public class OrbitalAnchorProcessor : MonoBehaviour
         isProcessing;
     
     public float BarrelsPerSecond =>
-        barrelsPerSecond;
+        barrelsPerSecond * SpeedMultiplier;
+
+    public float SpeedMultiplier { get; set; } = 1f;
 
     public void BeginProcessing(
         MiningCargo cargo,
@@ -119,6 +121,7 @@ public class OrbitalAnchorProcessor : MonoBehaviour
         float nextProgress =
             processingProgress +
             barrelsPerSecond *
+            SpeedMultiplier *
             Time.deltaTime;
 
         nextProgress =

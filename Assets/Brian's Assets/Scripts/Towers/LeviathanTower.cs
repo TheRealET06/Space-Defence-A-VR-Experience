@@ -5,6 +5,15 @@ namespace Brian
 {
     public class LeviathanTower : Tower
     {
+        public override string Description => Join(Summary, "Upgrade: one more infant, and all infants get stronger.");
+
+        protected override List<(string label, string change)> UpgradePreview() => new List<(string, string)>
+        {
+            ("Infants", $"+{Data.infantsPerLevel}"),
+            ("Infant attack", $"+{Data.infantAttack * Data.infantStatPerLevel:0.#}"),
+            ("Infant speed", $"+{Data.infantAttackSpeed * Data.infantStatPerLevel:0.##} /s")
+        };
+
         readonly List<LeviathanInfant> infants = new List<LeviathanInfant>();
 
         float StatScale => 1f + Data.infantStatPerLevel * (Level - 1);

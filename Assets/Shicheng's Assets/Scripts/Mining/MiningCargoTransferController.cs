@@ -27,6 +27,8 @@ public class MiningCargoTransferController : MonoBehaviour
     public TransferState State =>
         state;
 
+    public float SpeedMultiplier { get; set; } = 1f;
+
     public bool IsBusy =>
         state != TransferState.Idle;
 
@@ -89,6 +91,7 @@ public class MiningCargoTransferController : MonoBehaviour
                 position.y,
                 processingLocalY,
                 moveSpeed *
+                SpeedMultiplier *
                 Time.deltaTime
             );
 
@@ -146,6 +149,7 @@ public class MiningCargoTransferController : MonoBehaviour
                 position.y,
                 defaultStorageLocalPosition.y,
                 moveSpeed *
+                SpeedMultiplier *
                 Time.deltaTime
             );
 

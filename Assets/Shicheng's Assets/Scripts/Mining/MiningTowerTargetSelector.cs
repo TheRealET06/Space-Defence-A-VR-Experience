@@ -54,6 +54,13 @@ public class MiningTowerTargetSelector : MonoBehaviour
     [SerializeField]
     private bool logRejectedTargets = false;
 
+    [Header("Selection")]
+    [SerializeField]
+    private bool randomTarget = false;
+
+    private readonly System.Collections.Generic.List<ResourceAsteroid> candidates =
+        new System.Collections.Generic.List<ResourceAsteroid>();
+
     // =========================================================
     // STATE
     // =========================================================
@@ -109,6 +116,8 @@ public class MiningTowerTargetSelector : MonoBehaviour
                 : rangeOrigin;
 
         ResourceAsteroid bestTarget = null;
+
+        candidates.Clear();
 
         int bestValue =
             int.MinValue;
@@ -218,6 +227,8 @@ public class MiningTowerTargetSelector : MonoBehaviour
             // VALUE SELECTION
             // -------------------------------------------------
 
+            candidates.Add(asteroid);
+
             int value =
                 asteroid.PriorityValue;
 
@@ -242,6 +253,18 @@ public class MiningTowerTargetSelector : MonoBehaviour
                 bestDistance =
                     distance;
             }
+        }
+
+        if (randomTarget && candidates.Count > 0)
+        {
+            bestTarget =
+                candidates[Random.Range(0, candidates.Count)];
+
+            bestDistance =
+                Vector3.Distance(
+                    rangeOrigin,
+                    bestTarget.transform.position
+                );
         }
 
         currentTarget =

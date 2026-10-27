@@ -316,7 +316,6 @@ GameObject:
   - component: {fileID: 349121827}
   - component: {fileID: 349121826}
   - component: {fileID: 349121825}
-  - component: {fileID: 349121824}
   - component: {fileID: 349121823}
   m_Layer: 0
   m_Name: Game
@@ -352,29 +351,6 @@ MonoBehaviour:
   endHardRatio: 0.7
   intervalJitter: 0.3
   endHealthMultiplier: 2.5
---- !u!114 &349121824
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 349121822}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4d23f44a55bc416f84da3210b3be053f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Brian.MeteorField
-  grid: {fileID: 1469345585}
-  meteorPrefabs:
-  - {fileID: 7911116098625079960, guid: c3ca3acdcd2148d4b80a9a379cce6185, type: 3}
-  meteorParent: {fileID: 0}
-  launchCount: 8
-  reservedCells:
-  - {x: 20, y: 1, z: 5}
-  - {x: 0, y: 1, z: 5}
-  reservedRadius: 1
-  spawnInterval: {x: 15, y: 30}
-  maxMeteors: 30
 --- !u!114 &349121825
 MonoBehaviour:
   m_ObjectHideFlags: 0

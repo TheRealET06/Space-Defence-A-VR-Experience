@@ -24,6 +24,8 @@ namespace Brian
     {
         public string name = "Wave";
         public float delayBefore = 8f;    // countdown before this wave starts
+        public float duration = 30f;
+        [TextArea(2, 4)] public string description;
         public List<SpawnGroup> groups = new List<SpawnGroup>();
     }
 
@@ -63,6 +65,8 @@ namespace Brian
         {
             public string name;
             public float delay;
+            public float duration;
+            public string description;
             public List<Entry> entries = new List<Entry>();
         }
 
@@ -136,6 +140,13 @@ namespace Brian
             BeginWave();
         }
         public string CurrentWaveName => waveIndex < waves.Count ? waves[waveIndex].name : "";
+
+        public bool WaveRunning => phase == WavePhase.Spawning || phase == WavePhase.Clearing;
+        public float WaveDuration => waveIndex < waves.Count ? waves[waveIndex].duration : 0f;
+        public float TimeLeft => WaveRunning ? Mathf.Max(0f, WaveDuration - waveClock) : 0f;
+
+        public string GetWaveDescription(int waveNumber) =>
+            waveNumber >= 1 && waveNumber <= waves.Count ? waves[waveNumber - 1].description : "";
 
         /// 1-based number of the next wave the player hasn't started yet (the one after the active wave
         /// while a wave is running). 0 when there are no more waves to start.
@@ -262,7 +273,7 @@ namespace Brian
 
         Wave BuildManualWave(WaveDefinition def, int index)
         {
-            var wave = new Wave { name = string.IsNullOrEmpty(def.name) ? $"Wave {index + 1}" : def.name, delay = def.delayBefore };
+            var wave = new Wave { name = string.IsNullOrEmpty(def.name) ? $"Wave {index + 1}" : def.name, delay = def.delayBefore, duration = def.duration, description = def.description };
             var rng = new System.Random(seed + index * 7919);
 
             foreach (var g in def.groups)
@@ -285,7 +296,7 @@ namespace Brian
 
         Wave BuildGeneratedWave(int waveNumber, int generatedIndex)
         {
-            var wave = new Wave { name = $"Wave {waveNumber}", delay = generatedWaveDelay };
+            var wave = new Wave { name = $"Wave {waveNumber}", delay = generatedWaveDelay, duration = 30f };
             var rng = new System.Random(seed + waveNumber * 104729);   // per-wave seed: editing one wave doesn't reshuffle the others
 
             float budget = baseBudget + budgetPerWave * generatedIndex;
@@ -373,6 +384,8 @@ namespace Brian
                     break;
 
                 case WavePhase.Clearing:
+                    waveClock += dt;
+                    if (waveClock < WaveDuration) break;
                     bool isLast = waveIndex >= waves.Count - 1;
                     if (isLast)
                     {

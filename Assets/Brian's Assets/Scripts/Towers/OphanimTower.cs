@@ -5,6 +5,15 @@ namespace Brian
 {
     public class OphanimTower : Tower
     {
+        public override string Description => Join(Summary, "Upgrade: stronger pulse and a bigger buff.");
+
+        protected override List<(string label, string change)> UpgradePreview()
+        {
+            var list = base.UpgradePreview();
+            list.Add(("Ally buff", $"+{Data.buffPercentPerLevel * 100f:0}%"));
+            return list;
+        }
+
         float cooldown;
 
         public int Allies { get; private set; }
@@ -58,8 +67,8 @@ namespace Brian
         public override void FillStats(List<(string label, string value)> rows)
         {
             base.FillStats(rows);
-            rows.Add(("Ally buff", $"+{BuffPercent * 100f:0}% atk / speed / range"));
-            rows.Add(("Allies in range", $"{Allies}  <color=#9fd7ff>(+{Data.attackPerAlly * Mathf.Min(Allies, Data.maxAllies) * 100f:0}% attack)</color>"));
+            rows.Add(("Ally buff", $"+{BuffPercent * 100f:0}%"));
+            rows.Add(("Allies in range", $"{Allies}  <color=#9fd7ff>(+{Data.attackPerAlly * Mathf.Min(Allies, Data.maxAllies) * 100f:0}% atk)</color>"));
         }
     }
 }

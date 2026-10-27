@@ -57,10 +57,17 @@ namespace Brian
             foreach (var l in lines) total += l.count;
 
             title.text = $"NEXT WAVE  <size=24><color=#b8c0cc>{wave}/{wd.TotalWaves}</color></size>";
-            subtitle.text = $"{wd.GetWaveName(wave)}  �  {total} enemies";
+            subtitle.text = $"{wd.GetWaveName(wave)}  ·  {total} enemies";
+
+            if (lines.Count == 0)
+            {
+                subtitle.text = $"{wd.GetWaveName(wave)}  ·  no enemies";
+                list.text = $"<color=#9fd7ff>{wd.GetWaveDescription(wave)}</color>";
+                return;
+            }
 
             var sb = new StringBuilder();
-            sb.AppendLine("<color=#8a93a6>ENEMY<pos=46%>COUNT<pos=64%>HP<pos=82%>REWARD</color>");
+            sb.AppendLine("<color=#8a93a6>ENEMY<pos=56%>COUNT<pos=78%>HP</color>");
 
             int shown = Mathf.Min(lines.Count, maxRows);
             for (int i = 0; i < shown; i++)
@@ -69,9 +76,8 @@ namespace Brian
                 string tag = l.isNew ? " <size=16><color=#ffd36e>NEW</color></size>" : "";
                 sb.AppendLine(
                     $"<color=#9fd7ff>{l.enemy.displayName}</color>{tag}" +
-                    $"<pos=46%>x{l.count}" +
-                    $"<pos=64%>{Mathf.RoundToInt(l.health)}" +
-                    $"<pos=82%>${l.enemy.killReward}");
+                    $"<pos=56%>x{l.count}" +
+                    $"<pos=78%>{Mathf.RoundToInt(l.health)}");
             }
 
             if (lines.Count > shown)

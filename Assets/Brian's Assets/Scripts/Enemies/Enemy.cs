@@ -44,6 +44,7 @@ namespace Brian
         public void Init(EnemyData data, List<Vector3> path, Vector3 upDirection, float healthMultiplier)
         {
             Data = data;
+            NonBlocking.MakeTriggers(gameObject);
             MaxHealth = data.maxHealth * healthMultiplier;
             Health = MaxHealth;
             waypoints = path;
@@ -105,7 +106,6 @@ namespace Brian
         void Die()
         {
             Health = 0f;
-            if (Economy.Instance != null) Economy.Instance.Earn(Data.killReward);
             Destroy(gameObject);
         }
 

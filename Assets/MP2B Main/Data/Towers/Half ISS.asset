@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Half ISS
   m_EditorClassIdentifier: Assembly-CSharp::Brian.TowerData
   displayName: Temporary ISS
+  description: 'Half-built space station. Cheap and weak, but it shoots.'
   icon: {fileID: 21300000, guid: f997d60d79a4e45cab6b1814e377a1b3, type: 3}
   prefab: {fileID: 8590418199075452814, guid: 4fad6cc971fb8cc4c94a95cdb6c6e5fa, type: 3}
   cost: 5

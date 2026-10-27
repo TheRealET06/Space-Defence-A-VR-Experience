@@ -14,7 +14,7 @@ namespace Brian
 
         public static readonly Binding SelectBinding = new Binding
         {
-            label = "Place tower / select tower / collect meteor",
+            label = "Place tower / select tower or Mining Tower",
             xrName = "Right trigger", xrPath = "<XRController>{RightHand}/triggerPressed"
         };
 
