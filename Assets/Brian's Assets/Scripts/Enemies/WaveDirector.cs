@@ -38,6 +38,15 @@ namespace Brian
 
     public enum WavePhase { Waiting, Spawning, Clearing, Finished }   // Waiting = idle until the player starts the next wave
 
+    /// One row of a wave preview: how many of one enemy type are coming, and at what health.
+    public struct WavePreviewLine
+    {
+        public EnemyData enemy;
+        public int count;
+        public float health;     // strongest health among this wave's spawns of this type
+        public bool isNew;       // true if this enemy type hasn't appeared in any earlier wave
+    }
+
     [DefaultExecutionOrder(200)]
     public class WaveDirector : MonoBehaviour
     {
@@ -127,6 +136,56 @@ namespace Brian
             BeginWave();
         }
         public string CurrentWaveName => waveIndex < waves.Count ? waves[waveIndex].name : "";
+
+        /// 1-based number of the next wave the player hasn't started yet (the one after the active wave
+        /// while a wave is running). 0 when there are no more waves to start.
+        public int UpcomingWaveNumber
+        {
+            get
+            {
+                if (phase == WavePhase.Finished) return 0;
+                int idx = phase == WavePhase.Waiting ? waveIndex : waveIndex + 1;
+                return idx < waves.Count ? idx + 1 : 0;
+            }
+        }
+
+        public string GetWaveName(int waveNumber) =>
+            waveNumber >= 1 && waveNumber <= waves.Count ? waves[waveNumber - 1].name : "";
+
+        /// Enemy types and counts for a wave (1-based), in order of first appearance.
+        public List<WavePreviewLine> GetWavePreview(int waveNumber)
+        {
+            var result = new List<WavePreviewLine>();
+            if (waveNumber < 1 || waveNumber > waves.Count) return result;
+            int idx = waveNumber - 1;
+
+            foreach (var e in waves[idx].entries)
+            {
+                float mult = e.healthMultiplier > 0f ? e.healthMultiplier : 1f;
+                float hp = e.data.maxHealth * mult;
+                int i = result.FindIndex(l => l.enemy == e.data);
+                if (i < 0)
+                {
+                    result.Add(new WavePreviewLine { enemy = e.data, count = 1, health = hp, isNew = !SeenBefore(e.data, idx) });
+                }
+                else
+                {
+                    var line = result[i];
+                    line.count++;
+                    line.health = Mathf.Max(line.health, hp);
+                    result[i] = line;
+                }
+            }
+            return result;
+        }
+
+        bool SeenBefore(EnemyData data, int beforeIndex)
+        {
+            for (int w = 0; w < beforeIndex; w++)
+                foreach (var e in waves[w].entries)
+                    if (e.data == data) return true;
+            return false;
+        }
 
         public event Action<int, int> WaveStarted;   // (waveNumber, totalWaves)
         public event Action<int> ReadyForWave;       // fired when a wave is cleared and the next one (number given) can be started

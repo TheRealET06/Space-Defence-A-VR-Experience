@@ -83,6 +83,22 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.4, y: 0.4, z: 0.4}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &8687058360420007936
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8368772048171780016}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92b0f436311b4635b03878aa2eabe9e5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Brian.Outline
+  material: {fileID: 2100000, guid: 948f388513044b6ab57ef7cf48867b18, type: 2}
+  color: {r: 0.85, g: 0.5, b: 0.2, a: 1}
+  thickness: 0.04
+  skinnedUpdateInterval: 3
 --- !u!1001 &403702086678035005
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -157,19 +173,3 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2774220344278030320, guid: e4ffbacbc52867746aca22e93602070e, type: 3}
   m_PrefabInstance: {fileID: 403702086678035005}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &8687058360420007936
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8368772048171780016}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 92b0f436311b4635b03878aa2eabe9e5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Brian.Outline
-  material: {fileID: 2100000, guid: 948f388513044b6ab57ef7cf48867b18, type: 2}
-  color: {r: 0.85, g: 0.5, b: 0.2, a: 1}
-  thickness: 0.04
-  skinnedUpdateInterval: 3

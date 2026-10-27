@@ -28,6 +28,7 @@ namespace Brian
             towers ??= new TowerData[0];
 
             root = UIKit.Canvas("Unlock Popup", transform, new Vector2(W, H), metersPerPixel);
+            root.SetParent(null, false);   // world-space card: don't inherit scale from whatever this component sits under
             UIKit.Text(root, "NEW TOWER", 16, 30, 18, W - 60, 24, TextAlignmentOptions.TopLeft, UIKit.DimText);
 
             icon = UIKit.Box(root, Color.white, 30, 62, 170, 170);
@@ -39,13 +40,31 @@ namespace Brian
             UIKit.Button(root, "CONTINUE", 26, (W - 240f) / 2f, 250, 240, 60, Dismiss);
             root.gameObject.SetActive(false);
 
+            int unlockable = 0;
+            foreach (var t in towers)
+                if (t != null && t.unlockWave > 1) unlockable++;
+            if (unlockable == 0)
+                Debug.LogWarning("UnlockPopup: no tower in the 'towers' list has unlockWave > 1, so nothing will ever pop up.", this);
+
             director = WaveDirector.Instance;
             if (director != null) director.ReadyForWave += OnReadyForWave;
+            else Debug.LogWarning("UnlockPopup: no WaveDirector found, so unlocks can't be detected.", this);
+        }
+
+        /// Right-click the component header in Play mode -> "Test Popup" to check that the card itself renders.
+        [ContextMenu("Test Popup")]
+        void TestPopup()
+        {
+            if (root == null) return;
+            foreach (var t in towers)
+                if (t != null) { queue.Enqueue(t); break; }
+            if (!root.gameObject.activeSelf) ShowNext();
         }
 
         void OnDestroy()
         {
             if (director != null) director.ReadyForWave -= OnReadyForWave;
+            if (root != null) Destroy(root.gameObject);
         }
 
         void OnReadyForWave(int waveNumber)
@@ -53,6 +72,8 @@ namespace Brian
             foreach (var t in towers)
                 if (t != null && t.unlockWave > 1 && t.unlockWave == waveNumber)
                     queue.Enqueue(t);
+
+            Debug.Log($"UnlockPopup: ready for wave {waveNumber}, {queue.Count} unlock(s) queued.", this);
 
             if (!root.gameObject.activeSelf) ShowNext();
         }
@@ -79,7 +100,11 @@ namespace Brian
         void Place()
         {
             var cam = Camera.main;
-            if (cam == null) return;
+            if (cam == null)
+            {
+                Debug.LogWarning("UnlockPopup: Camera.main is null (tag your XR camera 'MainCamera'); card can't be placed.", this);
+                return;
+            }
 
             Vector3 fwd = Vector3.ProjectOnPlane(cam.transform.forward, Vector3.up);
             if (fwd.sqrMagnitude < 0.01f) fwd = Vector3.forward;

@@ -413,8 +413,8 @@ MonoBehaviour:
     delayBefore: 0
     groups:
     - enemy: {fileID: 11400000, guid: fc86e46056368a747af2ec21f1f8914a, type: 2}
-      minCount: 3
-      maxCount: 5
+      minCount: 1
+      maxCount: 2
       startOffset: 0
       interval: 1
       intervalJitter: 0.335
@@ -441,6 +441,255 @@ MonoBehaviour:
       maxCount: 2
       startOffset: 0
       interval: 5
+      intervalJitter: 0.173
+      healthMultiplier: 1
+  - name: Wave 5
+    delayBefore: 0
+    groups:
+    - enemy: {fileID: 11400000, guid: fc86e46056368a747af2ec21f1f8914a, type: 2}
+      minCount: 3
+      maxCount: 5
+      startOffset: 0
+      interval: 1
+      intervalJitter: 0.335
+      healthMultiplier: 1
+    - enemy: {fileID: 11400000, guid: 2da1867940dd8fb46ab1ec62d290f0d3, type: 2}
+      minCount: 1
+      maxCount: 2
+      startOffset: 0
+      interval: 5
+      intervalJitter: 0.173
+      healthMultiplier: 1
+    - enemy: {fileID: 11400000, guid: 606b172bc0a8c424db71db961ca3256c, type: 2}
+      minCount: 1
+      maxCount: 5
+      startOffset: 0
+      interval: 1
+      intervalJitter: 0.173
+      healthMultiplier: 1
+    - enemy: {fileID: 11400000, guid: 878db55996721b445b39bb414012624b, type: 2}
+      minCount: 1
+      maxCount: 5
+      startOffset: 0
+      interval: 1
+      intervalJitter: 0.173
+      healthMultiplier: 1
+  - name: Wave 6
+    delayBefore: 0
+    groups:
+    - enemy: {fileID: 11400000, guid: fc86e46056368a747af2ec21f1f8914a, type: 2}
+      minCount: 3
+      maxCount: 5
+      startOffset: 0
+      interval: 1
+      intervalJitter: 0.335
+      healthMultiplier: 1
+    - enemy: {fileID: 11400000, guid: 2da1867940dd8fb46ab1ec62d290f0d3, type: 2}
+      minCount: 1
+      maxCount: 2
+      startOffset: 0
+      interval: 5
+      intervalJitter: 0.173
+      healthMultiplier: 1
+    - enemy: {fileID: 11400000, guid: 606b172bc0a8c424db71db961ca3256c, type: 2}
+      minCount: 1
+      maxCount: 5
+      startOffset: 0
+      interval: 1
+      intervalJitter: 0.173
+      healthMultiplier: 1
+    - enemy: {fileID: 11400000, guid: 878db55996721b445b39bb414012624b, type: 2}
+      minCount: 1
+      maxCount: 5
+      startOffset: 0
+      interval: 1
+      intervalJitter: 0.173
+      healthMultiplier: 1
+    - enemy: {fileID: 11400000, guid: 8e882006910642445a7e9dfc0a43ef24, type: 2}
+      minCount: 1
+      maxCount: 5
+      startOffset: 0
+      interval: 1
+      intervalJitter: 0.173
+      healthMultiplier: 1
+  - name: Wave 7
+    delayBefore: 0
+    groups:
+    - enemy: {fileID: 11400000, guid: fc86e46056368a747af2ec21f1f8914a, type: 2}
+      minCount: 3
+      maxCount: 5
+      startOffset: 0
+      interval: 1
+      intervalJitter: 0.335
+      healthMultiplier: 1
+    - enemy: {fileID: 11400000, guid: 2da1867940dd8fb46ab1ec62d290f0d3, type: 2}
+      minCount: 1
+      maxCount: 2
+      startOffset: 0
+      interval: 5
+      intervalJitter: 0.173
+      healthMultiplier: 1
+    - enemy: {fileID: 11400000, guid: 606b172bc0a8c424db71db961ca3256c, type: 2}
+      minCount: 1
+      maxCount: 5
+      startOffset: 0
+      interval: 1
+      intervalJitter: 0.173
+      healthMultiplier: 1
+    - enemy: {fileID: 11400000, guid: 878db55996721b445b39bb414012624b, type: 2}
+      minCount: 1
+      maxCount: 5
+      startOffset: 0
+      interval: 1
+      intervalJitter: 0.173
+      healthMultiplier: 1
+    - enemy: {fileID: 11400000, guid: 8e882006910642445a7e9dfc0a43ef24, type: 2}
+      minCount: 1
+      maxCount: 5
+      startOffset: 0
+      interval: 1
+      intervalJitter: 0.173
+      healthMultiplier: 1
+    - enemy: {fileID: 11400000, guid: 86c22478abc6ffb4c8476024bb5d70d5, type: 2}
+      minCount: 1
+      maxCount: 5
+      startOffset: 0
+      interval: 1
+      intervalJitter: 0.173
+      healthMultiplier: 1
+  - name: Wave 8
+    delayBefore: 0
+    groups:
+    - enemy: {fileID: 11400000, guid: fc86e46056368a747af2ec21f1f8914a, type: 2}
+      minCount: 3
+      maxCount: 5
+      startOffset: 0
+      interval: 1
+      intervalJitter: 0.335
+      healthMultiplier: 1
+    - enemy: {fileID: 11400000, guid: 2da1867940dd8fb46ab1ec62d290f0d3, type: 2}
+      minCount: 1
+      maxCount: 2
+      startOffset: 0
+      interval: 1
+      intervalJitter: 0.173
+      healthMultiplier: 1
+    - enemy: {fileID: 11400000, guid: 606b172bc0a8c424db71db961ca3256c, type: 2}
+      minCount: 1
+      maxCount: 5
+      startOffset: 0
+      interval: 1
+      intervalJitter: 0.173
+      healthMultiplier: 1
+    - enemy: {fileID: 11400000, guid: 878db55996721b445b39bb414012624b, type: 2}
+      minCount: 1
+      maxCount: 5
+      startOffset: 0
+      interval: 1
+      intervalJitter: 0.173
+      healthMultiplier: 1
+    - enemy: {fileID: 11400000, guid: 8e882006910642445a7e9dfc0a43ef24, type: 2}
+      minCount: 1
+      maxCount: 5
+      startOffset: 0
+      interval: 1
+      intervalJitter: 0.173
+      healthMultiplier: 1
+    - enemy: {fileID: 11400000, guid: 86c22478abc6ffb4c8476024bb5d70d5, type: 2}
+      minCount: 1
+      maxCount: 5
+      startOffset: 0
+      interval: 1
+      intervalJitter: 0.173
+      healthMultiplier: 1
+  - name: Wave 9
+    delayBefore: 0
+    groups:
+    - enemy: {fileID: 11400000, guid: fc86e46056368a747af2ec21f1f8914a, type: 2}
+      minCount: 3
+      maxCount: 5
+      startOffset: 0
+      interval: 1
+      intervalJitter: 0.335
+      healthMultiplier: 1
+    - enemy: {fileID: 11400000, guid: 2da1867940dd8fb46ab1ec62d290f0d3, type: 2}
+      minCount: 1
+      maxCount: 2
+      startOffset: 0
+      interval: 5
+      intervalJitter: 0.173
+      healthMultiplier: 1
+    - enemy: {fileID: 11400000, guid: 606b172bc0a8c424db71db961ca3256c, type: 2}
+      minCount: 1
+      maxCount: 5
+      startOffset: 0
+      interval: 1
+      intervalJitter: 0.173
+      healthMultiplier: 1
+    - enemy: {fileID: 11400000, guid: 878db55996721b445b39bb414012624b, type: 2}
+      minCount: 1
+      maxCount: 5
+      startOffset: 0
+      interval: 1
+      intervalJitter: 0.173
+      healthMultiplier: 1
+    - enemy: {fileID: 11400000, guid: 8e882006910642445a7e9dfc0a43ef24, type: 2}
+      minCount: 1
+      maxCount: 5
+      startOffset: 0
+      interval: 1
+      intervalJitter: 0.173
+      healthMultiplier: 1
+    - enemy: {fileID: 11400000, guid: 86c22478abc6ffb4c8476024bb5d70d5, type: 2}
+      minCount: 1
+      maxCount: 5
+      startOffset: 0
+      interval: 1
+      intervalJitter: 0.173
+      healthMultiplier: 1
+  - name: Wave 10
+    delayBefore: 0
+    groups:
+    - enemy: {fileID: 11400000, guid: fc86e46056368a747af2ec21f1f8914a, type: 2}
+      minCount: 3
+      maxCount: 5
+      startOffset: 0
+      interval: 1
+      intervalJitter: 0.335
+      healthMultiplier: 1
+    - enemy: {fileID: 11400000, guid: 2da1867940dd8fb46ab1ec62d290f0d3, type: 2}
+      minCount: 1
+      maxCount: 2
+      startOffset: 0
+      interval: 5
+      intervalJitter: 0.173
+      healthMultiplier: 1
+    - enemy: {fileID: 11400000, guid: 606b172bc0a8c424db71db961ca3256c, type: 2}
+      minCount: 1
+      maxCount: 5
+      startOffset: 0
+      interval: 1
+      intervalJitter: 0.173
+      healthMultiplier: 1
+    - enemy: {fileID: 11400000, guid: 878db55996721b445b39bb414012624b, type: 2}
+      minCount: 1
+      maxCount: 5
+      startOffset: 0
+      interval: 1
+      intervalJitter: 0.173
+      healthMultiplier: 1
+    - enemy: {fileID: 11400000, guid: 8e882006910642445a7e9dfc0a43ef24, type: 2}
+      minCount: 1
+      maxCount: 5
+      startOffset: 0
+      interval: 1
+      intervalJitter: 0.173
+      healthMultiplier: 1
+    - enemy: {fileID: 11400000, guid: 86c22478abc6ffb4c8476024bb5d70d5, type: 2}
+      minCount: 1
+      maxCount: 5
+      startOffset: 0
+      interval: 1
       intervalJitter: 0.173
       healthMultiplier: 1
   generateWaves: 0
@@ -555,6 +804,10 @@ MonoBehaviour:
   - {fileID: 11400000, guid: a013e9add8da6a34191e4c63f06ced87, type: 2}
   - {fileID: 11400000, guid: 53f4cc69877339c4e8f884268ec8e4fc, type: 2}
   - {fileID: 11400000, guid: f000beff67a08c646ae8406ead52777f, type: 2}
+  - {fileID: 11400000, guid: b013f503a1788564cb720ac08d4a909b, type: 2}
+  - {fileID: 11400000, guid: 2150f188ae24b8441a71bca373a2c5e8, type: 2}
+  - {fileID: 11400000, guid: 0027ea459aefa3b499c12cd2928adcae, type: 2}
+  - {fileID: 11400000, guid: bc4eec2410fea7949a28cdb8fbbaecb9, type: 2}
   handOffset: {x: 0, y: 0.09, z: 0.04}
   handRotation: {x: 0, y: -30, z: 0}
   metersPerPixel: 0.0005
@@ -817,6 +1070,52 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1257923197
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1257923199}
+  - component: {fileID: 1257923198}
+  m_Layer: 0
+  m_Name: WavePreviewBoard
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1257923198
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1257923197}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 670e7361c1d0fec418d5990426148a24, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Brian.WavePreviewBoard
+  metersPerPixel: 0.0015
+  maxRows: 6
+--- !u!4 &1257923199
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1257923197}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: -9.8, y: 1.8, z: 2}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
 --- !u!1 &1408066305
 GameObject:
   m_ObjectHideFlags: 0
@@ -846,7 +1145,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7aa928984bd6744aa862210c8c8be81, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Brian.UnlockPopup
-  towers: []
+  towers:
+  - {fileID: 11400000, guid: f000beff67a08c646ae8406ead52777f, type: 2}
+  - {fileID: 11400000, guid: 53f4cc69877339c4e8f884268ec8e4fc, type: 2}
+  - {fileID: 11400000, guid: eddbdeb13304f4646ba978b338414bda, type: 2}
+  - {fileID: 11400000, guid: a013e9add8da6a34191e4c63f06ced87, type: 2}
+  - {fileID: 11400000, guid: 2dd9f3dcce64c2a48a0e0ed2d4fb063c, type: 2}
+  - {fileID: 11400000, guid: b013f503a1788564cb720ac08d4a909b, type: 2}
+  - {fileID: 11400000, guid: 2150f188ae24b8441a71bca373a2c5e8, type: 2}
+  - {fileID: 11400000, guid: 0027ea459aefa3b499c12cd2928adcae, type: 2}
+  - {fileID: 11400000, guid: bc4eec2410fea7949a28cdb8fbbaecb9, type: 2}
   metersPerPixel: 0.0012
   distance: 1.2
   heightBelowEyes: 0.05
@@ -1704,3 +2012,4 @@ SceneRoots:
   - {fileID: 1826231908}
   - {fileID: 1939018327}
   - {fileID: 1408066307}
+  - {fileID: 1257923199}

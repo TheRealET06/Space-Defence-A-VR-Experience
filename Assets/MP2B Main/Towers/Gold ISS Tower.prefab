@@ -1344,6 +1344,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: c1807cd4c5dfa6244a6752f1e2868a8c, type: 3}
       insertIndex: -1
       addedObject: {fileID: -796808539096781662}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: c1807cd4c5dfa6244a6752f1e2868a8c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -1292624706112395593}
   m_SourcePrefab: {fileID: 100100000, guid: c1807cd4c5dfa6244a6752f1e2868a8c, type: 3}
 --- !u!4 &4913872696748397858 stripped
 Transform:
@@ -1390,3 +1393,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Brian.GeneralTower
   firePoint: {fileID: 0}
   turnSpeed: 6
+--- !u!114 &-1292624706112395593
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5726966302071689112}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b05cbb43624c413aac5a0319c58539a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Brian.Buffable
