@@ -12,6 +12,8 @@ public class MiningCargo : MonoBehaviour
 
     Vector3 defaultMeteorScale;
 
+    public float YieldMultiplier { get; set; } = 1f;
+
     public bool IsLoaded => isLoaded;
     public bool HasCargo => storedBarrelYield > 0;
     public int StoredBarrelYield => storedBarrelYield;
@@ -44,7 +46,7 @@ public class MiningCargo : MonoBehaviour
         }
 
         storedBarrelYield =
-            Mathf.Clamp(barrelYield, 1, 64);
+            Mathf.Clamp(Mathf.RoundToInt(barrelYield * YieldMultiplier), 1, 64);
 
         storedFamily =
             family;

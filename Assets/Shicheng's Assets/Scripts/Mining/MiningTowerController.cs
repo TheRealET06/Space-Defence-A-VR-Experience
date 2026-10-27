@@ -69,6 +69,8 @@ public class MiningTowerController : MonoBehaviour
     Vector3 defaultArmHeadPosition;
 
     public TowerState State => state;
+
+    public float SpeedMultiplier { get; set; } = 1f;
     public ResourceAsteroid CurrentTarget => currentTarget;
 
     void Awake()
@@ -309,6 +311,9 @@ public class MiningTowerController : MonoBehaviour
             miningPulseDamage
         );
 
+        pulse.SpeedMultiplier =
+            SpeedMultiplier;
+
         Debug.Log(
             $"[MiningTower] FIRE\n" +
             $"Target = {currentTarget.name}",
@@ -512,6 +517,7 @@ public class MiningTowerController : MonoBehaviour
 
         scale.y +=
             extensionSpeed *
+            SpeedMultiplier *
             Time.deltaTime;
 
         trackSupport.localScale =
@@ -591,6 +597,7 @@ public class MiningTowerController : MonoBehaviour
                 towerRoot.rotation,
                 desiredRotation,
                 towerRotationSpeed *
+                SpeedMultiplier *
                 Time.deltaTime
             );
 
@@ -643,6 +650,7 @@ public class MiningTowerController : MonoBehaviour
                 currentX,
                 clampedArmX,
                 armRotationSpeed *
+                SpeedMultiplier *
                 Time.deltaTime
             );
 
@@ -793,6 +801,7 @@ public class MiningTowerController : MonoBehaviour
                 scale.y,
                 defaultTrackScale.y,
                 extensionSpeed *
+                SpeedMultiplier *
                 Time.deltaTime
             );
 
@@ -854,6 +863,7 @@ public class MiningTowerController : MonoBehaviour
                 currentArmX,
                 defaultArmX,
                 armRotationSpeed *
+                SpeedMultiplier *
                 Time.deltaTime
             );
 
@@ -897,6 +907,7 @@ public class MiningTowerController : MonoBehaviour
                 towerRoot.localRotation,
                 defaultTowerLocalRotation,
                 towerRotationSpeed *
+                SpeedMultiplier *
                 Time.deltaTime
             );
 

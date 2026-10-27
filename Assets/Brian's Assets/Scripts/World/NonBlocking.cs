@@ -16,7 +16,12 @@ namespace Brian
         void Apply()
         {
             lastChildCount = transform.childCount;
-            foreach (var c in GetComponentsInChildren<Collider>(true))
+            MakeTriggers(gameObject);
+        }
+
+        public static void MakeTriggers(GameObject root)
+        {
+            foreach (var c in root.GetComponentsInChildren<Collider>(true))
             {
                 if (c.isTrigger) continue;
                 if (c is MeshCollider mesh && !mesh.convex) c.enabled = false;

@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Gold Alien Data
   m_EditorClassIdentifier: Assembly-CSharp::Brian.TowerData
   displayName: Super Advanced Alien Ship
+  description: 'The most advanced alien ship.'
   icon: {fileID: 21300000, guid: 4eb43321e418951499417cda6141b31a, type: 3}
   prefab: {fileID: -6698682562300373681, guid: ebc07b516b2848d40b99a9cf20ede92b, type: 3}
   cost: 50
@@ -42,6 +43,6 @@ MonoBehaviour:
   infantMoveSpeed: 1.2
   infantMeleeRange: 0.12
   infantStatPerLevel: 0.15
-  unlockWave: 9
+  unlockWave: 10
   unlockHeadline: Eureka!
   unlockText: The Aliens have struck gold here. These ships are super powerful

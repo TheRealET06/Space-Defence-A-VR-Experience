@@ -22,6 +22,7 @@ namespace Brian
         {
             buff = GetComponent<Buffable>();
             if (buff == null) buff = gameObject.AddComponent<Buffable>();
+            NonBlocking.MakeTriggers(gameObject);
         }
 
         public void Bind(LeviathanTower owner) => mother = owner;

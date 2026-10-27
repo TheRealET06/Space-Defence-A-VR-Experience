@@ -15,6 +15,8 @@ public class MiningPulse : MonoBehaviour
 
     float damage;
     float age;
+
+    public float SpeedMultiplier { get; set; } = 1f;
     bool resolved;
 
     void Awake()
@@ -84,7 +86,7 @@ public class MiningPulse : MonoBehaviour
             direction.normalized;
 
         rb.linearVelocity =
-            normalizedDirection * speed;
+            normalizedDirection * speed * SpeedMultiplier;
 
         Quaternion desiredRotation =
             Quaternion.LookRotation(

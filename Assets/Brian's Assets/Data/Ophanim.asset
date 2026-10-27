@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Ophanim
   m_EditorClassIdentifier: Assembly-CSharp::Brian.TowerData
   displayName: Ophanim
+  description: 'Angel-like support. Its pulse hurts enemies and buffs towers in range, and it hits harder with more towers around it.'
   icon: {fileID: 21300000, guid: 731e7aed8e9f540ac8bf2a7b66abdaf6, type: 3}
   prefab: {fileID: 9140292719004449926, guid: a2f31298f88f9e64c8d5b571ec132ac1, type: 3}
   cost: 80
@@ -42,6 +43,6 @@ MonoBehaviour:
   infantMoveSpeed: 1.2
   infantMeleeRange: 0.12
   infantStatPerLevel: 0.15
-  unlockWave: 7
-  unlockHeadline: Tower Buffs
-  unlockText: This Ophanim lets you buff towers around it! Check it out
+  unlockWave: 8
+  unlockHeadline: 'Ophanim Unlocked'
+  unlockText: 'An alien shaped like a biblically accurate angel. Its strange pulses hurt enemies and strengthen every tower around it, and it grows stronger with more allies nearby.'

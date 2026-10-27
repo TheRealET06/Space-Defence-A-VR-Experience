@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Gold ISS Data
   m_EditorClassIdentifier: Assembly-CSharp::Brian.TowerData
   displayName: Super ISS
+  description: 'Evolved human station. Huge, slow shots.'
   icon: {fileID: 21300000, guid: 308cc8b73722e43eab64c228a76560a6, type: 3}
   prefab: {fileID: -796808539096781662, guid: cc2d36fcea2bd544f99c6e0c5998f78b, type: 3}
   cost: 50
@@ -42,6 +43,6 @@ MonoBehaviour:
   infantMoveSpeed: 1.2
   infantMeleeRange: 0.12
   infantStatPerLevel: 0.15
-  unlockWave: 8
+  unlockWave: 9
   unlockHeadline: Humans Have Evolved
   unlockText: Its a whole new ISS Station, go use it!

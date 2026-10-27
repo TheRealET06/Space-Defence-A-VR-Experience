@@ -28,7 +28,10 @@ namespace Brian
         {
             Buff = GetComponent<Buffable>();
             if (Buff == null) Buff = gameObject.AddComponent<Buffable>();
+            if (!BlocksPlayer) NonBlocking.MakeTriggers(gameObject);
         }
+
+        protected virtual bool BlocksPlayer => false;
 
         protected virtual void OnEnable() => All.Add(this);
 
@@ -63,7 +66,52 @@ namespace Brian
 
         protected virtual float AttackBonus => 1f;
 
+        public virtual Vector3 RangeCenter => transform.position;
+        public virtual float MaxSelectDistance => float.PositiveInfinity;
+        public string Summary => Data != null ? Data.description : "";
+        public virtual string Description => Join(Summary, "Upgrade: more attack and attack speed.");
+
+        protected static string Join(string a, string b) => string.IsNullOrEmpty(a) ? b : $"{a}\n{b}";
+
+        protected virtual List<(string label, string change)> UpgradePreview()
+        {
+            var list = new List<(string, string)>
+            {
+                ("Attack", $"+{Data.attackPerLevel * Buff.AttackMultiplier * AttackBonus:0.#}"),
+                ("Attack speed", $"+{Data.attackSpeedPerLevel * Buff.SpeedMultiplier:0.##} /s")
+            };
+            if (Data.rangePerLevel > 0f) list.Add(("Range", $"+{Data.rangePerLevel * Buff.RangeMultiplier:0.##} m"));
+            return list;
+        }
+
+        public virtual Vector3 PanelAnchor(Vector3 eye, out bool centered)
+        {
+            centered = false;
+            return transform.position + Vector3.up * 0.35f;
+        }
+
+        public virtual void FillActions(List<TowerAction> actions)
+        {
+            var eco = Economy.Instance;
+            if (CanUpgrade) actions.Add(new TowerAction($"Upgrade  ${UpgradeCost}", eco != null && eco.CanAfford(UpgradeCost), () =>
+            {
+                if (eco != null && !eco.CanAfford(UpgradeCost)) PanelMessage($"Can't afford: upgrade costs ${UpgradeCost},\nyou have ${eco.Money}.");
+                else TryUpgrade();
+            }, UpgradePreview()));
+            else actions.Add(new TowerAction("Max level", false, null));
+            actions.Add(new TowerAction($"Sell  +${SellValue}", true, () =>
+            {
+                Sell();
+                if (TowerPanel.Instance != null) TowerPanel.Instance.Hide();
+            }));
+        }
+
         protected virtual void OnLevelChanged() { }
+
+        protected void PanelMessage(string text, bool error = true)
+        {
+            if (TowerPanel.Instance != null && TowerPanel.Instance.Current == this) TowerPanel.Instance.Notify(text, error);
+        }
 
         public virtual void FillStats(List<(string label, string value)> rows)
         {
@@ -77,6 +125,22 @@ namespace Brian
             string s = value.ToString(format);
             if (value > baseValue + 0.001f) s += $"  <color=#9fd7ff>(+{(value / baseValue - 1f) * 100f:0}%)</color>";
             return s;
+        }
+    }
+
+    public readonly struct TowerAction
+    {
+        public readonly string label;
+        public readonly bool enabled;
+        public readonly System.Action run;
+        public readonly List<(string label, string change)> preview;
+
+        public TowerAction(string label, bool enabled, System.Action run, List<(string label, string change)> preview = null)
+        {
+            this.label = label;
+            this.enabled = enabled;
+            this.run = run;
+            this.preview = preview;
         }
     }
 }

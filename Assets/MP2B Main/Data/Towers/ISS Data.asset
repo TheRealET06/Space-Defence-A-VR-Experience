@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: ISS Data
   m_EditorClassIdentifier: Assembly-CSharp::Brian.TowerData
   displayName: ISS
+  description: 'Finished space station. Steady fire at the nearest enemy.'
   icon: {fileID: 21300000, guid: 3b2e62babc5249f42921c2cd027852cd, type: 3}
   prefab: {fileID: 8590418199075452814, guid: bff712c59ce5feb47a0482c2fd684654, type: 3}
   cost: 15
@@ -42,7 +43,7 @@ MonoBehaviour:
   infantMoveSpeed: 1.2
   infantMeleeRange: 0.12
   infantStatPerLevel: 0.15
-  unlockWave: 2
+  unlockWave: 3
   unlockHeadline: Finished ISS
   unlockText: Humanity has truly stepped foot into the galaxy, build these towers
     for better damage!

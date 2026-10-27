@@ -11,6 +11,5 @@ namespace Brian
         public float maxSpeed = 0.6f;
         [Range(0.05f, 1f)] public float minSpeedFraction = 0.35f;
         public int homeDamage = 1;
-        public int killReward = 5;
     }
 }

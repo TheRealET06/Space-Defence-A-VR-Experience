@@ -46,15 +46,14 @@ namespace Brian
             for (int i = 0; i < count; i++)
             {
                 var col = hits[i].collider;
-                var meteor = col.GetComponentInParent<Meteor>();
-                if (meteor != null)
-                {
-                    meteor.Collect();
-                    return;
-                }
                 var tower = col.GetComponentInParent<Tower>();
                 if (tower != null)
                 {
+                    if (Vector3.Distance(ray.origin, tower.transform.position) > tower.MaxSelectDistance)
+                    {
+                        if (HandHUD.Instance != null) HandHUD.Instance.Flash($"Too far. Walk to the {tower.Data.displayName} to use it.");
+                        return;
+                    }
                     if (TowerPanel.Instance != null) TowerPanel.Instance.Show(tower);
                     return;
                 }

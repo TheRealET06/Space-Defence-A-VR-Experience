@@ -91,8 +91,27 @@ namespace Brian
             button.colors = colors;
             if (onClick != null) button.onClick.AddListener(() => onClick());
             var rt = Place((RectTransform)go.transform, x, y, w, h);
-            Text(rt, label, size, 0f, 0f, w, h, TextAlignmentOptions.Center);
+            var t = Text(rt, label, size, 0f, 0f, w, h, TextAlignmentOptions.Center);
+            t.enableAutoSizing = true;
+            t.fontSizeMin = 9f;
+            t.fontSizeMax = size;
+            t.margin = new Vector4(4f, 2f, 4f, 2f);
             return button;
+        }
+
+        public static void OnHover(Button button, Action entered, Action exited)
+        {
+            var relay = button.gameObject.AddComponent<HoverRelay>();
+            relay.entered = entered;
+            relay.exited = exited;
+        }
+
+        public static void SetDimmed(Button button, bool dimmed)
+        {
+            button.interactable = true;
+            if (button.targetGraphic != null) button.targetGraphic.color = dimmed ? new Color(0.1f, 0.12f, 0.17f, 0.75f) : ButtonColor;
+            var t = button.GetComponentInChildren<TextMeshProUGUI>();
+            if (t != null) t.alpha = dimmed ? 0.45f : 1f;
         }
 
         public static void SetLabel(Button button, string label)

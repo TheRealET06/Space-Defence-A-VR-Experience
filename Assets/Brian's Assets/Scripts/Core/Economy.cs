@@ -8,14 +8,10 @@ namespace Brian
         public static Economy Instance { get; private set; }
 
         [SerializeField] int startingMoney = 100;
-        [SerializeField] float incomePerSecond = 2f;
 
         public int Money { get; private set; }
-        public float IncomePerSecond => incomePerSecond;
 
         public event Action<int> MoneyChanged;
-
-        float pending;
 
         void Awake()
         {
@@ -26,16 +22,6 @@ namespace Brian
         void OnDestroy()
         {
             if (Instance == this) Instance = null;
-        }
-
-        void Update()
-        {
-            if (GameManager.Instance != null && !GameManager.Instance.IsPlaying) return;
-            pending += incomePerSecond * Time.deltaTime;
-            if (pending < 1f) return;
-            int whole = Mathf.FloorToInt(pending);
-            pending -= whole;
-            Earn(whole);
         }
 
         public bool CanAfford(int cost) => Money >= cost;

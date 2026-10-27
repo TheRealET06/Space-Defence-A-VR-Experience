@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Green Alien Tower
   m_EditorClassIdentifier: Assembly-CSharp::Brian.TowerData
   displayName: Advanced Alien Tower
+  description: 'Advanced alien tower. Rapid-fire shots at the nearest enemy.'
   icon: {fileID: 21300000, guid: f8ecc54972abacc46a93f671b0602139, type: 3}
   prefab: {fileID: 824673480323166200, guid: 06b8fa9c6c3a13e4fb035607809f3d67, type: 3}
   cost: 50
@@ -42,7 +43,7 @@ MonoBehaviour:
   infantMoveSpeed: 1.2
   infantMeleeRange: 0.12
   infantStatPerLevel: 0.15
-  unlockWave: 6
+  unlockWave: 7
   unlockHeadline: Technological Advancement
   unlockText: The Aliens have found a better way to fire, use this even faster firing
     ships!!!

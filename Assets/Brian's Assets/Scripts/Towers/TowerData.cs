@@ -6,6 +6,7 @@ namespace Brian
     public class TowerData : ScriptableObject
     {
         public string displayName = "Tower";
+        [TextArea(2, 4)] public string description;
         public Sprite icon;
         public Tower prefab;
         public int cost = 50;
