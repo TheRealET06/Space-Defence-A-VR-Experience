@@ -15,9 +15,12 @@ public class TowerPlacer : MonoBehaviour
     [SerializeField] float maxDistance = 10f;
 
     TowerData selected;
+    bool selectedNeedsNode;          // read from the prefab's Tower.placement
+    NodeType selectedNodeType;       // read from the prefab's Tower.requiredNodeType
     GameObject ghost;
     Vector3Int currentCell;
     Vector3 currentPoint;
+    TowerNode currentNode;
     bool hasValidPoint;
 
     void OnEnable()
@@ -34,7 +37,11 @@ public class TowerPlacer : MonoBehaviour
     public void SelectTower(TowerData data)
     {
         selected = data;
-        // TowerSelector.SelectionBlocked = true;
+
+        Tower prefabTower = data.towerPrefab.GetComponentInChildren<Tower>();
+        selectedNeedsNode = prefabTower != null && prefabTower.placement == Tower.PlacementMode.Node;
+        selectedNodeType = prefabTower != null ? prefabTower.requiredNodeType : NodeType.Generic;
+
         if (ghost) Destroy(ghost);
         ghost = Instantiate(data.ghostPrefab);
         foreach (var c in ghost.GetComponentsInChildren<Collider>()) c.enabled = false; //fix????
@@ -46,25 +53,34 @@ public class TowerPlacer : MonoBehaviour
     void ClearSelection()
     {
         selected = null;
-       // TowerSelector.SelectionBlocked = false;
+        selectedNeedsNode = false;
+        currentNode = null;
         hasValidPoint = false;
         if (ghost) Destroy(ghost);
     }
 
     void Update()
     {
-
         if (UnityEngine.InputSystem.XR.XRController.leftHand != null &&
-    UnityEngine.InputSystem.XR.XRController.leftHand.IsPressed())
+            UnityEngine.InputSystem.XR.XRController.leftHand.IsPressed())
             Debug.Log("Left hand active");
-
 
         if (selected == null || menu.IsOpen) { if (ghost) ghost.SetActive(false); hasValidPoint = false; return; }
 
-        Transform origin = rayOrigin;
         var ray = new Ray(rayOrigin.position, rayOrigin.forward);
 
-        hasValidPoint = grid.TryGetFreePointAlongRay(ray, pickRadius, maxDistance,out currentCell, out currentPoint);
+        currentNode = null;
+        if (selectedNeedsNode)
+        {
+            // Snap onto a free spawned node of the matching type
+            hasValidPoint = grid.TryGetFreeNodeAlongRay(ray, pickRadius, maxDistance, selectedNodeType, out currentNode);
+            if (hasValidPoint) currentPoint = currentNode.SnapPoint;
+        }
+        else
+        {
+            hasValidPoint = grid.TryGetFreePointAlongRay(ray, pickRadius, maxDistance, out currentCell, out currentPoint);
+        }
+
         ghost.SetActive(hasValidPoint);
         if (hasValidPoint)
             ghost.transform.SetPositionAndRotation(currentPoint, grid.transform.rotation);
@@ -79,9 +95,20 @@ public class TowerPlacer : MonoBehaviour
         GameObject obj = Instantiate(selected.towerPrefab, currentPoint, grid.transform.rotation);
         Tower tower = obj.GetComponentInChildren<Tower>();   // also finds it on the root itself
         tower.data = selected;
-        tower.gridCell = currentCell;
         tower.root = obj;
-        grid.SetOccupied(currentCell, true);
+
+        if (selectedNeedsNode)
+        {
+            // The node's grid cell is already occupied; just claim the node
+            tower.node = currentNode;
+            currentNode.Occupant = tower;
+            obj.transform.SetParent(currentNode.transform, true);   // follows/dies with the node
+        }
+        else
+        {
+            tower.gridCell = currentCell;
+            grid.SetOccupied(currentCell, true);
+        }
 
         if (!currency.CanAfford(selected.cost)) ClearSelection(); // optional: auto-deselect when broke
     }

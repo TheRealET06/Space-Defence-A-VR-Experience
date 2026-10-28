@@ -59,4 +59,11 @@ public class GasPlanet : MonoBehaviour
         // .material creates an instance, so clean it up
         if (material != null) Destroy(material);
     }
+
+    public double Extract()
+    {
+        double extracted = gas;
+        gas = 0;
+        return extracted;
+    }
 }

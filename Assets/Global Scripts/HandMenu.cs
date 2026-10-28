@@ -13,6 +13,7 @@ public class HandMenu : MonoBehaviour
     [SerializeField] TowerData[] towers;
     [SerializeField] TowerPlacer placer;
     [SerializeField] CurrencyManager currency;
+    [SerializeField] PlayerStats pStats;
 
     Button[] buttons;
     public bool IsOpen => menuRoot.activeSelf;
@@ -58,7 +59,7 @@ public class HandMenu : MonoBehaviour
 
     void Refresh()
     {
-        moneyLabel.text = $"${currency.Money}";
+        moneyLabel.text = $"${currency.Money} Crystals:{pStats.crystals} Gas:{pStats.gas}";
         for (int i = 0; i < towers.Length; i++)
             buttons[i].interactable = currency.CanAfford(towers[i].cost);
     }

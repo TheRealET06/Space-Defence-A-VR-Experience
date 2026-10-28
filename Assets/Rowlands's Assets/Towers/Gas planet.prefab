@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 6167579982750744495}
   - component: {fileID: 6072357386395105526}
   - component: {fileID: 3892218384301848856}
+  - component: {fileID: 8587361267899112408}
   m_Layer: 0
   m_Name: Gas planet
   m_TagString: Untagged
@@ -29,7 +30,7 @@ Transform:
   m_GameObject: {fileID: 4689510960488641632}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.623, y: 1.118, z: 0.974}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.4, y: 0.4, z: 0.4}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -129,3 +130,18 @@ MonoBehaviour:
   max: 24
   speed: 2
   maxBrightness: 200
+--- !u!114 &8587361267899112408
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4689510960488641632}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e4438fc313129df4794cc6246e34c957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TowerNode
+  nodeType: 2
+  snapPoint: {fileID: 2910285383543421903}
+  cell: {x: 0, y: 0, z: 0}

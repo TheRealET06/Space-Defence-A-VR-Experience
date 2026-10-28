@@ -10,10 +10,11 @@ GameObject:
   m_Component:
   - component: {fileID: 8032200358783437258}
   - component: {fileID: 6308127851013341932}
-  - component: {fileID: 482448105629364135}
   - component: {fileID: 6415238377617965265}
+  - component: {fileID: 7807834072787141356}
+  - component: {fileID: 2516653271825407080}
   m_Layer: 0
-  m_Name: Enemy
+  m_Name: Crystal enemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -56,37 +57,10 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Size: {x: 0.4, y: 0.1, z: 0.6}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!54 &482448105629364135
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 265521279942974316}
-  serializedVersion: 5
-  m_Mass: 1
-  m_LinearDamping: 0
-  m_AngularDamping: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 0
-  m_IsKinematic: 1
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
 --- !u!114 &6415238377617965265
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -94,7 +68,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 265521279942974316}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6f2b708da998b4240ae9317713128d55, type: 3}
   m_Name: 
@@ -103,6 +77,39 @@ MonoBehaviour:
   faceDirection: 1
   turnSpeed: 360
   destroyOnArrival: 1
+--- !u!114 &7807834072787141356
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 265521279942974316}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 349bf205f3fef0a42958da44b49517e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Enemy
+  maxHealth: 100
+  aimPoint: {fileID: 8032200358783437258}
+  danger: 10
+  onDeath:
+    m_PersistentCalls:
+      m_Calls: []
+  IsDead: 0
+--- !u!114 &2516653271825407080
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 265521279942974316}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d4817f222b404d41ab43192156dac03c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Brian.Enemy
+  faceDirection: 1
+  turnSpeed: 360
 --- !u!1001 &561466692684383445
 PrefabInstance:
   m_ObjectHideFlags: 0
