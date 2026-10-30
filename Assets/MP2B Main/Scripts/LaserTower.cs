@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Brian
@@ -23,6 +24,7 @@ namespace Brian
 
         private Enemy currentTarget;
         private float retargetTimer;
+        private double gasFuel;                                 // gas already paid for but not yet burned
 
         private void Reset()
         {
@@ -75,7 +77,7 @@ namespace Brian
             Vector3 aimPoint = currentTarget.transform.position;
             AimAt(aimPoint);
 
-            if (IsAimedAt(aimPoint))
+            if (IsAimedAt(aimPoint) && TryUseGas(Time.deltaTime))
                 FireLaser(aimPoint);
             else
                 SetLaser(false);
@@ -113,6 +115,24 @@ namespace Brian
             return Vector3.Angle(turretHead.forward, dir) <= fireAngleTolerance;
         }
 
+        /// <summary>
+        /// Burns gas for this frame of firing. Gas is spent from Economy in whole units;
+        /// the leftover is kept as fuel. Returns false when the player is out of gas.
+        /// </summary>
+        private bool TryUseGas(float dt)
+        {
+            double needed = Data.gasPerSecond * dt;
+            if (needed <= 0 || Economy.Instance == null) return true;
+
+            while (gasFuel < needed)
+            {
+                if (!Economy.Instance.TrySpendGas(1)) return false;
+                gasFuel += 1;
+            }
+            gasFuel -= needed;
+            return true;
+        }
+
         private void FireLaser(Vector3 aimPoint)
         {
             SetLaser(true);
@@ -132,6 +152,17 @@ namespace Brian
         {
             if (laserLine != null && laserLine.enabled != on)
                 laserLine.enabled = on;
+        }
+
+        // ---- Tower panel text ----
+
+        public override string Description =>
+            Join(Summary, $"Costs {(Data != null ? Data.gemCost : 0)} gems to build and burns gas while firing.\nUpgrade: more damage.");
+
+        public override void FillStats(List<(string label, string value)> rows)
+        {
+            base.FillStats(rows);
+            rows.Add(("Gas use", $"{Data.gasPerSecond:0.#} /s when firing"));
         }
 
         private void OnDrawGizmosSelected()

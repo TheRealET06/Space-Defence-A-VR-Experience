@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 6484017073502128346}
   - component: {fileID: 6139471947054358631}
   - component: {fileID: 5656927958402566480}
+  - component: {fileID: 7655290325883521070}
   m_Layer: 9
   m_Name: Laser Tower
   m_TagString: Untagged
@@ -157,21 +158,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d8d5b0329a80e44ebb96115110ae5c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LaserTower
-  data: {fileID: 0}
-  range: 1.5
-  enemyLayer:
-    serializedVersion: 2
-    m_Bits: 0
   retargetInterval: 0.2
   turretHead: {fileID: 6484017073502128346}
   turnSpeed: 360
   fireAngleTolerance: 5
   firePoint: {fileID: 6484017073502128346}
   laserLine: {fileID: 6139471947054358631}
-  damagePerSecond: 20
-  refundPercent: 0.7
-  gridCell: {x: -1, y: -1, z: -1}
-  root: {fileID: 0}
+--- !u!114 &7655290325883521070
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1603545834640516993}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b05cbb43624c413aac5a0319c58539a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Brian.Buffable
 --- !u!1001 &2790889416837911609
 PrefabInstance:
   m_ObjectHideFlags: 0

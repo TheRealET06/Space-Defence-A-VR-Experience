@@ -155,7 +155,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4981607966448942880}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d921b7e43c1c0374aa34d7c936d68984, type: 3}
   m_Name: 
@@ -194,7 +194,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4981607966448942880}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8a35f6cfbfba9b548aaa00d52cfe8a50, type: 3}
   m_Name: 
@@ -285,8 +285,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b385473ddce8e241b1391b89250f8bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GemFactory
-  procesTime: 0
   gem: {fileID: 4431204662759833443}
+  gasCost: 100
+  processTime: 4
+  maxGemScale: 0.4
 --- !u!1001 &3464633188623172272
 PrefabInstance:
   m_ObjectHideFlags: 0

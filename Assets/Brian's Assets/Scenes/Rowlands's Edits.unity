@@ -385,7 +385,7 @@ MonoBehaviour:
     duration: 30
     description: 
     groups:
-    - enemy: {fileID: 11400000, guid: 8e882006910642445a7e9dfc0a43ef24, type: 2}
+    - enemy: {fileID: 11400000, guid: 262bebc401c2a314f9979530ab2fd026, type: 2}
       minCount: 10
       maxCount: 10
       startOffset: 0
@@ -624,6 +624,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Brian.Economy
   startingMoney: 100
+  startingGems: 0
+  startingGas: 0
 --- !u!114 &349121826
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -690,6 +692,10 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 2150f188ae24b8441a71bca373a2c5e8, type: 2}
   - {fileID: 11400000, guid: 0027ea459aefa3b499c12cd2928adcae, type: 2}
   - {fileID: 11400000, guid: bc4eec2410fea7949a28cdb8fbbaecb9, type: 2}
+  - {fileID: 11400000, guid: fecd0bc7364268b4d9da66069b4ece72, type: 2}
+  - {fileID: 11400000, guid: 4b4d5f0e43cfe514d9a579cf334d400b, type: 2}
+  - {fileID: 11400000, guid: 84b385e6670bdb44ba8b3d28cbebd141, type: 2}
+  - {fileID: 11400000, guid: 38950813cd28fa1488ca411cd67d80cb, type: 2}
   handOffset: {x: 0, y: 0.09, z: 0.04}
   handRotation: {x: 0, y: -30, z: 0}
   metersPerPixel: 0.0005
@@ -875,6 +881,7 @@ MonoBehaviour:
   ghostMaterial: {fileID: 2100000, guid: cf3d5ee85d2e0434da449f0018900c9a, type: 2}
   rangePrefab: {fileID: 6045757738272167579, guid: caaf151c40b5c7846ba74a03c95cfaa7, type: 3}
   pickRadius: 0.15
+  nodePickRadius: 0.4
   maxDistance: 15
 --- !u!114 &681199468
 MonoBehaviour:
@@ -1038,6 +1045,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 2150f188ae24b8441a71bca373a2c5e8, type: 2}
   - {fileID: 11400000, guid: 0027ea459aefa3b499c12cd2928adcae, type: 2}
   - {fileID: 11400000, guid: bc4eec2410fea7949a28cdb8fbbaecb9, type: 2}
+  - {fileID: 11400000, guid: fecd0bc7364268b4d9da66069b4ece72, type: 2}
   metersPerPixel: 0.0012
   distance: 1.2
   heightBelowEyes: 0.05

@@ -19,7 +19,7 @@ namespace Brian
 
         RectTransform root;
         Image hpFill;
-        TextMeshProUGUI hpText, moneyText, timerText, waveText, rewardText;
+        TextMeshProUGUI hpText, moneyText, gemsText, gasText, timerText, waveText, rewardText;
         TowerData hoveredTower;
         readonly List<(Button button, TowerData data)> buttons = new List<(Button, TowerData)>();
         float refresh;
@@ -35,7 +35,7 @@ namespace Brian
         void Start()
         {
             towers ??= new TowerData[0];
-            float height = 252f + Mathf.CeilToInt(towers.Length / 2f) * 66f;
+            float height = 278f + Mathf.CeilToInt(towers.Length / 2f) * 66f;
             root = UIKit.Canvas("Hand HUD", transform, new Vector2(Width, height), metersPerPixel);
 
             UIKit.Text(root, "HOME", 15, 16, 12, 100, 20, TextAlignmentOptions.TopLeft, UIKit.DimText);
@@ -45,16 +45,18 @@ namespace Brian
 
             moneyText = UIKit.Text(root, "", 30, 16, 60, 200, 40);
             timerText = UIKit.Text(root, "", 30, 180, 60, 184, 40, TextAlignmentOptions.TopRight, TimerColor);
-            waveText = UIKit.Text(root, "", 15, 16, 106, Width - 32, 46, TextAlignmentOptions.TopLeft, UIKit.DimText);
-            rewardText = UIKit.Text(root, "", 13, 16, 154, Width - 32, 54, TextAlignmentOptions.TopLeft, UIKit.DimText);
+            gemsText = UIKit.Text(root, "", 20, 16, 102, 170, 26, TextAlignmentOptions.TopLeft);
+            gasText = UIKit.Text(root, "", 20, 200, 102, 164, 26, TextAlignmentOptions.TopLeft);
+            waveText = UIKit.Text(root, "", 15, 16, 132, Width - 32, 46, TextAlignmentOptions.TopLeft, UIKit.DimText);
+            rewardText = UIKit.Text(root, "", 13, 16, 180, Width - 32, 54, TextAlignmentOptions.TopLeft, UIKit.DimText);
 
-            UIKit.Text(root, "BUILD", 15, 16, 210, 100, 20, TextAlignmentOptions.TopLeft, UIKit.DimText);
+            UIKit.Text(root, "BUILD", 15, 16, 236, 100, 20, TextAlignmentOptions.TopLeft, UIKit.DimText);
             for (int i = 0; i < towers.Length; i++)
             {
                 var data = towers[i];
                 if (data == null) continue;
                 float x = 16 + (i % 2) * ((Width - 40) / 2 + 8);
-                float y = 236 + (i / 2) * 66;
+                float y = 262 + (i / 2) * 66;
                 var b = UIKit.Button(root, "", 15, x, y, (Width - 40) / 2, 58, () => Pick(data));
                 UIKit.OnHover(b, () => hoveredTower = data, () => { if (hoveredTower == data) hoveredTower = null; });
                 buttons.Add((b, data));
@@ -98,7 +100,21 @@ namespace Brian
                 Flash($"Can't afford {data.displayName}: costs ${data.cost}, you have ${eco.Money}.");
                 return;
             }
+            int gemCost = GemCost(data);
+            if (eco != null && !eco.CanAffordGems(gemCost))
+            {
+                Flash($"Can't afford {data.displayName}: needs {gemCost} gems, you have {eco.Gems}.");
+                return;
+            }
             if (BuildController.Instance != null) BuildController.Instance.Select(data);
+        }
+
+        static int GemCost(TowerData d) => d.gemCost;
+
+        static string CostText(TowerData d)
+        {
+            int g = GemCost(d);
+            return g > 0 ? $"${d.cost} + {g} gems" : $"${d.cost}";
         }
 
         public void Flash(string text)
@@ -138,6 +154,8 @@ namespace Brian
 
             var eco = Economy.Instance;
             moneyText.text = eco != null ? $"${eco.Money}" : "";
+            gemsText.text = eco != null ? $"<size=13><color=#9fd7ff>GEMS</color></size>  {eco.Gems}" : "";
+            gasText.text = eco != null ? $"<size=13><color=#8dffa0>GAS</color></size>  {eco.Gas}" : "";
             var mine = MiningTower.Instance;
             string mining = mine == null ? "" : mine.Running ? "\n<color=#8dffa0>Mining Tower: mining</color>" : "\nMining Tower: paused";
 
@@ -171,7 +189,7 @@ namespace Brian
             if (Time.unscaledTime >= flashUntil)
             {
                 if (hoveredTower != null)
-                    rewardText.text = $"<color=#ffffff><b>{hoveredTower.displayName}</b>  ${hoveredTower.cost}</color>\n{hoveredTower.description}";
+                    rewardText.text = $"<color=#ffffff><b>{hoveredTower.displayName}</b>  {CostText(hoveredTower)}</color>\n{hoveredTower.description}";
                 else
                     rewardText.text = "The Mining Tower mines and sells by itself during waves.\nWalk over to it to upgrade.";
                 rewardText.color = UIKit.DimText;
@@ -187,10 +205,10 @@ namespace Brian
                     continue;
                 }
 
-                bool afford = eco != null && eco.CanAfford(data.cost);
+                bool afford = eco != null && eco.CanAfford(data.cost) && eco.CanAffordGems(GemCost(data));
                 UIKit.SetDimmed(button, !afford);
                 string mark = building == data ? "<color=#9fd7ff>> </color>" : "";
-                UIKit.SetLabel(button, $"{mark}{data.displayName}\n<size=13><color=#b8c0cc>${data.cost}</color></size>");
+                UIKit.SetLabel(button, $"{mark}{data.displayName}\n<size=13><color=#b8c0cc>{CostText(data)}</color></size>");
             }
         }
     }

@@ -10,6 +10,8 @@ namespace Brian
         public Sprite icon;
         public Tower prefab;
         public int cost = 50;
+        [Tooltip("Gems needed to build, on top of the money cost.")]
+        public int gemCost;
 
         [Header("Level 1 stats")]
         public float attack = 10f;
@@ -48,6 +50,10 @@ namespace Brian
         public float infantMoveSpeed = 1.2f;
         public float infantMeleeRange = 0.12f;
         public float infantStatPerLevel = 0.15f;
+
+        [Header("Laser Tower")]
+        [Tooltip("Gas burned per second while the laser is firing.")]
+        public float gasPerSecond = 2f;
 
         [Header("Unlocking")]
         [Tooltip("Becomes available before this wave. 1 = available from the start.")]

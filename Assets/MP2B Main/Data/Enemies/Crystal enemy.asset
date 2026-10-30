@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Brian.EnemyData
   displayName: Crystal enemy
   prefab: {fileID: 2516653271825407080, guid: aaf84e1335cda9a4da73cee11f5e6c44, type: 3}
-  maxHealth: 100
+  maxHealth: 25
   maxSpeed: 1
   minSpeedFraction: 0.5
   homeDamage: 1

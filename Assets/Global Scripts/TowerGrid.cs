@@ -29,6 +29,21 @@ public class TowerGrid : MonoBehaviour
     readonly Dictionary<Vector3Int, TowerNode> nodes = new Dictionary<Vector3Int, TowerNode>();
     public void RegisterNode(Vector3Int cell, TowerNode node) => nodes[cell] = node;
 
+    // Self-registering nodes (e.g. asteroids) get a unique key that can never match a real grid cell.
+    int autoNodeId;
+    public void RegisterNode(TowerNode node)
+    {
+        if (node == null || nodes.ContainsValue(node)) return;
+        nodes[new Vector3Int(-1, -1, -(++autoNodeId))] = node;
+    }
+
+    public void UnregisterNode(TowerNode node)
+    {
+        Vector3Int? key = null;
+        foreach (var kv in nodes) if (kv.Value == node) { key = kv.Key; break; }
+        if (key.HasValue) nodes.Remove(key.Value);
+    }
+
     void Awake()            // CHANGED: was "void Awake() => Build();"
     {
         Instance = this;

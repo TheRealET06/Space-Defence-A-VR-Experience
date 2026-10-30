@@ -101,7 +101,7 @@ public class TowerPlacer : MonoBehaviour
         {
             // The node's grid cell is already occupied; just claim the node
             tower.node = currentNode;
-            currentNode.Occupant = tower;
+            //currentNode.Occupant = tower;
             obj.transform.SetParent(currentNode.transform, true);   // follows/dies with the node
         }
         else
