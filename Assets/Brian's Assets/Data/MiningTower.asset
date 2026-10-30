@@ -13,16 +13,17 @@ MonoBehaviour:
   m_Name: MiningTower
   m_EditorClassIdentifier: Assembly-CSharp::Brian.TowerData
   displayName: Mining Tower
-  description: 'Mines asteroids and sells them for money during waves.'
+  description: 'Your base. Mines asteroids and sells them for money during waves.'
   icon: {fileID: 0}
   prefab: {fileID: 0}
   cost: 0
   attack: 0
   attackSpeed: 0
-  range: 7
+  range: 1.25
   attackPerLevel: 0
   attackSpeedPerLevel: 0
-  rangePerLevel: 3
+  rangePerLevel: 1.25
+  upgradeCosts: d7000000090200003c020000
   maxLevel: 4
   upgradeCost: 50
   upgradeCostGrowth: 2

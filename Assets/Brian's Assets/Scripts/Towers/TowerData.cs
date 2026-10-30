@@ -21,6 +21,11 @@ namespace Brian
         public float attackSpeedPerLevel = 0.2f;
         public float rangePerLevel;
 
+        [Header("Per level (index 0 = level 1). Left empty, the gains above are used")]
+        public float[] attackByLevel;
+        public float[] attackSpeedByLevel;
+        public int[] upgradeCosts;
+
         [Header("Upgrades and selling")]
         public int maxLevel = 5;
         public int upgradeCost = 40;
@@ -30,6 +35,8 @@ namespace Brian
         [Header("General Tower (i.e Legacy Bioship)")]
         public Projectile projectilePrefab;
         public float projectileSpeed = 4f;
+        public float splashRadius;
+        public float[] splashByLevel;
 
         [Header("Ophanim")]
         public PulseWave pulsePrefab;
@@ -38,6 +45,7 @@ namespace Brian
         public float buffPercentPerLevel = 0.05f;
         public float attackPerAlly = 0.33f;
         public int maxAllies = 6;
+        public float[] buffByLevel;
 
         [Header("Leviathan")]
         public LeviathanInfant infantPrefab;
@@ -48,6 +56,8 @@ namespace Brian
         public float infantMoveSpeed = 1.2f;
         public float infantMeleeRange = 0.12f;
         public float infantStatPerLevel = 0.15f;
+        public int[] infantsByLevel;
+        public float[] infantAttackByLevel;
 
         [Header("Unlocking")]
         [Tooltip("Becomes available before this wave. 1 = available from the start.")]

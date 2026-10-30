@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Brian.EnemyData
   displayName: Black hole
   prefab: {fileID: 1940512916095094059, guid: 95c7a1a024edb194a9e7ccfac15966b1, type: 3}
-  maxHealth: 450
-  maxSpeed: 0.25
-  minSpeedFraction: 0.6
-  homeDamage: 5
+  maxHealth: 3500
+  maxSpeed: 0.6
+  minSpeedFraction: 1
+  homeDamage: 20
   killReward: 20

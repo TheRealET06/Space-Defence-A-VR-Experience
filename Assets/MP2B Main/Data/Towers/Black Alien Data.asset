@@ -12,25 +12,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f2edb670670b4b37b7653e36abca201d, type: 3}
   m_Name: Black Alien Data
   m_EditorClassIdentifier: Assembly-CSharp::Brian.TowerData
-  displayName: Basic Alien
-  description: 'Basic alien ship. Hard-hitting shots at the nearest enemy.'
+  displayName: Prism Ark
+  description: 'Far-future human colony ship grown from purple-silver crystal. Slow shots that burst on impact and hit every enemy nearby. Each upgrade makes the burst bigger. Weak against lone big enemies, the best answer to swarms and to spots where the path folds back.'
   icon: {fileID: 21300000, guid: 4eb43321e418951499417cda6141b31a, type: 3}
   prefab: {fileID: 649939168868733069, guid: f45667535d1ef96469c2b5130504594c, type: 3}
-  cost: 30
-  attack: 20
-  attackSpeed: 1
+  cost: 120
+  attack: 15.85
+  attackSpeed: 0.4
   range: 1.5
   attackPerLevel: 4
   attackSpeedPerLevel: 0.2
   rangePerLevel: 0
-  maxLevel: 10
+  attackByLevel: 9a997d4148e1ca41295c744200004843
+  attackSpeedByLevel: cdcccc3e6666e63ecdcc0c3f3333333f
+  upgradeCosts: 780000002c010000d0020000
+  maxLevel: 4
   upgradeCost: 5
   upgradeCostGrowth: 1.5
-  refundFraction: 0.909
+  refundFraction: 0.7
   projectilePrefab: {fileID: 490335942653549193, guid: 156beb8ba62cc9b4c9f88c462df77bf2, type: 3}
   projectileSpeed: 10
-  pulsePrefab: {fileID: 0}
-  pulseDuration: 0.6
+  splashRadius: 0.55
+  splashByLevel: cdcc0c3f6666263f0000403f6666663f
+  pulsePrefab: {fileID: 1545406769944829965, guid: 8cb9fc7ad5f00a64dadf92596c75ebd0, type: 3}
+  pulseDuration: 0.2
   buffPercent: 0.2
   buffPercentPerLevel: 0.05
   attackPerAlly: 0.33
@@ -43,7 +48,6 @@ MonoBehaviour:
   infantMoveSpeed: 1.2
   infantMeleeRange: 0.12
   infantStatPerLevel: 0.15
-  unlockWave: 5
-  unlockHeadline: A New Space Ship Appears!
-  unlockText: Some aliens have come to help us fight! Their firiing technology is
-    very fast compared to ours but do less damaage overall.
+  unlockWave: 3
+  unlockHeadline: 'Prism Ark Unlocked'
+  unlockText: 'A colony ship from humanity''s far future arrives. Its crystal shots burst and hit whole groups at once. Place it where enemies bunch up or the path folds back.'

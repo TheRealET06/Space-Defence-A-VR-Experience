@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Brian.EnemyData
   displayName: Dark Blue Asteroid
   prefab: {fileID: 1637087543701261907, guid: cc3254a32df7fa34ebf4cbcfe859b6b9, type: 3}
-  maxHealth: 10
+  maxHealth: 5
   maxSpeed: 0.6
-  minSpeedFraction: 0.35
+  minSpeedFraction: 1
   homeDamage: 1
   killReward: 5
