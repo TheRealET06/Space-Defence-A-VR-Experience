@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 6139471947054358631}
   - component: {fileID: 5656927958402566480}
   - component: {fileID: 7655290325883521070}
+  - component: {fileID: 4860346057334036902}
   m_Layer: 9
   m_Name: Laser Tower
   m_TagString: Untagged
@@ -176,6 +177,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b05cbb43624c413aac5a0319c58539a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Brian.Buffable
+--- !u!65 &4860346057334036902
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1603545834640516993}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.09298206, y: 0.08305608, z: 0.2791958}
+  m_Center: {x: 0.0017318241, y: 0.0019853339, z: 0.0110160485}
 --- !u!1001 &2790889416837911609
 PrefabInstance:
   m_ObjectHideFlags: 0
