@@ -14,7 +14,7 @@ namespace Brian
             if (Data == null) return;
             cooldown -= Time.deltaTime;
 
-            Enemy target = Enemy.NearestInRange(transform.position, transform.position, Range);
+            Enemy target = Enemy.FirstInRange(transform.position, Range);
             if (target == null) return;
 
             Vector3 dir = target.transform.position - transform.position;

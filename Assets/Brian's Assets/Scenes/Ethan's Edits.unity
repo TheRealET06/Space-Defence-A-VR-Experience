@@ -374,230 +374,242 @@ MonoBehaviour:
   hardEnemy: {fileID: 11400000, guid: 2da1867940dd8fb46ab1ec62d290f0d3, type: 2}
   seed: 1234
   manualWaves:
-  - name: Mining wave
+  - name: Wave 1
     delayBefore: 0
+    groups:
+    - enemy: {fileID: 11400000, guid: 8e882006910642445a7e9dfc0a43ef24, type: 2}
+      minCount: 68
+      maxCount: 68
+      startOffset: 10.368
+      interval: 0.7353
+      intervalJitter: 0.3
+      healthMultiplier: 1
+    - enemy: {fileID: 11400000, guid: 606b172bc0a8c424db71db961ca3256c, type: 2}
+      minCount: 4
+      maxCount: 4
+      startOffset: 16.25
+      interval: 12.5
+      intervalJitter: 0.3
+      healthMultiplier: 1
     duration: 60
-    description: 'Mining wave: no enemies. Your Mining Tower mines and sells by itself
-      while a wave is running. Walk over to upgrade it, and build your first defenses.'
-    groups: []
+    description: 'Calm for 10 seconds, then a swarm of small asteroids. Your base mines only while the timer runs: split your money between the base and towers.'
   - name: Wave 2
     delayBefore: 0
     duration: 30
     description: 
     groups:
     - enemy: {fileID: 11400000, guid: 8e882006910642445a7e9dfc0a43ef24, type: 2}
-      minCount: 10
-      maxCount: 10
-      startOffset: 0
-      interval: 2.6
-      intervalJitter: 0.2
+      minCount: 40
+      maxCount: 40
+      startOffset: 0.75
+      interval: 1.5
+      intervalJitter: 0.3
       healthMultiplier: 1
+    - enemy: {fileID: 11400000, guid: 606b172bc0a8c424db71db961ca3256c, type: 2}
+      minCount: 40
+      maxCount: 40
+      startOffset: 0.75
+      interval: 1.5
+      intervalJitter: 0.3
+      healthMultiplier: 1
+    - enemy: {fileID: 11400000, guid: 86c22478abc6ffb4c8476024bb5d70d5, type: 2}
+      minCount: 3
+      maxCount: 3
+      startOffset: 10.0
+      interval: 20.0
+      intervalJitter: 0.3
+      healthMultiplier: 1
+    duration: 60
+    description: 'A bigger swarm with the first Red asteroids. Bioship is now available.'
   - name: Wave 3
     delayBefore: 0
     duration: 30
     description: 
     groups:
     - enemy: {fileID: 11400000, guid: 8e882006910642445a7e9dfc0a43ef24, type: 2}
-      minCount: 8
-      maxCount: 8
-      startOffset: 0
-      interval: 3.2
-      intervalJitter: 0.2
+      minCount: 40
+      maxCount: 40
+      startOffset: 0.75
+      interval: 1.5
+      intervalJitter: 0.3
       healthMultiplier: 1
     - enemy: {fileID: 11400000, guid: 606b172bc0a8c424db71db961ca3256c, type: 2}
-      minCount: 8
-      maxCount: 8
-      startOffset: 1.6
-      interval: 3.2
-      intervalJitter: 0.2
+      minCount: 50
+      maxCount: 50
+      startOffset: 0.6
+      interval: 1.2
+      intervalJitter: 0.3
       healthMultiplier: 1
+    - enemy: {fileID: 11400000, guid: 86c22478abc6ffb4c8476024bb5d70d5, type: 2}
+      minCount: 13
+      maxCount: 13
+      startOffset: 2.308
+      interval: 4.6154
+      intervalJitter: 0.3
+      healthMultiplier: 1
+    duration: 60
+    description: 'A heavy swarm with more Reds. Prism Ark is now available: its bursts shred swarms.'
   - name: Wave 4
     delayBefore: 0
     duration: 30
     description: 
     groups:
+    - enemy: {fileID: 11400000, guid: 8e882006910642445a7e9dfc0a43ef24, type: 2}
+      minCount: 20
+      maxCount: 20
+      startOffset: 1.5
+      interval: 3.0
+      intervalJitter: 0.3
+      healthMultiplier: 1
     - enemy: {fileID: 11400000, guid: 606b172bc0a8c424db71db961ca3256c, type: 2}
-      minCount: 10
-      maxCount: 10
-      startOffset: 0
-      interval: 2.6
-      intervalJitter: 0.2
+      minCount: 50
+      maxCount: 50
+      startOffset: 0.6
+      interval: 1.2
+      intervalJitter: 0.3
       healthMultiplier: 1
     - enemy: {fileID: 11400000, guid: 86c22478abc6ffb4c8476024bb5d70d5, type: 2}
-      minCount: 6
-      maxCount: 6
-      startOffset: 2
-      interval: 4
-      intervalJitter: 0.2
+      minCount: 27
+      maxCount: 27
+      startOffset: 1.111
+      interval: 2.2222
+      intervalJitter: 0.3
       healthMultiplier: 1
+    - enemy: {fileID: 11400000, guid: 878db55996721b445b39bb414012624b, type: 2}
+      minCount: 1
+      maxCount: 1
+      startOffset: 30.0
+      interval: 60.0
+      intervalJitter: 0.3
+      healthMultiplier: 1
+    duration: 60
+    description: 'Reds and the first Purple. Ophanim is now available: build your towers around it.'
   - name: Wave 5
     delayBefore: 0
     duration: 30
     description: 
     groups:
-    - enemy: {fileID: 11400000, guid: 86c22478abc6ffb4c8476024bb5d70d5, type: 2}
-      minCount: 10
-      maxCount: 10
-      startOffset: 0
-      interval: 2.6
-      intervalJitter: 0.2
+    - enemy: {fileID: 11400000, guid: 878db55996721b445b39bb414012624b, type: 2}
+      minCount: 20
+      maxCount: 20
+      startOffset: 1.5
+      interval: 3.0
+      intervalJitter: 0.3
       healthMultiplier: 1
     - enemy: {fileID: 11400000, guid: fc86e46056368a747af2ec21f1f8914a, type: 2}
-      minCount: 3
-      maxCount: 3
-      startOffset: 4
-      interval: 8
-      intervalJitter: 0.2
+      minCount: 4
+      maxCount: 4
+      startOffset: 7.5
+      interval: 15.0
+      intervalJitter: 0.3
       healthMultiplier: 1
+    duration: 60
+    description: 'BOSS: Suns. Each Sun has 325 HP and costs 8 base health if it gets through. Leviathan is now available.'
   - name: Wave 6
     delayBefore: 0
     duration: 30
     description: 
     groups:
     - enemy: {fileID: 11400000, guid: 86c22478abc6ffb4c8476024bb5d70d5, type: 2}
-      minCount: 8
-      maxCount: 8
-      startOffset: 0
-      interval: 3.2
-      intervalJitter: 0.2
+      minCount: 20
+      maxCount: 20
+      startOffset: 1.5
+      interval: 3.0
+      intervalJitter: 0.3
       healthMultiplier: 1
     - enemy: {fileID: 11400000, guid: 878db55996721b445b39bb414012624b, type: 2}
-      minCount: 8
-      maxCount: 8
-      startOffset: 1.6
-      interval: 3.2
-      intervalJitter: 0.2
+      minCount: 50
+      maxCount: 50
+      startOffset: 0.6
+      interval: 1.2
+      intervalJitter: 0.3
       healthMultiplier: 1
     - enemy: {fileID: 11400000, guid: fc86e46056368a747af2ec21f1f8914a, type: 2}
-      minCount: 3
-      maxCount: 3
-      startOffset: 4
-      interval: 8
-      intervalJitter: 0.2
+      minCount: 1
+      maxCount: 1
+      startOffset: 30.0
+      interval: 60.0
+      intervalJitter: 0.3
       healthMultiplier: 1
+    duration: 60
+    description: 'A wall of Purple asteroids.'
   - name: Wave 7
     delayBefore: 0
     duration: 30
     description: 
     groups:
     - enemy: {fileID: 11400000, guid: 878db55996721b445b39bb414012624b, type: 2}
-      minCount: 10
-      maxCount: 10
-      startOffset: 0
-      interval: 2.6
-      intervalJitter: 0.2
+      minCount: 50
+      maxCount: 50
+      startOffset: 0.6
+      interval: 1.2
+      intervalJitter: 0.3
       healthMultiplier: 1
     - enemy: {fileID: 11400000, guid: fc86e46056368a747af2ec21f1f8914a, type: 2}
-      minCount: 5
-      maxCount: 5
-      startOffset: 2.5
-      interval: 5
-      intervalJitter: 0.2
+      minCount: 24
+      maxCount: 24
+      startOffset: 1.25
+      interval: 2.5
+      intervalJitter: 0.3
       healthMultiplier: 1
+    duration: 60
+    description: 'Purples and twenty-four Suns.'
   - name: Wave 8
     delayBefore: 0
     duration: 30
     description: 
     groups:
     - enemy: {fileID: 11400000, guid: 878db55996721b445b39bb414012624b, type: 2}
-      minCount: 10
-      maxCount: 10
-      startOffset: 0
-      interval: 2.6
-      intervalJitter: 0.2
+      minCount: 40
+      maxCount: 40
+      startOffset: 0.75
+      interval: 1.5
+      intervalJitter: 0.3
       healthMultiplier: 1
     - enemy: {fileID: 11400000, guid: fc86e46056368a747af2ec21f1f8914a, type: 2}
-      minCount: 6
-      maxCount: 6
-      startOffset: 2
-      interval: 4.3
-      intervalJitter: 0.2
+      minCount: 86
+      maxCount: 86
+      startOffset: 0.349
+      interval: 0.6977
+      intervalJitter: 0.3
       healthMultiplier: 1
-    - enemy: {fileID: 11400000, guid: 2da1867940dd8fb46ab1ec62d290f0d3, type: 2}
-      minCount: 1
-      maxCount: 1
-      startOffset: 12
-      interval: 1
-      intervalJitter: 0.2
-      healthMultiplier: 1
+    duration: 60
+    description: 'The biggest wave: 126 enemies, mostly Suns.'
   - name: Wave 9
     delayBefore: 0
     duration: 30
     description: 
     groups:
-    - enemy: {fileID: 11400000, guid: 878db55996721b445b39bb414012624b, type: 2}
-      minCount: 10
-      maxCount: 10
-      startOffset: 0
-      interval: 2.6
-      intervalJitter: 0.2
-      healthMultiplier: 1
     - enemy: {fileID: 11400000, guid: fc86e46056368a747af2ec21f1f8914a, type: 2}
-      minCount: 8
-      maxCount: 8
-      startOffset: 1.5
-      interval: 3.2
-      intervalJitter: 0.2
+      minCount: 79
+      maxCount: 79
+      startOffset: 0.38
+      interval: 0.7595
+      intervalJitter: 0.3
       healthMultiplier: 1
     - enemy: {fileID: 11400000, guid: 2da1867940dd8fb46ab1ec62d290f0d3, type: 2}
-      minCount: 2
-      maxCount: 2
-      startOffset: 6
-      interval: 12
-      intervalJitter: 0.2
+      minCount: 9
+      maxCount: 9
+      startOffset: 3.333
+      interval: 6.6667
+      intervalJitter: 0.3
       healthMultiplier: 1
+    duration: 60
+    description: 'Black Holes arrive: 3500 HP each, and one reaching your base ends the game.'
   - name: Wave 10
     delayBefore: 0
     duration: 30
     description: 
     groups:
-    - enemy: {fileID: 11400000, guid: fc86e46056368a747af2ec21f1f8914a, type: 2}
-      minCount: 12
-      maxCount: 12
-      startOffset: 0
-      interval: 2.2
-      intervalJitter: 0.2
-      healthMultiplier: 1
-    - enemy: {fileID: 11400000, guid: 878db55996721b445b39bb414012624b, type: 2}
-      minCount: 10
-      maxCount: 10
-      startOffset: 1.3
-      interval: 2.6
-      intervalJitter: 0.2
-      healthMultiplier: 1
     - enemy: {fileID: 11400000, guid: 2da1867940dd8fb46ab1ec62d290f0d3, type: 2}
-      minCount: 3
-      maxCount: 3
-      startOffset: 4
-      interval: 8
-      intervalJitter: 0.2
+      minCount: 18
+      maxCount: 18
+      startOffset: 1.667
+      interval: 3.3333
+      intervalJitter: 0.3
       healthMultiplier: 1
-  - name: Wave 11
-    delayBefore: 0
-    duration: 30
-    description: Final wave.
-    groups:
-    - enemy: {fileID: 11400000, guid: fc86e46056368a747af2ec21f1f8914a, type: 2}
-      minCount: 14
-      maxCount: 14
-      startOffset: 0
-      interval: 1.9
-      intervalJitter: 0.2
-      healthMultiplier: 1
-    - enemy: {fileID: 11400000, guid: 878db55996721b445b39bb414012624b, type: 2}
-      minCount: 12
-      maxCount: 12
-      startOffset: 1
-      interval: 2.2
-      intervalJitter: 0.2
-      healthMultiplier: 1
-    - enemy: {fileID: 11400000, guid: 2da1867940dd8fb46ab1ec62d290f0d3, type: 2}
-      minCount: 4
-      maxCount: 4
-      startOffset: 3
-      interval: 6.5
-      intervalJitter: 0.2
-      healthMultiplier: 1
+    duration: 60
+    description: 'FINAL BOSS: 18 Black Holes, one every few seconds.'
   generateWaves: 0
   generatedWaveCount: 10
   pool: []
@@ -623,7 +635,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84b44a1c63914f8ea8be681e7452125a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Brian.Economy
-  startingMoney: 100
+  startingMoney: 120
+  incomePerSecond: 2
 --- !u!114 &349121826
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -681,15 +694,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Brian.HandHUD
   towers:
+  - {fileID: 11400000, guid: 53f4cc69877339c4e8f884268ec8e4fc, type: 2}
   - {fileID: 11400000, guid: eddbdeb13304f4646ba978b338414bda, type: 2}
+  - {fileID: 11400000, guid: f000beff67a08c646ae8406ead52777f, type: 2}
   - {fileID: 11400000, guid: 2dd9f3dcce64c2a48a0e0ed2d4fb063c, type: 2}
   - {fileID: 11400000, guid: a013e9add8da6a34191e4c63f06ced87, type: 2}
-  - {fileID: 11400000, guid: 53f4cc69877339c4e8f884268ec8e4fc, type: 2}
-  - {fileID: 11400000, guid: f000beff67a08c646ae8406ead52777f, type: 2}
-  - {fileID: 11400000, guid: b013f503a1788564cb720ac08d4a909b, type: 2}
-  - {fileID: 11400000, guid: 2150f188ae24b8441a71bca373a2c5e8, type: 2}
-  - {fileID: 11400000, guid: 0027ea459aefa3b499c12cd2928adcae, type: 2}
-  - {fileID: 11400000, guid: bc4eec2410fea7949a28cdb8fbbaecb9, type: 2}
   handOffset: {x: 0, y: 0.09, z: 0.04}
   handRotation: {x: 0, y: -30, z: 0}
   metersPerPixel: 0.0005
@@ -1265,15 +1274,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Brian.UnlockPopup
   towers:
-  - {fileID: 11400000, guid: f000beff67a08c646ae8406ead52777f, type: 2}
   - {fileID: 11400000, guid: 53f4cc69877339c4e8f884268ec8e4fc, type: 2}
   - {fileID: 11400000, guid: eddbdeb13304f4646ba978b338414bda, type: 2}
-  - {fileID: 11400000, guid: a013e9add8da6a34191e4c63f06ced87, type: 2}
+  - {fileID: 11400000, guid: f000beff67a08c646ae8406ead52777f, type: 2}
   - {fileID: 11400000, guid: 2dd9f3dcce64c2a48a0e0ed2d4fb063c, type: 2}
-  - {fileID: 11400000, guid: b013f503a1788564cb720ac08d4a909b, type: 2}
-  - {fileID: 11400000, guid: 2150f188ae24b8441a71bca373a2c5e8, type: 2}
-  - {fileID: 11400000, guid: 0027ea459aefa3b499c12cd2928adcae, type: 2}
-  - {fileID: 11400000, guid: bc4eec2410fea7949a28cdb8fbbaecb9, type: 2}
+  - {fileID: 11400000, guid: a013e9add8da6a34191e4c63f06ced87, type: 2}
   metersPerPixel: 0.0012
   distance: 1.2
   heightBelowEyes: 0.05
@@ -1459,7 +1464,7 @@ MonoBehaviour:
   grid: {fileID: 1469345585}
   pathPrefab: {fileID: 8270878465617315978, guid: 771e0f45290dcd8438b16adbe7bd6013, type: 3}
   startPrefab: {fileID: 0}
-  endPrefab: {fileID: 7171859137688760005, guid: 485576c058b781540be97fb6b392c72a, type: 3}
+  endPrefab: {fileID: 0}
   spawnParent: {fileID: 0}
   randomEndpoints: 0
   minEndpointDistance: 8
@@ -1988,7 +1993,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 5b0e3c9d7f2a4c61a8e4d2b7c9f01a35, type: 2}
+  - {fileID: 2100000, guid: 7c06759dccd24cdcbdadbf0058484046, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2029,8 +2034,8 @@ Transform:
   m_GameObject: {fileID: 1880084397}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 6, y: 0, z: 14}
-  m_LocalScale: {x: 3.2, y: 1, z: 4.8}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 2, y: 1, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1805916731}
@@ -2114,6 +2119,23 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &8798020862299825269
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3846921121527142232}
+  - component: {fileID: 8592742534836635631}
+  m_Layer: 0
+  m_Name: Asteroid Field
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!4 &3846921121527142232
 Transform:
   m_ObjectHideFlags: 0
@@ -2123,12 +2145,47 @@ Transform:
   m_GameObject: {fileID: 8798020862299825269}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 6, y: 0, z: 22}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8592742534836635631
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8798020862299825269}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b755c78eac2a4a3c8bb3c4e7b6e9b5b6, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::Brian.AsteroidField
+  bands:
+  - prefab: {fileID: 1226324906047858999, guid: 8a5fa3c35a3c6b948a2d9df6c6799993, type: 3}
+    minDistance: 0
+    maxDistance: 1.25
+    startCount: 5
+    cap: 5
+  - prefab: {fileID: 5118508563000850792, guid: 449ad7598a508fa4aba9e2827ccb378f, type: 3}
+    minDistance: 1.25
+    maxDistance: 2.5
+    startCount: 5
+    cap: 5
+  - prefab: {fileID: 613985255027862022, guid: 7952a373ce8ca724b9b3dffbf2606d71, type: 3}
+    minDistance: 2.5
+    maxDistance: 3.75
+    startCount: 4
+    cap: 4
+  - prefab: {fileID: 5325677315635501699, guid: a465940c2161c3b429c9a043dc9db541, type: 3}
+    minDistance: 3.75
+    maxDistance: 5
+    startCount: 4
+    cap: 4
+  spawnInterval: 2
+  bandMargin: 0.1
 --- !u!1001 &7210578313339591845
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2139,7 +2196,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 574318669731238, guid: c5ed4c2a635141bc84d0880c54a20f0e, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 6
+      value: -6.5
       objectReference: {fileID: 0}
     - target: {fileID: 574318669731238, guid: c5ed4c2a635141bc84d0880c54a20f0e, type: 3}
       propertyPath: m_LocalPosition.y
@@ -2147,11 +2204,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 574318669731238, guid: c5ed4c2a635141bc84d0880c54a20f0e, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 22
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 574318669731238, guid: c5ed4c2a635141bc84d0880c54a20f0e, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0
+      value: 0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: 574318669731238, guid: c5ed4c2a635141bc84d0880c54a20f0e, type: 3}
       propertyPath: m_LocalRotation.x
@@ -2159,7 +2216,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 574318669731238, guid: c5ed4c2a635141bc84d0880c54a20f0e, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 1
+      value: 0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: 574318669731238, guid: c5ed4c2a635141bc84d0880c54a20f0e, type: 3}
       propertyPath: m_LocalRotation.z
@@ -2171,7 +2228,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 574318669731238, guid: c5ed4c2a635141bc84d0880c54a20f0e, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 180
+      value: 90
       objectReference: {fileID: 0}
     - target: {fileID: 574318669731238, guid: c5ed4c2a635141bc84d0880c54a20f0e, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z

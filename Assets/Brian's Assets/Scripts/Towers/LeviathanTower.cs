@@ -9,17 +9,23 @@ namespace Brian
 
         protected override List<(string label, string change)> UpgradePreview() => new List<(string, string)>
         {
-            ("Infants", $"+{Data.infantsPerLevel}"),
-            ("Infant attack", $"+{Data.infantAttack * Data.infantStatPerLevel:0.#}"),
-            ("Infant speed", $"+{Data.infantAttackSpeed * Data.infantStatPerLevel:0.##} /s")
+            ("Infants", $"+{InfantsAt(Level + 1) - InfantsAt(Level)}"),
+            ("Infant attack", $"+{InfantAttackAt(Level + 1) - InfantAttackAt(Level):0.#}")
         };
 
         readonly List<LeviathanInfant> infants = new List<LeviathanInfant>();
 
-        float StatScale => 1f + Data.infantStatPerLevel * (Level - 1);
-        public int InfantCount => Data.infantCount + Data.infantsPerLevel * (Level - 1);
-        public float InfantAttack => Data.infantAttack * StatScale;
+        bool HasLevelTable => Data.infantsByLevel != null && Data.infantsByLevel.Length > 0;
+        float StatScale => HasLevelTable ? 1f : 1f + Data.infantStatPerLevel * (Level - 1);
+        public int InfantCount => InfantsAt(Level);
+        public float InfantAttack => InfantAttackAt(Level);
         public float InfantAttackSpeed => Data.infantAttackSpeed * StatScale;
+
+        int InfantsAt(int level) => HasLevelTable
+            ? Data.infantsByLevel[Mathf.Clamp(level - 1, 0, Data.infantsByLevel.Length - 1)]
+            : Data.infantCount + Data.infantsPerLevel * (level - 1);
+
+        float InfantAttackAt(int level) => ByLevel(Data.infantAttackByLevel, level, Data.infantAttack * (1f + Data.infantStatPerLevel * (level - 1)));
         public float InfantMoveSpeed => Data.infantMoveSpeed;
         public float InfantMeleeRange => Data.infantMeleeRange;
         public int InfantTotal => infants.Count;
