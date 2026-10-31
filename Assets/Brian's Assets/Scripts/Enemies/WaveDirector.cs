@@ -199,7 +199,9 @@ namespace Brian
         }
 
         public event Action<int, int> WaveStarted;   // (waveNumber, totalWaves)
+        public event Action<int> WaveEnded;          // (waveNumber) fired when a wave is fully cleared, including the final wave
         public event Action<int> ReadyForWave;       // fired when a wave is cleared and the next one (number given) can be started
+        public event Action GameWon;                 // fired once when the final wave is cleared
 
         /// Enemies still to spawn in the active wave plus enemies alive on the field.
         public int WaveEnemiesLeft =>
@@ -393,12 +395,15 @@ namespace Brian
                         if (Enemy.Active.Count == 0)
                         {
                             phase = WavePhase.Finished;
+                            WaveEnded?.Invoke(waveIndex + 1);
+                            GameWon?.Invoke();   // WaveAudioDirector plays the win sound from this
                             if (GameManager.Instance != null) GameManager.Instance.Win();
                         }
                     }
                     else if (Enemy.Active.Count == 0)
                     {
                         // Wave fully spawned AND fully dead: unlock the button for the next one.
+                        WaveEnded?.Invoke(waveIndex + 1);   // number of the wave that just ended
                         waveIndex++;
                         phase = WavePhase.Waiting;
                         ReadyForWave?.Invoke(waveIndex + 1);
