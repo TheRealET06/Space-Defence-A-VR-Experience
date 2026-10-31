@@ -44,7 +44,6 @@
 
 # Visual Studio cache directory
 .vs/
-.vscode/
 
 # Gradle cache directory
 .gradle/
@@ -113,3 +112,10 @@ InitTestScene*.unity*
 
 # Auto-generated cache in Assets folder
 /[Aa]ssets/[Ss]ceneDependencyCache*
+
+# Build leftovers and editor logs
+*_BackUpThisFolder_ButDontShipItWithYourGame/
+*_BurstDebugInformation_DoNotShip/
+UpgradeLog*.htm
+/Assets/_Recovery/
+/Assets/_Recovery.meta

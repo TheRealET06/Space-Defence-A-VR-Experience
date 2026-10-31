@@ -7,18 +7,18 @@ namespace Brian
     {
         public override string Description => Join(Summary, "Upgrade: stronger pulse and a bigger buff.");
 
-        protected override List<(string label, string change)> UpgradePreview()
+        protected override List<(string label, string change)> UpgradePreview() => new List<(string, string)>
         {
-            var list = base.UpgradePreview();
-            list.Add(("Ally buff", $"+{Data.buffPercentPerLevel * 100f:0}%"));
-            return list;
-        }
+            ("Pulse damage", $"+{AttackAt(Level + 1) - AttackAt(Level):0.#}"),
+            ("Ally buff", $"+{(BuffAt(Level + 1) - BuffAt(Level)) * 100f:0}%")
+        };
 
         float cooldown;
 
         public int Allies { get; private set; }
-        protected override float AttackBonus => 1f + Data.attackPerAlly * Mathf.Min(Allies, Data.maxAllies);
-        public float BuffPercent => Data.buffPercent + Data.buffPercentPerLevel * (Level - 1);
+        public float BuffPercent => BuffAt(Level);
+
+        float BuffAt(int level) => ByLevel(Data.buffByLevel, level, Data.buffPercent + Data.buffPercentPerLevel * (level - 1));
 
         void Update()
         {
@@ -66,9 +66,11 @@ namespace Brian
 
         public override void FillStats(List<(string label, string value)> rows)
         {
-            base.FillStats(rows);
-            rows.Add(("Ally buff", $"+{BuffPercent * 100f:0}%"));
-            rows.Add(("Allies in range", $"{Allies}  <color=#9fd7ff>(+{Data.attackPerAlly * Mathf.Min(Allies, Data.maxAllies) * 100f:0}% atk)</color>"));
+            rows.Add(("Pulse damage", BaseAttack.ToString("0.#")));
+            rows.Add(("Pulse every", $"{1f / Mathf.Max(0.05f, AttackSpeed):0.#} s"));
+            rows.Add(("Range", BaseRange.ToString("0.##") + " m"));
+            rows.Add(("Ally buff", $"+{BuffPercent * 100f:0}% damage"));
+            rows.Add(("Towers buffed", Allies.ToString()));
         }
     }
 }

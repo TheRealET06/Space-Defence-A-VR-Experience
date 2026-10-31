@@ -103,6 +103,7 @@ GameObject:
   m_Component:
   - component: {fileID: 574318669731238}
   - component: {fileID: 3405979592473668733}
+  - component: {fileID: 6529874110399382745}
   - component: {fileID: 6986105721216474747}
   m_Layer: 0
   m_Name: Mining Tower
@@ -121,7 +122,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.6, y: 0.6, z: 0.6}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8714478395843222979}
@@ -130,6 +131,19 @@ Transform:
   - {fileID: 3772968932917977887}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6529874110399382745
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5334816415982310083}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b99e97fb3e1f4045a97a32d62385893e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Brian.Home
+  maxHealth: 20
 --- !u!114 &3405979592473668733
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -143,7 +157,7 @@ MonoBehaviour:
   m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::Brian.MiningTower
   data: {fileID: 11400000, guid: 62523032a9f94e889dcc3a6a87d24f01, type: 2}
-  barrelPrices: 0a0000000c0000000f00000014000000
+  barrelPrices: 0a0000000f0000001c00000023000000
 --- !u!114 &6986105721216474747
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -188,7 +202,7 @@ MonoBehaviour:
   - {fileID: 5166401614378369120}
   - {fileID: 8316586539932053477}
   - {fileID: 1543488893160636380}
-  miningHeadRangeIncreasePerLevel: 3
+  miningHeadRangeIncreasePerLevel: 1.25
   maxMiningHeadLevel: 4
   repairPerEngineerPerSecond: 1
   powerProcessingBonusPerLevel: 0
@@ -521,7 +535,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4815138282842339143, guid: 80656d3f4c3dd9644892b3df49bbfc69, type: 3}
       propertyPath: captureRange
-      value: 7
+      value: 1.25
       objectReference: {fileID: 0}
     - target: {fileID: 4815138282842339143, guid: 80656d3f4c3dd9644892b3df49bbfc69, type: 3}
       propertyPath: logRejectedTargets

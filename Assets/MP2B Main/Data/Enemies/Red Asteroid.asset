@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Brian.EnemyData
   displayName: Red Asteroid
   prefab: {fileID: -578630716126993075, guid: bdc9bbd01f090b0448dcf4c50dfba706, type: 3}
-  maxHealth: 20
+  maxHealth: 40
   maxSpeed: 0.6
-  minSpeedFraction: 0.35
-  homeDamage: 1
+  minSpeedFraction: 1
+  homeDamage: 2
   killReward: 5

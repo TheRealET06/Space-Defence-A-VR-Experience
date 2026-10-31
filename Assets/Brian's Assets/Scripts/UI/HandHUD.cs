@@ -38,7 +38,7 @@ namespace Brian
             float height = 278f + Mathf.CeilToInt(towers.Length / 2f) * 66f;
             root = UIKit.Canvas("Hand HUD", transform, new Vector2(Width, height), metersPerPixel);
 
-            UIKit.Text(root, "HOME", 15, 16, 12, 100, 20, TextAlignmentOptions.TopLeft, UIKit.DimText);
+            UIKit.Text(root, "BASE", 15, 16, 12, 100, 20, TextAlignmentOptions.TopLeft, UIKit.DimText);
             hpText = UIKit.Text(root, "", 15, 200, 12, 164, 20, TextAlignmentOptions.TopRight);
             UIKit.Box(root, new Color(1f, 1f, 1f, 0.12f), 16, 36, Width - 32, 14);
             hpFill = UIKit.Box(root, new Color(0.45f, 1f, 0.55f), 16, 36, Width - 32, 14);
@@ -157,7 +157,7 @@ namespace Brian
             gemsText.text = eco != null ? $"<size=13><color=#9fd7ff>GEMS</color></size>  {eco.Gems}" : "";
             gasText.text = eco != null ? $"<size=13><color=#8dffa0>GAS</color></size>  {eco.Gas}" : "";
             var mine = MiningTower.Instance;
-            string mining = mine == null ? "" : mine.Running ? "\n<color=#8dffa0>Mining Tower: mining</color>" : "\nMining Tower: paused";
+            string mining = mine == null ? "" : mine.Running ? "\n<color=#8dffa0>Base: mining</color>" : "\nBase: mining paused";
 
             var wave = WaveDirector.Instance;
             var gm = GameManager.Instance;
@@ -191,7 +191,7 @@ namespace Brian
                 if (hoveredTower != null)
                     rewardText.text = $"<color=#ffffff><b>{hoveredTower.displayName}</b>  {CostText(hoveredTower)}</color>\n{hoveredTower.description}";
                 else
-                    rewardText.text = "The Mining Tower mines and sells by itself during waves.\nWalk over to it to upgrade.";
+                    rewardText.text = "Your base mines and sells by itself while the wave timer\nruns. Select it to upgrade. Towers unlock after each wave.";
                 rewardText.color = UIKit.DimText;
             }
 

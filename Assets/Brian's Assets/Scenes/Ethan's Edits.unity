@@ -374,229 +374,229 @@ MonoBehaviour:
   hardEnemy: {fileID: 11400000, guid: 2da1867940dd8fb46ab1ec62d290f0d3, type: 2}
   seed: 1234
   manualWaves:
-  - name: Mining wave
+  - name: Wave 1
     delayBefore: 0
-    groups: []
     duration: 60
-    description: 'Mining wave: no enemies. Your Mining Tower mines and sells by itself while a wave is running. Walk over to upgrade it, and build your first defenses.'
-  - name: Wave 2
-    delayBefore: 0
+    description: 'Calm for 10 seconds, then a swarm of small asteroids. Your base
+      mines only while the timer runs: split your money between the base and towers.'
     groups:
     - enemy: {fileID: 11400000, guid: 8e882006910642445a7e9dfc0a43ef24, type: 2}
-      minCount: 10
-      maxCount: 10
-      startOffset: 0
-      interval: 2.6
-      intervalJitter: 0.2
-      healthMultiplier: 1
-    duration: 30
-    description: 
-  - name: Wave 3
-    delayBefore: 0
-    groups:
-    - enemy: {fileID: 11400000, guid: 8e882006910642445a7e9dfc0a43ef24, type: 2}
-      minCount: 8
-      maxCount: 8
-      startOffset: 0
-      interval: 3.2
-      intervalJitter: 0.2
+      minCount: 68
+      maxCount: 68
+      startOffset: 10.368
+      interval: 0.7353
+      intervalJitter: 0.3
       healthMultiplier: 1
     - enemy: {fileID: 11400000, guid: 606b172bc0a8c424db71db961ca3256c, type: 2}
-      minCount: 8
-      maxCount: 8
-      startOffset: 1.6
-      interval: 3.2
-      intervalJitter: 0.2
-      healthMultiplier: 1
-    duration: 30
-    description: 
-  - name: Wave 4
-    delayBefore: 0
-    groups:
-    - enemy: {fileID: 11400000, guid: 606b172bc0a8c424db71db961ca3256c, type: 2}
-      minCount: 10
-      maxCount: 10
-      startOffset: 0
-      interval: 2.6
-      intervalJitter: 0.2
-      healthMultiplier: 1
-    - enemy: {fileID: 11400000, guid: 86c22478abc6ffb4c8476024bb5d70d5, type: 2}
-      minCount: 6
-      maxCount: 6
-      startOffset: 2
-      interval: 4
-      intervalJitter: 0.2
-      healthMultiplier: 1
-    duration: 30
-    description: 
-  - name: Wave 5
-    delayBefore: 0
-    groups:
-    - enemy: {fileID: 11400000, guid: 86c22478abc6ffb4c8476024bb5d70d5, type: 2}
-      minCount: 10
-      maxCount: 10
-      startOffset: 0
-      interval: 2.6
-      intervalJitter: 0.2
-      healthMultiplier: 1
-    - enemy: {fileID: 11400000, guid: fc86e46056368a747af2ec21f1f8914a, type: 2}
-      minCount: 3
-      maxCount: 3
-      startOffset: 4
-      interval: 8
-      intervalJitter: 0.2
-      healthMultiplier: 1
-    duration: 30
-    description: 
-  - name: Wave 6
-    delayBefore: 0
-    groups:
-    - enemy: {fileID: 11400000, guid: 86c22478abc6ffb4c8476024bb5d70d5, type: 2}
-      minCount: 8
-      maxCount: 8
-      startOffset: 0
-      interval: 3.2
-      intervalJitter: 0.2
-      healthMultiplier: 1
-    - enemy: {fileID: 11400000, guid: 878db55996721b445b39bb414012624b, type: 2}
-      minCount: 8
-      maxCount: 8
-      startOffset: 1.6
-      interval: 3.2
-      intervalJitter: 0.2
-      healthMultiplier: 1
-    - enemy: {fileID: 11400000, guid: fc86e46056368a747af2ec21f1f8914a, type: 2}
-      minCount: 3
-      maxCount: 3
-      startOffset: 4
-      interval: 8
-      intervalJitter: 0.2
-      healthMultiplier: 1
-    duration: 30
-    description: 
-  - name: Wave 7
-    delayBefore: 0
-    groups:
-    - enemy: {fileID: 11400000, guid: 878db55996721b445b39bb414012624b, type: 2}
-      minCount: 10
-      maxCount: 10
-      startOffset: 0
-      interval: 2.6
-      intervalJitter: 0.2
-      healthMultiplier: 1
-    - enemy: {fileID: 11400000, guid: fc86e46056368a747af2ec21f1f8914a, type: 2}
-      minCount: 5
-      maxCount: 5
-      startOffset: 2.5
-      interval: 5
-      intervalJitter: 0.2
-      healthMultiplier: 1
-    duration: 30
-    description: 
-  - name: Wave 8
-    delayBefore: 0
-    groups:
-    - enemy: {fileID: 11400000, guid: 878db55996721b445b39bb414012624b, type: 2}
-      minCount: 10
-      maxCount: 10
-      startOffset: 0
-      interval: 2.6
-      intervalJitter: 0.2
-      healthMultiplier: 1
-    - enemy: {fileID: 11400000, guid: fc86e46056368a747af2ec21f1f8914a, type: 2}
-      minCount: 6
-      maxCount: 6
-      startOffset: 2
-      interval: 4.3
-      intervalJitter: 0.2
-      healthMultiplier: 1
-    - enemy: {fileID: 11400000, guid: 2da1867940dd8fb46ab1ec62d290f0d3, type: 2}
-      minCount: 1
-      maxCount: 1
-      startOffset: 12
-      interval: 1
-      intervalJitter: 0.2
-      healthMultiplier: 1
-    duration: 30
-    description: 
-  - name: Wave 9
-    delayBefore: 0
-    groups:
-    - enemy: {fileID: 11400000, guid: 878db55996721b445b39bb414012624b, type: 2}
-      minCount: 10
-      maxCount: 10
-      startOffset: 0
-      interval: 2.6
-      intervalJitter: 0.2
-      healthMultiplier: 1
-    - enemy: {fileID: 11400000, guid: fc86e46056368a747af2ec21f1f8914a, type: 2}
-      minCount: 8
-      maxCount: 8
-      startOffset: 1.5
-      interval: 3.2
-      intervalJitter: 0.2
-      healthMultiplier: 1
-    - enemy: {fileID: 11400000, guid: 2da1867940dd8fb46ab1ec62d290f0d3, type: 2}
-      minCount: 2
-      maxCount: 2
-      startOffset: 6
-      interval: 12
-      intervalJitter: 0.2
-      healthMultiplier: 1
-    duration: 30
-    description: 
-  - name: Wave 10
-    delayBefore: 0
-    groups:
-    - enemy: {fileID: 11400000, guid: fc86e46056368a747af2ec21f1f8914a, type: 2}
-      minCount: 12
-      maxCount: 12
-      startOffset: 0
-      interval: 2.2
-      intervalJitter: 0.2
-      healthMultiplier: 1
-    - enemy: {fileID: 11400000, guid: 878db55996721b445b39bb414012624b, type: 2}
-      minCount: 10
-      maxCount: 10
-      startOffset: 1.3
-      interval: 2.6
-      intervalJitter: 0.2
-      healthMultiplier: 1
-    - enemy: {fileID: 11400000, guid: 2da1867940dd8fb46ab1ec62d290f0d3, type: 2}
-      minCount: 3
-      maxCount: 3
-      startOffset: 4
-      interval: 8
-      intervalJitter: 0.2
-      healthMultiplier: 1
-    duration: 30
-    description: 
-  - name: Wave 11
-    delayBefore: 0
-    groups:
-    - enemy: {fileID: 11400000, guid: fc86e46056368a747af2ec21f1f8914a, type: 2}
-      minCount: 14
-      maxCount: 14
-      startOffset: 0
-      interval: 1.9
-      intervalJitter: 0.2
-      healthMultiplier: 1
-    - enemy: {fileID: 11400000, guid: 878db55996721b445b39bb414012624b, type: 2}
-      minCount: 12
-      maxCount: 12
-      startOffset: 1
-      interval: 2.2
-      intervalJitter: 0.2
-      healthMultiplier: 1
-    - enemy: {fileID: 11400000, guid: 2da1867940dd8fb46ab1ec62d290f0d3, type: 2}
       minCount: 4
       maxCount: 4
-      startOffset: 3
-      interval: 6.5
-      intervalJitter: 0.2
+      startOffset: 16.25
+      interval: 12.5
+      intervalJitter: 0.3
       healthMultiplier: 1
+  - name: Wave 2
+    delayBefore: 0
     duration: 30
-    description: Final wave.
+    description: A bigger swarm with the first Red asteroids. Bioship is now available.
+    groups:
+    - enemy: {fileID: 11400000, guid: 8e882006910642445a7e9dfc0a43ef24, type: 2}
+      minCount: 40
+      maxCount: 40
+      startOffset: 0.75
+      interval: 1.5
+      intervalJitter: 0.3
+      healthMultiplier: 1
+    - enemy: {fileID: 11400000, guid: 606b172bc0a8c424db71db961ca3256c, type: 2}
+      minCount: 40
+      maxCount: 40
+      startOffset: 0.75
+      interval: 1.5
+      intervalJitter: 0.3
+      healthMultiplier: 1
+    - enemy: {fileID: 11400000, guid: 86c22478abc6ffb4c8476024bb5d70d5, type: 2}
+      minCount: 3
+      maxCount: 3
+      startOffset: 10
+      interval: 20
+      intervalJitter: 0.3
+      healthMultiplier: 1
+  - name: Wave 3
+    delayBefore: 0
+    duration: 30
+    description: 'A heavy swarm with more Reds. Prism Ark is now available: its bursts
+      shred swarms.'
+    groups:
+    - enemy: {fileID: 11400000, guid: 8e882006910642445a7e9dfc0a43ef24, type: 2}
+      minCount: 40
+      maxCount: 40
+      startOffset: 0.75
+      interval: 1.5
+      intervalJitter: 0.3
+      healthMultiplier: 1
+    - enemy: {fileID: 11400000, guid: 606b172bc0a8c424db71db961ca3256c, type: 2}
+      minCount: 50
+      maxCount: 50
+      startOffset: 0.6
+      interval: 1.2
+      intervalJitter: 0.3
+      healthMultiplier: 1
+    - enemy: {fileID: 11400000, guid: 86c22478abc6ffb4c8476024bb5d70d5, type: 2}
+      minCount: 13
+      maxCount: 13
+      startOffset: 2.308
+      interval: 4.6154
+      intervalJitter: 0.3
+      healthMultiplier: 1
+  - name: Wave 4
+    delayBefore: 0
+    duration: 30
+    description: 'Reds and the first Purple. Ophanim is now available: build your
+      towers around it.'
+    groups:
+    - enemy: {fileID: 11400000, guid: 8e882006910642445a7e9dfc0a43ef24, type: 2}
+      minCount: 20
+      maxCount: 20
+      startOffset: 1.5
+      interval: 3
+      intervalJitter: 0.3
+      healthMultiplier: 1
+    - enemy: {fileID: 11400000, guid: 606b172bc0a8c424db71db961ca3256c, type: 2}
+      minCount: 50
+      maxCount: 50
+      startOffset: 0.6
+      interval: 1.2
+      intervalJitter: 0.3
+      healthMultiplier: 1
+    - enemy: {fileID: 11400000, guid: 86c22478abc6ffb4c8476024bb5d70d5, type: 2}
+      minCount: 27
+      maxCount: 27
+      startOffset: 1.111
+      interval: 2.2222
+      intervalJitter: 0.3
+      healthMultiplier: 1
+    - enemy: {fileID: 11400000, guid: 878db55996721b445b39bb414012624b, type: 2}
+      minCount: 1
+      maxCount: 1
+      startOffset: 30
+      interval: 60
+      intervalJitter: 0.3
+      healthMultiplier: 1
+  - name: Wave 5
+    delayBefore: 0
+    duration: 30
+    description: 'BOSS: Suns. Each Sun has 325 HP and costs 8 base health if it gets
+      through. Leviathan is now available.'
+    groups:
+    - enemy: {fileID: 11400000, guid: 878db55996721b445b39bb414012624b, type: 2}
+      minCount: 20
+      maxCount: 20
+      startOffset: 1.5
+      interval: 3
+      intervalJitter: 0.3
+      healthMultiplier: 1
+    - enemy: {fileID: 11400000, guid: fc86e46056368a747af2ec21f1f8914a, type: 2}
+      minCount: 4
+      maxCount: 4
+      startOffset: 7.5
+      interval: 15
+      intervalJitter: 0.3
+      healthMultiplier: 1
+  - name: Wave 6
+    delayBefore: 0
+    duration: 30
+    description: A wall of Purple asteroids.
+    groups:
+    - enemy: {fileID: 11400000, guid: 86c22478abc6ffb4c8476024bb5d70d5, type: 2}
+      minCount: 20
+      maxCount: 20
+      startOffset: 1.5
+      interval: 3
+      intervalJitter: 0.3
+      healthMultiplier: 1
+    - enemy: {fileID: 11400000, guid: 878db55996721b445b39bb414012624b, type: 2}
+      minCount: 50
+      maxCount: 50
+      startOffset: 0.6
+      interval: 1.2
+      intervalJitter: 0.3
+      healthMultiplier: 1
+    - enemy: {fileID: 11400000, guid: fc86e46056368a747af2ec21f1f8914a, type: 2}
+      minCount: 1
+      maxCount: 1
+      startOffset: 30
+      interval: 60
+      intervalJitter: 0.3
+      healthMultiplier: 1
+  - name: Wave 7
+    delayBefore: 0
+    duration: 30
+    description: Purples and twenty-four Suns.
+    groups:
+    - enemy: {fileID: 11400000, guid: 878db55996721b445b39bb414012624b, type: 2}
+      minCount: 50
+      maxCount: 50
+      startOffset: 0.6
+      interval: 1.2
+      intervalJitter: 0.3
+      healthMultiplier: 1
+    - enemy: {fileID: 11400000, guid: fc86e46056368a747af2ec21f1f8914a, type: 2}
+      minCount: 24
+      maxCount: 24
+      startOffset: 1.25
+      interval: 2.5
+      intervalJitter: 0.3
+      healthMultiplier: 1
+  - name: Wave 8
+    delayBefore: 0
+    duration: 30
+    description: 'The biggest wave: 126 enemies, mostly Suns.'
+    groups:
+    - enemy: {fileID: 11400000, guid: 878db55996721b445b39bb414012624b, type: 2}
+      minCount: 40
+      maxCount: 40
+      startOffset: 0.75
+      interval: 1.5
+      intervalJitter: 0.3
+      healthMultiplier: 1
+    - enemy: {fileID: 11400000, guid: fc86e46056368a747af2ec21f1f8914a, type: 2}
+      minCount: 86
+      maxCount: 86
+      startOffset: 0.349
+      interval: 0.6977
+      intervalJitter: 0.3
+      healthMultiplier: 1
+  - name: Wave 9
+    delayBefore: 0
+    duration: 30
+    description: 'Black Holes arrive: 3500 HP each, and one reaching your base ends
+      the game.'
+    groups:
+    - enemy: {fileID: 11400000, guid: fc86e46056368a747af2ec21f1f8914a, type: 2}
+      minCount: 79
+      maxCount: 79
+      startOffset: 0.38
+      interval: 0.7595
+      intervalJitter: 0.3
+      healthMultiplier: 1
+    - enemy: {fileID: 11400000, guid: 2da1867940dd8fb46ab1ec62d290f0d3, type: 2}
+      minCount: 9
+      maxCount: 9
+      startOffset: 3.333
+      interval: 6.6667
+      intervalJitter: 0.3
+      healthMultiplier: 1
+  - name: Wave 10
+    delayBefore: 0
+    duration: 30
+    description: 'FINAL BOSS: 18 Black Holes, one every few seconds.'
+    groups:
+    - enemy: {fileID: 11400000, guid: 2da1867940dd8fb46ab1ec62d290f0d3, type: 2}
+      minCount: 18
+      maxCount: 18
+      startOffset: 1.667
+      interval: 3.3333
+      intervalJitter: 0.3
+      healthMultiplier: 1
   generateWaves: 0
   generatedWaveCount: 10
   pool: []
@@ -622,8 +622,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84b44a1c63914f8ea8be681e7452125a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Brian.Economy
-  startingMoney: 100
-  incomePerSecond: 2
+  startingMoney: 120
 --- !u!114 &349121826
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -636,6 +635,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 308ca9e38bf447258a31a06a1f04006d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Brian.GameManager
+  wd: {fileID: 1119357105}
 --- !u!4 &349121827
 Transform:
   m_ObjectHideFlags: 0
@@ -681,15 +681,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Brian.HandHUD
   towers:
+  - {fileID: 11400000, guid: 53f4cc69877339c4e8f884268ec8e4fc, type: 2}
   - {fileID: 11400000, guid: eddbdeb13304f4646ba978b338414bda, type: 2}
+  - {fileID: 11400000, guid: f000beff67a08c646ae8406ead52777f, type: 2}
   - {fileID: 11400000, guid: 2dd9f3dcce64c2a48a0e0ed2d4fb063c, type: 2}
   - {fileID: 11400000, guid: a013e9add8da6a34191e4c63f06ced87, type: 2}
-  - {fileID: 11400000, guid: 53f4cc69877339c4e8f884268ec8e4fc, type: 2}
-  - {fileID: 11400000, guid: f000beff67a08c646ae8406ead52777f, type: 2}
-  - {fileID: 11400000, guid: b013f503a1788564cb720ac08d4a909b, type: 2}
-  - {fileID: 11400000, guid: 2150f188ae24b8441a71bca373a2c5e8, type: 2}
-  - {fileID: 11400000, guid: 0027ea459aefa3b499c12cd2928adcae, type: 2}
-  - {fileID: 11400000, guid: bc4eec2410fea7949a28cdb8fbbaecb9, type: 2}
   handOffset: {x: 0, y: 0.09, z: 0.04}
   handRotation: {x: 0, y: -30, z: 0}
   metersPerPixel: 0.0005
@@ -905,6 +901,254 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &709693016
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 709693017}
+  - component: {fileID: 709693018}
+  m_Layer: 0
+  m_Name: Audio Source
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &709693017
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 709693016}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 1, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!82 &709693018
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 709693016}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 0}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!1 &1119357104
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1119357106}
+  - component: {fileID: 1119357105}
+  m_Layer: 0
+  m_Name: WaveAudioDirector
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1119357105
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1119357104}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30b421c143fb30b4ba2a7d185b56d7d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Brian.WaveAudioDirector
+  waveDirector: {fileID: 349121823}
+  musicSource: {fileID: 709693018}
+  sfxSource: {fileID: 0}
+  musicVolume: 0.5
+  sfxVolume: 1
+  crossfadeSeconds: 1.5
+  interludeMusic: {fileID: 8300000, guid: 1de14ac8828eaef4b8f8bf28ceafc74c, type: 3}
+  defaultWaveMusic: {fileID: 8300000, guid: 466977421d70184468a03e2ca80f091c, type: 3}
+  bossMusic: {fileID: 8300000, guid: 78b8ab923ce995744b1643a2b8644c00, type: 3}
+  defaultWaveStartSfx: {fileID: 8300000, guid: 16fba6d30ed741d4a9fdd6e79ee2f3ac, type: 3}
+  defaultWaveEndSfx: {fileID: 8300000, guid: 16fba6d30ed741d4a9fdd6e79ee2f3ac, type: 3}
+  gameWonSfx: {fileID: 8300000, guid: c684d80b77ff40c458430bcf487f7bcc, type: 3}
+  gameLostSfx: {fileID: 8300000, guid: 30042882e7bceda45b63c2c400a64318, type: 3}
+  stopMusicOnGameEnd: 1
+  waves:
+  - waveNumber: 1
+    isBossWave: 0
+    music: {fileID: 0}
+    startSfx: {fileID: 8300000, guid: 5072859a29c91554da0974c102b8f2d6, type: 3}
+    endSfx: {fileID: 0}
+    interludeAfter: {fileID: 8300000, guid: 1de14ac8828eaef4b8f8bf28ceafc74c, type: 3}
+  - waveNumber: 2
+    isBossWave: 0
+    music: {fileID: 0}
+    startSfx: {fileID: 0}
+    endSfx: {fileID: 0}
+    interludeAfter: {fileID: 8300000, guid: 1de14ac8828eaef4b8f8bf28ceafc74c, type: 3}
+  - waveNumber: 3
+    isBossWave: 0
+    music: {fileID: 0}
+    startSfx: {fileID: 0}
+    endSfx: {fileID: 0}
+    interludeAfter: {fileID: 8300000, guid: 41bd537c0d41da548b90c13df0cdb824, type: 3}
+  - waveNumber: 4
+    isBossWave: 0
+    music: {fileID: 0}
+    startSfx: {fileID: 0}
+    endSfx: {fileID: 0}
+    interludeAfter: {fileID: 8300000, guid: 1de71d30af054f14d81eaaea9f8ca803, type: 3}
+  - waveNumber: 5
+    isBossWave: 1
+    music: {fileID: 0}
+    startSfx: {fileID: 0}
+    endSfx: {fileID: 0}
+    interludeAfter: {fileID: 8300000, guid: c28514abaf86324419c37d740f14db78, type: 3}
+  - waveNumber: 6
+    isBossWave: 0
+    music: {fileID: 0}
+    startSfx: {fileID: 0}
+    endSfx: {fileID: 0}
+    interludeAfter: {fileID: 8300000, guid: e94508da4e83c854d9a243190164da94, type: 3}
+  - waveNumber: 7
+    isBossWave: 0
+    music: {fileID: 0}
+    startSfx: {fileID: 0}
+    endSfx: {fileID: 0}
+    interludeAfter: {fileID: 8300000, guid: 7c4a149ad5a6071438cfc2dbc28406c5, type: 3}
+  - waveNumber: 8
+    isBossWave: 0
+    music: {fileID: 0}
+    startSfx: {fileID: 0}
+    endSfx: {fileID: 0}
+    interludeAfter: {fileID: 8300000, guid: fcdc6ed514e917646baff16b3eabddef, type: 3}
+  - waveNumber: 9
+    isBossWave: 0
+    music: {fileID: 0}
+    startSfx: {fileID: 0}
+    endSfx: {fileID: 0}
+    interludeAfter: {fileID: 8300000, guid: 7900bf76a133e8a44bdeb4be5512b722, type: 3}
+  - waveNumber: 10
+    isBossWave: 1
+    music: {fileID: 0}
+    startSfx: {fileID: 0}
+    endSfx: {fileID: 0}
+    interludeAfter: {fileID: 0}
+--- !u!4 &1119357106
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1119357104}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 3.26715, y: 0, z: 15.42518}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1139864824
 GameObject:
   m_ObjectHideFlags: 0
@@ -936,7 +1180,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Brian.TowerPanel
   rangePrefab: {fileID: 6045757738272167579, guid: caaf151c40b5c7846ba74a03c95cfaa7, type: 3}
   metersPerPixel: 0.0006
-  heightAbove: 0.35
+  comfortDistance: 0.8
+  messageDuration: 3.5
 --- !u!4 &1139864826
 Transform:
   m_ObjectHideFlags: 0
@@ -1028,15 +1273,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Brian.UnlockPopup
   towers:
-  - {fileID: 11400000, guid: f000beff67a08c646ae8406ead52777f, type: 2}
   - {fileID: 11400000, guid: 53f4cc69877339c4e8f884268ec8e4fc, type: 2}
   - {fileID: 11400000, guid: eddbdeb13304f4646ba978b338414bda, type: 2}
-  - {fileID: 11400000, guid: a013e9add8da6a34191e4c63f06ced87, type: 2}
+  - {fileID: 11400000, guid: f000beff67a08c646ae8406ead52777f, type: 2}
   - {fileID: 11400000, guid: 2dd9f3dcce64c2a48a0e0ed2d4fb063c, type: 2}
-  - {fileID: 11400000, guid: b013f503a1788564cb720ac08d4a909b, type: 2}
-  - {fileID: 11400000, guid: 2150f188ae24b8441a71bca373a2c5e8, type: 2}
-  - {fileID: 11400000, guid: 0027ea459aefa3b499c12cd2928adcae, type: 2}
-  - {fileID: 11400000, guid: bc4eec2410fea7949a28cdb8fbbaecb9, type: 2}
+  - {fileID: 11400000, guid: a013e9add8da6a34191e4c63f06ced87, type: 2}
   metersPerPixel: 0.0012
   distance: 1.2
   heightBelowEyes: 0.05
@@ -1222,7 +1463,7 @@ MonoBehaviour:
   grid: {fileID: 1469345585}
   pathPrefab: {fileID: 8270878465617315978, guid: 771e0f45290dcd8438b16adbe7bd6013, type: 3}
   startPrefab: {fileID: 0}
-  endPrefab: {fileID: 7171859137688760005, guid: 485576c058b781540be97fb6b392c72a, type: 3}
+  endPrefab: {fileID: 0}
   spawnParent: {fileID: 0}
   randomEndpoints: 0
   minEndpointDistance: 8
@@ -1751,7 +1992,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 5b0e3c9d7f2a4c61a8e4d2b7c9f01a35, type: 2}
+  - {fileID: 2100000, guid: 7c06759dccd24cdcbdadbf0058484046, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1792,8 +2033,8 @@ Transform:
   m_GameObject: {fileID: 1880084397}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 6, y: 0, z: 14}
-  m_LocalScale: {x: 3.2, y: 1, z: 4.8}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 2, y: 1, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1805916731}
@@ -1877,23 +2118,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &8798020862299825269
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 3846921121527142232}
-  - component: {fileID: 8592742534836635631}
-  m_Layer: 0
-  m_Name: Mining Region
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
 --- !u!4 &3846921121527142232
 Transform:
   m_ObjectHideFlags: 0
@@ -1903,13 +2127,70 @@ Transform:
   m_GameObject: {fileID: 8798020862299825269}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 6, y: 0, z: 22}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8592742534836635631
+--- !u!1001 &7210578313339591845
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 574318669731238, guid: c5ed4c2a635141bc84d0880c54a20f0e, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -6.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 574318669731238, guid: c5ed4c2a635141bc84d0880c54a20f0e, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 574318669731238, guid: c5ed4c2a635141bc84d0880c54a20f0e, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 574318669731238, guid: c5ed4c2a635141bc84d0880c54a20f0e, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 574318669731238, guid: c5ed4c2a635141bc84d0880c54a20f0e, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 574318669731238, guid: c5ed4c2a635141bc84d0880c54a20f0e, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 574318669731238, guid: c5ed4c2a635141bc84d0880c54a20f0e, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 574318669731238, guid: c5ed4c2a635141bc84d0880c54a20f0e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 574318669731238, guid: c5ed4c2a635141bc84d0880c54a20f0e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 574318669731238, guid: c5ed4c2a635141bc84d0880c54a20f0e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5334816415982310083, guid: c5ed4c2a635141bc84d0880c54a20f0e, type: 3}
+      propertyPath: m_Name
+      value: Mining Tower
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: c5ed4c2a635141bc84d0880c54a20f0e, type: 3}
+--- !u!114 &8592742534836635632
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1919,7 +2200,42 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b755c78eac2a4a3c8bb3c4e7b6e9b5b6, type: 3}
-  m_Name:
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Brian.AsteroidField
+  bands:
+  - prefab: {fileID: 1226324906047858999, guid: 8a5fa3c35a3c6b948a2d9df6c6799993, type: 3}
+    minDistance: 0
+    maxDistance: 1.25
+    startCount: 5
+    cap: 5
+  - prefab: {fileID: 5118508563000850792, guid: 449ad7598a508fa4aba9e2827ccb378f, type: 3}
+    minDistance: 1.25
+    maxDistance: 2.5
+    startCount: 5
+    cap: 5
+  - prefab: {fileID: 613985255027862022, guid: 7952a373ce8ca724b9b3dffbf2606d71, type: 3}
+    minDistance: 2.5
+    maxDistance: 3.75
+    startCount: 4
+    cap: 4
+  - prefab: {fileID: 5325677315635501699, guid: a465940c2161c3b429c9a043dc9db541, type: 3}
+    minDistance: 3.75
+    maxDistance: 5
+    startCount: 4
+    cap: 4
+  spawnInterval: 2
+  bandMargin: 0.1
+--- !u!114 &8592742534836635633
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8798020862299825269}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b755c78eac2a4a3c8bb3c4e7b6e9b5b6, type: 3}
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Brian.AsteroidField
   bands:
   - prefab: {fileID: 1226324906047858999, guid: 8a5fa3c35a3c6b948a2d9df6c6799993, type: 3}
@@ -1943,75 +2259,61 @@ MonoBehaviour:
     startCount: 2
     cap: 3
   spawnInterval: 9
-  size: {x: 32, y: 32}
-  edgeMargin: 1.5
-  floorClearance: 1
   bandMargin: 0.3
-  minElevation: -10
-  lowestArmAngle: -40
-  spacing: 2.5
-  attempts: 40
---- !u!1001 &7210578313339591845
-PrefabInstance:
+--- !u!1 &8798020862299825269
+GameObject:
   m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3846921121527142232}
+  - component: {fileID: 8592742534836635632}
+  - component: {fileID: 8592742534836635633}
+  m_Layer: 0
+  m_Name: Asteroid Field
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!1 &8798020862299825270
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8798020862299825271}
+  m_Layer: 0
+  m_Name: Mining Region
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8798020862299825271
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8798020862299825270}
   serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 574318669731238, guid: c5ed4c2a635141bc84d0880c54a20f0e, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 574318669731238, guid: c5ed4c2a635141bc84d0880c54a20f0e, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 574318669731238, guid: c5ed4c2a635141bc84d0880c54a20f0e, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 22
-      objectReference: {fileID: 0}
-    - target: {fileID: 574318669731238, guid: c5ed4c2a635141bc84d0880c54a20f0e, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 574318669731238, guid: c5ed4c2a635141bc84d0880c54a20f0e, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 574318669731238, guid: c5ed4c2a635141bc84d0880c54a20f0e, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 574318669731238, guid: c5ed4c2a635141bc84d0880c54a20f0e, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 574318669731238, guid: c5ed4c2a635141bc84d0880c54a20f0e, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 574318669731238, guid: c5ed4c2a635141bc84d0880c54a20f0e, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 180
-      objectReference: {fileID: 0}
-    - target: {fileID: 574318669731238, guid: c5ed4c2a635141bc84d0880c54a20f0e, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5334816415982310083, guid: c5ed4c2a635141bc84d0880c54a20f0e, type: 3}
-      propertyPath: m_Name
-      value: Mining Tower
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: c5ed4c2a635141bc84d0880c54a20f0e, type: 3}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
+  - {fileID: 8798020862299825271}
   - {fileID: 1880084401}
   - {fileID: 76996066}
   - {fileID: 1767684618}
@@ -2028,3 +2330,5 @@ SceneRoots:
   - {fileID: 1257923199}
   - {fileID: 3846921121527142232}
   - {fileID: 7210578313339591845}
+  - {fileID: 1119357106}
+  - {fileID: 709693017}

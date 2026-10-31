@@ -12,8 +12,8 @@ namespace Brian
 
         public float Percent => Time.time < until ? percent : 0f;
         public float AttackMultiplier => 1f + Percent;
-        public float SpeedMultiplier => 1f + Percent;
-        public float RangeMultiplier => 1f + Percent;
+        public float SpeedMultiplier => 1f;
+        public float RangeMultiplier => 1f;
 
         void OnEnable() => All.Add(this);
 

@@ -11,118 +11,128 @@ namespace Brian
         public class Band
         {
             public ResourceAsteroid prefab;
-            public float minDistance = 4f;
-            public float maxDistance = 7f;
+            public float minDistance;
+            public float maxDistance = 1.25f;
             public int startCount = 2;
             public int cap = 4;
         }
 
-        [SerializeField] Band[] bands;
-        [SerializeField] float spawnInterval = 9f;
-        [SerializeField] Vector2 size = new Vector2(32f, 32f);
-        [SerializeField] float edgeMargin = 1.5f;
-        [SerializeField] float floorClearance = 1f;
-        [SerializeField] float bandMargin = 0.3f;
-        [SerializeField] float minElevation = -10f;
-        [SerializeField] float lowestArmAngle = -40f;
-        [SerializeField] float spacing = 2.5f;
-        [SerializeField] int attempts = 40;
+        public struct Face
+        {
+            public Vector3 origin;
+            public Vector3 normal;
+        }
 
-        MiningTower tower;
-        Transform arm;
+        [SerializeField] Band[] bands;
+        [SerializeField] float spawnInterval = 2f;
+        [SerializeField] float bandMargin = 0.1f;
+
+        TowerGrid grid;
+        Face face;
+        bool ready;
         List<ResourceAsteroid>[] alive;
-        readonly List<int> open = new List<int>();
-        float timer;
+        readonly Dictionary<ResourceAsteroid, Vector3Int> cells = new Dictionary<ResourceAsteroid, Vector3Int>();
+        readonly List<Vector3Int> candidates = new List<Vector3Int>();
+        readonly List<ResourceAsteroid> gone = new List<ResourceAsteroid>();
+        float[] timers;
+        float colliderSweep;
+
+        public static bool TryGetFace(TowerGrid grid, out Face face)
+        {
+            face = default;
+            if (grid == null) return false;
+            if (!grid.TryGetPoint(Vector3Int.zero, out Vector3 corner)) return false;
+            if (!grid.TryGetPoint(new Vector3Int(grid.Columns - 1, 0, 0), out Vector3 far)) return false;
+            face.origin = corner;
+            face.normal = (far - corner).normalized;
+            return true;
+        }
 
         void Start()
         {
-            tower = FindAnyObjectByType<MiningTower>();
-            if (tower == null || bands == null || bands.Length == 0)
+            grid = FindAnyObjectByType<TowerGrid>();
+            if (bands == null || bands.Length == 0 || !TryGetFace(grid, out face))
             {
-                Debug.LogError("AsteroidField: needs a Mining Tower in the scene and at least one band.", this);
+                Debug.LogError("AsteroidField: needs a TowerGrid in the scene and at least one band.", this);
                 enabled = false;
                 return;
             }
-            arm = FindChild(tower.transform, "Arm");
-
             alive = new List<ResourceAsteroid>[bands.Length];
+            timers = new float[bands.Length];
             for (int i = 0; i < bands.Length; i++) alive[i] = new List<ResourceAsteroid>();
-            for (int i = 0; i < bands.Length; i++)
-                for (int n = 0; n < Mathf.Min(bands[i].startCount, bands[i].cap); n++) Spawn(i);
-            timer = spawnInterval;
         }
 
         void Update()
         {
-            for (int i = 0; i < bands.Length; i++) alive[i].RemoveAll(a => a == null || a.IsChunk);
+            if (!ready)
+            {
+                ready = true;
+                for (int i = 0; i < bands.Length; i++)
+                {
+                    for (int n = 0; n < Mathf.Min(bands[i].startCount, bands[i].cap); n++) Spawn(i);
+                    timers[i] = spawnInterval;
+                }
+                return;
+            }
 
-            timer -= Time.deltaTime;
-            if (timer > 0f) return;
-            timer = spawnInterval;
+            gone.Clear();
+            foreach (var pair in cells)
+                if (pair.Key == null) gone.Add(pair.Key);
+            foreach (var a in gone)
+            {
+                grid.SetOccupied(cells[a], false);
+                cells.Remove(a);
+            }
+            for (int i = 0; i < bands.Length; i++) alive[i].RemoveAll(a => a == null);
 
-            open.Clear();
+            colliderSweep -= Time.deltaTime;
+            if (colliderSweep <= 0f)
+            {
+                colliderSweep = 0.1f;
+                foreach (var c in GetComponentsInChildren<Collider>()) c.enabled = false;
+            }
+
+            var wave = WaveDirector.Instance;
+            if (wave == null || !wave.WaveRunning || wave.TimeLeft <= 0f) return;
+
             for (int i = 0; i < bands.Length; i++)
-                if (alive[i].Count < bands[i].cap) open.Add(i);
-            if (open.Count > 0) Spawn(open[Random.Range(0, open.Count)]);
+            {
+                if (alive[i].Count >= bands[i].cap)
+                {
+                    timers[i] = spawnInterval;
+                    continue;
+                }
+                timers[i] -= Time.deltaTime;
+                if (timers[i] > 0f) continue;
+                timers[i] = spawnInterval;
+                Spawn(i);
+            }
         }
 
         void Spawn(int index)
         {
             var band = bands[index];
             if (band.prefab == null) return;
-            for (int a = 0; a < attempts; a++)
-            {
-                if (!TryPick(band, out Vector3 p)) continue;
-                alive[index].Add(Instantiate(band.prefab, p, Random.rotation, transform));
-                return;
-            }
-        }
 
-        bool TryPick(Band band, out Vector3 p)
-        {
-            Vector3 center = tower.RangeCenter;
-            float near = band.minDistance + bandMargin;
-            float far = band.maxDistance - bandMargin;
-            float dist = Mathf.Pow(Random.Range(near * near * near, far * far * far), 1f / 3f);
-            float elevation = Mathf.Asin(Random.Range(Mathf.Sin(minElevation * Mathf.Deg2Rad), 1f));
-            float azimuth = Random.Range(0f, Mathf.PI * 2f);
-            Vector3 dir = new Vector3(Mathf.Cos(elevation) * Mathf.Cos(azimuth), Mathf.Sin(elevation), Mathf.Cos(elevation) * Mathf.Sin(azimuth));
-            p = center + dir * dist;
+            candidates.Clear();
+            for (int x = 0; x < grid.Columns; x++)
+                for (int y = 0; y < grid.Layers; y++)
+                    for (int z = 0; z < grid.Rows; z++)
+                    {
+                        var c = new Vector3Int(x, y, z);
+                        if (grid.IsOccupied(c) || !grid.TryGetPoint(c, out Vector3 p)) continue;
+                        float depth = Vector3.Dot(p - face.origin, face.normal);
+                        if (depth >= band.minDistance + bandMargin && depth <= band.maxDistance - bandMargin) candidates.Add(c);
+                    }
+            if (candidates.Count == 0) return;
 
-            Vector3 local = p - transform.position;
-            if (local.y < floorClearance) return false;
-            if (Mathf.Abs(local.x) > size.x * 0.5f - edgeMargin) return false;
-            if (Mathf.Abs(local.z) > size.y * 0.5f - edgeMargin) return false;
-
-            if (arm != null)
-            {
-                Vector3 fromArm = p - arm.position;
-                float armElevation = Mathf.Atan2(fromArm.y, new Vector2(fromArm.x, fromArm.z).magnitude) * Mathf.Rad2Deg;
-                if (armElevation < lowestArmAngle) return false;
-            }
-
-            float spacingSqr = spacing * spacing;
-            foreach (var list in alive)
-                foreach (var other in list)
-                    if (other != null && (other.transform.position - p).sqrMagnitude < spacingSqr) return false;
-            return true;
-        }
-
-        static Transform FindChild(Transform parent, string name)
-        {
-            foreach (Transform child in parent)
-            {
-                if (child.name == name) return child;
-                var found = FindChild(child, name);
-                if (found != null) return found;
-            }
-            return null;
-        }
-
-        void OnDrawGizmosSelected()
-        {
-            Gizmos.color = new Color(0.6f, 0.8f, 1f, 0.4f);
-            Gizmos.DrawWireCube(transform.position + Vector3.up * 6f, new Vector3(size.x, 12f, size.y));
+            var cell = candidates[Random.Range(0, candidates.Count)];
+            grid.TryGetPoint(cell, out Vector3 point);
+            var asteroid = Instantiate(band.prefab, point, Random.rotation, transform);
+            foreach (var c in asteroid.GetComponentsInChildren<Collider>()) c.enabled = false;
+            grid.SetOccupied(cell, true);
+            cells[asteroid] = cell;
+            alive[index].Add(asteroid);
         }
     }
 }

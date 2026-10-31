@@ -27,7 +27,18 @@ namespace Brian
         public float Range => BaseRange * Buff.RangeMultiplier;
 
         public bool CanUpgrade => Level < Data.maxLevel;
-        public int UpgradeCost => Mathf.RoundToInt(Data.upgradeCost * Mathf.Pow(Data.upgradeCostGrowth, Level - 1));
+        public int UpgradeCost => Data.upgradeCosts != null && Data.upgradeCosts.Length >= Level
+            ? Data.upgradeCosts[Level - 1]
+            : Mathf.RoundToInt(Data.upgradeCost * Mathf.Pow(Data.upgradeCostGrowth, Level - 1));
+
+        public float SplashRadius => SplashAt(Level);
+        public float SplashAt(int level) => ByLevel(Data.splashByLevel, level, Data.splashRadius);
+
+        public float AttackAt(int level) => ByLevel(Data.attackByLevel, level, Data.attack + Data.attackPerLevel * (level - 1));
+        public float AttackSpeedAt(int level) => ByLevel(Data.attackSpeedByLevel, level, Data.attackSpeed + Data.attackSpeedPerLevel * (level - 1));
+
+        protected static float ByLevel(float[] values, int level, float fallback) =>
+            values != null && values.Length > 0 ? values[Mathf.Clamp(level - 1, 0, values.Length - 1)] : fallback;
         public int SellValue => Mathf.RoundToInt(TotalSpent * Data.refundFraction);
 
         protected virtual void Awake()
@@ -79,6 +90,7 @@ namespace Brian
 
         public virtual Vector3 RangeCenter => transform.position;
         public virtual float MaxSelectDistance => float.PositiveInfinity;
+        public virtual bool ShowsRange => true;
         public string Summary => Data != null ? Data.description : "";
         public virtual string Description => Join(Summary, "Upgrade: more attack and attack speed.");
 
@@ -88,17 +100,21 @@ namespace Brian
         {
             var list = new List<(string, string)>
             {
-                ("Attack", $"+{Data.attackPerLevel * Buff.AttackMultiplier * AttackBonus:0.#}"),
-                ("Attack speed", $"+{Data.attackSpeedPerLevel * Buff.SpeedMultiplier:0.##} /s")
+                ("Attack", $"+{(AttackAt(Level + 1) - AttackAt(Level)) * Buff.AttackMultiplier * AttackBonus:0.#}"),
+                ("Attack speed", $"+{AttackSpeedAt(Level + 1) - AttackSpeedAt(Level):0.##} /s")
             };
             if (Data.rangePerLevel > 0f) list.Add(("Range", $"+{Data.rangePerLevel * Buff.RangeMultiplier:0.##} m"));
+            if (SplashAt(Level + 1) > SplashAt(Level)) list.Add(("Splash", $"+{SplashAt(Level + 1) - SplashAt(Level):0.##} m"));
             return list;
         }
 
         public virtual Vector3 PanelAnchor(Vector3 eye, out bool centered)
         {
             centered = false;
-            return transform.position + Vector3.up * 0.35f;
+            Vector3 toEye = eye - transform.position;
+            toEye.y = 0f;
+            if (toEye.sqrMagnitude > 0.0001f) toEye.Normalize();
+            return transform.position + toEye * 0.2f + Vector3.up * 0.08f;
         }
 
         public virtual void FillActions(List<TowerAction> actions)
@@ -129,6 +145,7 @@ namespace Brian
             rows.Add(("Attack", WithBuff(BaseAttack, Attack, "0.#")));
             rows.Add(("Attack speed", WithBuff(BaseAttackSpeed, AttackSpeed, "0.##") + " /s"));
             rows.Add(("Range", WithBuff(BaseRange, Range, "0.##") + " m"));
+            if (SplashRadius > 0f) rows.Add(("Splash", $"{SplashRadius:0.##} m radius"));
         }
 
         protected string WithBuff(float baseValue, float value, string format)

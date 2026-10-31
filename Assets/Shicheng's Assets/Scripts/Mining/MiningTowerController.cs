@@ -480,7 +480,7 @@ public class MiningTowerController : MonoBehaviour
          * mechanical arm reach limit.
          */
         float maxArmReach =
-            targetSelector.CaptureRange;
+            targetSelector.ArmReach;
 
         if (
             currentArmReach >=
@@ -691,13 +691,13 @@ public class MiningTowerController : MonoBehaviour
 
         if (
             targetDistance >
-            targetSelector.CaptureRange
+            targetSelector.ArmReach
         )
         {
             FailCapture(
                 $"Target escaped capture range. " +
                 $"Distance = {targetDistance:F2} m, " +
-                $"Range = {targetSelector.CaptureRange:F2} m"
+                $"Range = {targetSelector.ArmReach:F2} m"
             );
 
             return false;
