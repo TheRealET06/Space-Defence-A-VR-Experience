@@ -24,7 +24,7 @@ MonoBehaviour:
   attackPerLevel: 4
   attackSpeedPerLevel: 0.2
   rangePerLevel: 0
-  maxLevel: 1
+  maxLevel: 3
   upgradeCost: 40
   upgradeCostGrowth: 1.5
   refundFraction: 0.7
@@ -45,6 +45,6 @@ MonoBehaviour:
   infantMeleeRange: 0.12
   infantStatPerLevel: 0.15
   gasPerSecond: 2
-  unlockWave: 1
+  unlockWave: 2
   unlockHeadline: 
   unlockText: 

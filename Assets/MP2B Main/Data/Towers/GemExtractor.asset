@@ -17,6 +17,7 @@ MonoBehaviour:
   icon: {fileID: 21300000, guid: 17d565bb4a7744b41b7e4dc7e3a09e35, type: 3}
   prefab: {fileID: 2473379812107810328, guid: 0e176336e3083624ab4ae5eaa4858dc3, type: 3}
   cost: 50
+  gemCost: 0
   attack: 1
   attackSpeed: 1
   range: 0
@@ -43,6 +44,7 @@ MonoBehaviour:
   infantMoveSpeed: 1.2
   infantMeleeRange: 0.12
   infantStatPerLevel: 0.15
-  unlockWave: 1
+  gasPerSecond: 2
+  unlockWave: 2
   unlockHeadline: 
   unlockText: 

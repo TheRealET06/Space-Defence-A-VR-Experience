@@ -45,6 +45,6 @@ MonoBehaviour:
   infantMeleeRange: 0.12
   infantStatPerLevel: 0.15
   gasPerSecond: 2
-  unlockWave: 1
+  unlockWave: 3
   unlockHeadline: 
   unlockText: 
