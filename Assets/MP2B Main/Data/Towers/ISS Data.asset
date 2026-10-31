@@ -13,17 +13,20 @@ MonoBehaviour:
   m_Name: ISS Data
   m_EditorClassIdentifier: Assembly-CSharp::Brian.TowerData
   displayName: ISS
-  description: 'Finished space station. Steady fire at the nearest enemy.'
+  description: 'Humanity''s space station. Cheap, quick shots at the enemy furthest along the path. Strong early, falls behind late.'
   icon: {fileID: 21300000, guid: 3b2e62babc5249f42921c2cd027852cd, type: 3}
   prefab: {fileID: 8590418199075452814, guid: bff712c59ce5feb47a0482c2fd684654, type: 3}
-  cost: 15
-  attack: 5
-  attackSpeed: 1
+  cost: 40
+  attack: 2
+  attackSpeed: 2
   range: 1.5
   attackPerLevel: 4
   attackSpeedPerLevel: 0.2
   rangePerLevel: 0
-  maxLevel: 5
+  attackByLevel: 00000040000040406822e240cdccb041
+  attackSpeedByLevel: 000000409a9919400000404000008040
+  upgradeCosts: 2800000064000000f0000000
+  maxLevel: 4
   upgradeCost: 40
   upgradeCostGrowth: 1.5
   refundFraction: 0.7
@@ -43,7 +46,6 @@ MonoBehaviour:
   infantMoveSpeed: 1.2
   infantMeleeRange: 0.12
   infantStatPerLevel: 0.15
-  unlockWave: 3
-  unlockHeadline: Finished ISS
-  unlockText: Humanity has truly stepped foot into the galaxy, build these towers
-    for better damage!
+  unlockWave: 1
+  unlockHeadline: 'ISS'
+  unlockText: 'Humanity''s first line of defense.'

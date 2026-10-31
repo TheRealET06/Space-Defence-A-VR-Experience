@@ -69,7 +69,7 @@ namespace Brian
             hovered = -1;
             current = tower;
             root.gameObject.SetActive(true);
-            if (range != null) range.gameObject.SetActive(true);
+            if (range != null) range.gameObject.SetActive(tower.ShowsRange);
             Anchor();
             Refresh();
             Place();

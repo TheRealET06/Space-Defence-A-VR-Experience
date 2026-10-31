@@ -8,15 +8,16 @@ namespace Brian
         public static MiningTower Instance { get; private set; }
 
         [SerializeField] TowerData data;
-        [SerializeField] float selectDistance = 7f;
-        [SerializeField] float panelSideOffset = 3f;
+        [SerializeField] float panelSideOffset = 1.2f;
         [SerializeField] float panelEyeHeight = 1.5f;
+        [SerializeField] float armReach = 12f;
         [SerializeField] float retryInterval = 1f;
-        [SerializeField] int[] barrelPrices = { 10, 12, 15, 20 };
-        [SerializeField] float[] powerSpeeds = { 1f, 1.6f, 2.2f, 3f };
-        [SerializeField] int[] powerCosts = { 40, 80, 160 };
-        [SerializeField] float[] cargoYields = { 1f, 1.5f, 2f, 2.5f };
-        [SerializeField] int[] cargoCosts = { 30, 60, 120 };
+        [SerializeField] int[] barrelPrices = { 10, 15, 28, 35 };
+        [SerializeField] float[] powerSpeeds = { 1f, 1.5f, 2.25f, 3.375f };
+        [SerializeField] int[] powerCosts = { 103, 278, 887 };
+        [SerializeField] float[] cargoYields = { 1f, 1.6f, 2.56f, 4.1f };
+        [SerializeField] int[] cargoCosts = { 68, 163, 299 };
+        [SerializeField] float processingBoost = 2f;
 
         MiningTowerController controller;
         MiningTowerTargetSelector selector;
@@ -40,13 +41,13 @@ namespace Brian
         bool CargoLoaded => cargo != null && cargo.IsLoaded;
         bool Processing => transfer != null && transfer.IsBusy;
 
-        public override Vector3 RangeCenter => selector != null ? selector.transform.position : transform.position;
-        public override float MaxSelectDistance => selectDistance;
+        public override bool ShowsRange => false;
         public override string Description =>
-            "Mines and sells asteroids by itself while a wave is running.\n" +
+            "Your base. If enemies destroy it, you lose. It mines and sells asteroids by itself while the wave timer runs.\n" +
             "- Mining Head: reach the next ring of richer asteroids\n" +
             "- Power: every step runs faster\n" +
-            "- Cargo: more barrels from each asteroid";
+            "- Cargo: more barrels from each asteroid\n" +
+            "Each upgrade pays for itself in about a minute, but money spent here is not defending you.";
 
         protected override bool BlocksPlayer => true;
 
@@ -69,6 +70,27 @@ namespace Brian
             if (hub != null) while (hub.UnlockNextRepository()) { }
             ApplySpeed();
             ApplyCargo();
+            if (AsteroidField.TryGetFace(FindAnyObjectByType<TowerGrid>(), out var face))
+            {
+                AlignEdge(face);
+                if (selector != null) selector.SetPlane(face.origin, face.normal, armReach);
+            }
+        }
+
+        void AlignEdge(AsteroidField.Face face)
+        {
+            bool any = false;
+            float edge = float.MinValue;
+            foreach (var r in GetComponentsInChildren<Renderer>())
+            {
+                if (!(r is MeshRenderer || r is SkinnedMeshRenderer) || r.GetComponentInParent<SimpleWaypointFollower>() != null) continue;
+                var b = r.bounds;
+                Vector3 n = face.normal;
+                float reach = Vector3.Dot(b.center - face.origin, n) + Mathf.Abs(b.extents.x * n.x) + Mathf.Abs(b.extents.y * n.y) + Mathf.Abs(b.extents.z * n.z);
+                edge = Mathf.Max(edge, reach);
+                any = true;
+            }
+            if (any) transform.position -= face.normal * edge;
         }
 
         void OnDestroy()
@@ -82,7 +104,7 @@ namespace Brian
 
             var wave = WaveDirector.Instance;
             var gm = GameManager.Instance;
-            Running = wave != null && wave.WaveRunning && (gm == null || gm.IsPlaying);
+            Running = wave != null && wave.WaveRunning && wave.TimeLeft > 0f && (gm == null || gm.IsPlaying);
             if (!Running || controller == null || ArmBusy) return;
 
             if (CargoLoaded)
@@ -111,7 +133,7 @@ namespace Brian
         {
             if (controller != null) controller.SpeedMultiplier = Speed;
             if (transfer != null) transfer.SpeedMultiplier = Speed;
-            if (processor != null) processor.SpeedMultiplier = Speed;
+            if (processor != null) processor.SpeedMultiplier = Speed * processingBoost;
         }
 
         void ApplyCargo()
@@ -137,7 +159,7 @@ namespace Brian
             }
             if (!TryUpgrade()) return;
             if (upgrades != null) upgrades.ApplyUpgrade(MiningTowerUpgradeType.MiningHead);
-            PanelMessage($"Mining Head Lv {Level}: reach {Range:0} m, can mine {(AsteroidFamily)(Level - 1)}.", false);
+            PanelMessage($"Mining Head Lv {Level}: reach {BaseRange:0.##} m into the grid, can mine {(AsteroidFamily)(Level - 1)}.", false);
         }
 
         void UpgradePower()
@@ -160,7 +182,7 @@ namespace Brian
 
         string Activity()
         {
-            if (!Running) return "Paused (no wave)";
+            if (!Running) return "Paused (timer not running)";
             if (Processing) return "Processing";
             if (ArmBusy) return "Harvesting";
             return "Searching";
@@ -174,13 +196,13 @@ namespace Brian
             if (toEye.sqrMagnitude < 0.01f) toEye = Vector3.back;
             toEye.Normalize();
             Vector3 side = Vector3.Cross(Vector3.up, toEye);
-            return transform.position + side * panelSideOffset + toEye * 1.5f + Vector3.up * panelEyeHeight;
+            return transform.position + side * panelSideOffset + toEye * 0.6f + Vector3.up * panelEyeHeight;
         }
 
         public override void FillStats(List<(string label, string value)> rows)
         {
             rows.Add(("Status", Activity()));
-            rows.Add(("Reach", $"{Range:0} m"));
+            rows.Add(("Reach", $"{BaseRange:0.##} m into the grid"));
             rows.Add(("Can mine", Level == 1 ? "Slate" : $"Slate to {(AsteroidFamily)(Level - 1)}"));
             rows.Add(("Speed", $"x{Speed:0.0}"));
             rows.Add(("Cargo", $"x{CargoYield:0.0} barrels"));
@@ -192,24 +214,24 @@ namespace Brian
             var eco = Economy.Instance;
             int money = eco != null ? eco.Money : 0;
 
-            if (CanUpgrade) actions.Add(new TowerAction($"Mining Head\nLv {Level + 1}  ${UpgradeCost}", money >= UpgradeCost, UpgradeMiningHead, new List<(string, string)>
+            if (CanUpgrade) actions.Add(new TowerAction($"Mining Head\nLv {Level} -> {Level + 1}  ${UpgradeCost}", money >= UpgradeCost, UpgradeMiningHead, new List<(string, string)>
             {
-                ("Reach", $"+{Data.rangePerLevel:0} m"),
+                ("Reach", $"+{Data.rangePerLevel:0.##} m"),
                 ("Can mine", $"+{(AsteroidFamily)Level}")
             }));
-            else actions.Add(new TowerAction("Mining Head\nMAX", false, null));
+            else actions.Add(new TowerAction($"Mining Head\nLv {Level}  MAX", false, null));
 
-            if (PowerLevel < MaxPowerLevel) actions.Add(new TowerAction($"Power\nLv {PowerLevel + 1}  ${powerCosts[PowerLevel - 1]}", money >= powerCosts[PowerLevel - 1], UpgradePower, new List<(string, string)>
+            if (PowerLevel < MaxPowerLevel) actions.Add(new TowerAction($"Power\nLv {PowerLevel} -> {PowerLevel + 1}  ${powerCosts[PowerLevel - 1]}", money >= powerCosts[PowerLevel - 1], UpgradePower, new List<(string, string)>
             {
                 ("Speed", $"-> x{powerSpeeds[PowerLevel]:0.0}")
             }));
-            else actions.Add(new TowerAction("Power\nMAX", false, null));
+            else actions.Add(new TowerAction($"Power\nLv {PowerLevel}  MAX", false, null));
 
-            if (CargoLevel < MaxCargoLevel) actions.Add(new TowerAction($"Cargo\nLv {CargoLevel + 1}  ${cargoCosts[CargoLevel - 1]}", money >= cargoCosts[CargoLevel - 1], UpgradeCargo, new List<(string, string)>
+            if (CargoLevel < MaxCargoLevel) actions.Add(new TowerAction($"Cargo\nLv {CargoLevel} -> {CargoLevel + 1}  ${cargoCosts[CargoLevel - 1]}", money >= cargoCosts[CargoLevel - 1], UpgradeCargo, new List<(string, string)>
             {
                 ("Cargo", $"-> x{cargoYields[CargoLevel]:0.0}")
             }));
-            else actions.Add(new TowerAction("Cargo\nMAX", false, null));
+            else actions.Add(new TowerAction($"Cargo\nLv {CargoLevel}  MAX", false, null));
         }
     }
 }

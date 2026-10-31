@@ -14,7 +14,7 @@ namespace Brian
             if (Data == null) return;
             cooldown -= Time.deltaTime;
 
-            Enemy target = Enemy.NearestInRange(transform.position, transform.position, Range);
+            Enemy target = Enemy.FirstInRange(transform.position, Range);
             if (target == null) return;
 
             Vector3 dir = target.transform.position - transform.position;
@@ -36,7 +36,7 @@ namespace Brian
             }
             Vector3 from = firePoint != null ? firePoint.position : transform.position;
             Projectile p = Instantiate(Data.projectilePrefab, from, Quaternion.identity);
-            p.Launch(target, Attack, Data.projectileSpeed);
+            p.Launch(target, Attack, Data.projectileSpeed, SplashRadius, Data.pulsePrefab, Data.pulseDuration);
         }
     }
 }

@@ -70,6 +70,22 @@ public class MiningTowerTargetSelector : MonoBehaviour
     public float CaptureRange =>
         captureRange;
 
+    private bool planar;
+    private Vector3 planeOrigin;
+    private Vector3 planeNormal;
+    private float planarArmReach;
+
+    public float ArmReach =>
+        planar ? planarArmReach : captureRange;
+
+    public void SetPlane(Vector3 origin, Vector3 normal, float armReach)
+    {
+        planar = true;
+        planeOrigin = origin;
+        planeNormal = normal.normalized;
+        planarArmReach = armReach;
+    }
+
     public ResourceAsteroid CurrentTarget =>
         currentTarget;
 
@@ -172,12 +188,14 @@ public class MiningTowerTargetSelector : MonoBehaviour
             // -------------------------------------------------
 
             float distance =
-                Vector3.Distance(
-                    rangeOrigin,
-                    asteroid.transform.position
-                );
+                planar
+                    ? Vector3.Dot(asteroid.transform.position - planeOrigin, planeNormal)
+                    : Vector3.Distance(
+                        rangeOrigin,
+                        asteroid.transform.position
+                    );
 
-            if (distance > captureRange)
+            if (distance > captureRange || distance < 0f)
             {
                 if (logRejectedTargets)
                 {

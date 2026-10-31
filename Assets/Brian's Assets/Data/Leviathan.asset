@@ -13,17 +13,18 @@ MonoBehaviour:
   m_Name: Leviathan
   m_EditorClassIdentifier: Assembly-CSharp::Brian.TowerData
   displayName: Leviathan
-  description: 'Giant mother creature. Its infants fly out and hunt enemies in its range.'
+  description: 'Giant mother creature. Her infants fly out and hunt enemies in her range. Weak at first, but every upgrade adds infants and power: the strongest single tower at max level.'
   icon: {fileID: 21300000, guid: 10abf1be8eef148d4aa4b96b2af7a9f0, type: 3}
   prefab: {fileID: 4635083163222650566, guid: 785179eeb446f1f46922073e5518f52b, type: 3}
-  cost: 100
+  cost: 120
   attack: 0
   attackSpeed: 0
   range: 1.4
   attackPerLevel: 0
   attackSpeedPerLevel: 0
   rangePerLevel: 0
-  maxLevel: 5
+  upgradeCosts: 780000002c010000d0020000
+  maxLevel: 4
   upgradeCost: 70
   upgradeCostGrowth: 1.5
   refundFraction: 0.7
@@ -40,9 +41,11 @@ MonoBehaviour:
   infantsPerLevel: 1
   infantAttack: 6
   infantAttackSpeed: 1.5
-  infantMoveSpeed: 1.2
+  infantMoveSpeed: 1.8
   infantMeleeRange: 0.12
   infantStatPerLevel: 0.15
-  unlockWave: 6
+  infantsByLevel: 01000000020000000400000007000000
+  infantAttackByLevel: 48e1ca4033330741cdcc804114ae2342
+  unlockWave: 5
   unlockHeadline: 'Leviathan Unlocked'
-  unlockText: 'A giant alien mother creature. She never attacks herself; her young fly out to hunt enemies in her territory and return to her when it is clear.'
+  unlockText: 'A giant alien mother and her young. Weak at first, unstoppable when fully upgraded.'

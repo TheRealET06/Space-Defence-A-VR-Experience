@@ -4,11 +4,13 @@ using UnityEngine.SceneManagement;
 
 namespace Brian
 {
+    
     public enum GameState { Ready, Playing, Won, Lost }
 
     public class GameManager : MonoBehaviour
     {
         public static GameManager Instance { get; private set; }
+        public WaveAudioDirector wd;
 
         public GameState State { get; private set; } = GameState.Ready;
         public float ElapsedTime { get; private set; }
@@ -40,9 +42,17 @@ namespace Brian
             StateChanged?.Invoke(State);
         }
 
-        public void Win() => End(GameState.Won);
+        public void Win()
+        {
+            wd.PlayGameWon();
+            End(GameState.Won);
+        }
 
-        public void Lose() => End(GameState.Lost);
+        public void Lose()
+        {
+            wd.PlayGameLost();
+            End(GameState.Lost);
+        }
 
         void End(GameState result)
         {

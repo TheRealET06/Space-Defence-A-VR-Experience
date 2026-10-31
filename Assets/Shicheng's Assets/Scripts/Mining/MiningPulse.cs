@@ -79,8 +79,14 @@ public class MiningPulse : MonoBehaviour
             target.transform.position -
             transform.position;
 
-        if (direction.sqrMagnitude < 0.0001f)
+        float step =
+            speed * SpeedMultiplier * Time.fixedDeltaTime;
+
+        if (direction.magnitude <= step + 0.1f)
+        {
+            Hit(target);
             return;
+        }
 
         Vector3 normalizedDirection =
             direction.normalized;
@@ -121,6 +127,11 @@ public class MiningPulse : MonoBehaviour
             return;
         }
 
+        Hit(asteroid);
+    }
+
+    void Hit(ResourceAsteroid asteroid)
+    {
         resolved = true;
 
         Debug.Log(

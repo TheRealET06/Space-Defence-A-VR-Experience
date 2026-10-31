@@ -77,7 +77,7 @@ namespace Brian
                 if (e != null && e.IsAlive && (e.transform.position - home).sqrMagnitude <= rangeSqr)
                     InRange.Add(e);
             if (InRange.Count == 0) return null;
-            InRange.Sort((a, b) => (a.transform.position - home).sqrMagnitude.CompareTo((b.transform.position - home).sqrMagnitude));
+            InRange.Sort((a, b) => b.Progress.CompareTo(a.Progress));
             return InRange[index % InRange.Count];
         }
     }

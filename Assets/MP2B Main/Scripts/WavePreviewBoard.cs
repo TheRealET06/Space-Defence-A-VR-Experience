@@ -16,11 +16,11 @@ namespace Brian
         const float RowPx = 42f;
 
         TextMeshProUGUI title, subtitle, list;
-        int shownWave = -1;
+        int shownWave = int.MinValue;
 
         void Start()
         {
-            float listHeight = (maxRows + 2) * RowPx;
+            float listHeight = (maxRows + 2) * RowPx + 90f;
             float h = 120f + listHeight + 30f;
             var root = UIKit.Canvas("Wave Preview", transform, new Vector2(W, h), metersPerPixel);
 
@@ -36,9 +36,10 @@ namespace Brian
             if (list == null || wd == null) return;
 
             // The preview only changes when the "next wave" changes, so don't rebuild text every frame.
-            int wave = wd.UpcomingWaveNumber;
-            if (wave == shownWave) return;
-            shownWave = wave;
+            int wave = wd.Phase == WavePhase.Finished ? 0 : wd.CurrentWave;
+            int key = wd.WaveRunning ? -wave : wave;
+            if (key == shownWave) return;
+            shownWave = key;
             Rebuild(wd, wave);
         }
 
@@ -56,7 +57,7 @@ namespace Brian
             int total = 0;
             foreach (var l in lines) total += l.count;
 
-            title.text = $"NEXT WAVE  <size=24><color=#b8c0cc>{wave}/{wd.TotalWaves}</color></size>";
+            title.text = $"{(wd.WaveRunning ? "CURRENT WAVE" : "NEXT WAVE")}  <size=24><color=#b8c0cc>{wave}/{wd.TotalWaves}</color></size>";
             subtitle.text = $"{wd.GetWaveName(wave)}  ·  {total} enemies";
 
             if (lines.Count == 0)
@@ -82,6 +83,10 @@ namespace Brian
 
             if (lines.Count > shown)
                 sb.AppendLine($"<color=#8a93a6>+{lines.Count - shown} more types</color>");
+
+            string description = wd.GetWaveDescription(wave);
+            if (!string.IsNullOrEmpty(description))
+                sb.Append($"<size=19><color=#b8c0cc>{description}</color></size>");
 
             list.text = sb.ToString();
         }

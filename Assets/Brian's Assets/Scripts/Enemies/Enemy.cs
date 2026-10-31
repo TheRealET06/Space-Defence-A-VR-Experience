@@ -27,6 +27,24 @@ namespace Brian
             return best;
         }
 
+        public static Enemy FirstInRange(Vector3 center, float range)
+        {
+            Enemy best = null;
+            float bestProgress = float.MinValue;
+            float rangeSqr = range * range;
+            foreach (var e in Active)
+            {
+                if (e == null || !e.IsAlive) continue;
+                if ((e.transform.position - center).sqrMagnitude > rangeSqr) continue;
+                if (e.Progress > bestProgress)
+                {
+                    bestProgress = e.Progress;
+                    best = e;
+                }
+            }
+            return best;
+        }
+
         [SerializeField] bool faceDirection = true;
         [SerializeField] float turnSpeed = 360f;
 
@@ -35,6 +53,7 @@ namespace Brian
         public float Health { get; private set; }
         public float HealthFraction => MaxHealth > 0f ? Mathf.Clamp01(Health / MaxHealth) : 0f;
         public bool IsAlive => Health > 0f;
+        public float Progress { get; private set; }
         public float Speed => Data == null ? 0f : Data.maxSpeed * Mathf.Lerp(Data.minSpeedFraction, 1f, HealthFraction);
 
         List<Vector3> waypoints;
@@ -50,6 +69,7 @@ namespace Brian
             waypoints = path;
             up = upDirection;
             next = 1;
+            Progress = 0f;
             transform.position = path[0];
         }
 
@@ -69,12 +89,14 @@ namespace Brian
                 if (dist <= remaining)
                 {
                     transform.position = target;
+                    Progress += dist;
                     remaining -= dist;
                     next++;
                 }
                 else
                 {
                     transform.position = Vector3.MoveTowards(transform.position, target, remaining);
+                    Progress += remaining;
                     remaining = 0f;
                 }
             }

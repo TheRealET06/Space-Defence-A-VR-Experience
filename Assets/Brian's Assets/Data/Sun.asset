@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Brian.EnemyData
   displayName: Sun
   prefab: {fileID: 4175880135738588319, guid: 537148becd0a22549adf4799d8f1bee2, type: 3}
-  maxHealth: 100
+  maxHealth: 325
   maxSpeed: 0.6
-  minSpeedFraction: 0.35
-  homeDamage: 1
+  minSpeedFraction: 1
+  homeDamage: 8
   killReward: 5
