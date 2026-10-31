@@ -13,8 +13,14 @@ namespace Brian
         public int TotalSpent { get; private set; }
         public Buffable Buff { get; private set; }
 
-        public float BaseAttack => AttackAt(Level);
-        public float BaseAttackSpeed => AttackSpeedAt(Level);
+        // Node placement: towers that return true from UsesNode are built on a TowerNode of
+        // RequiredNode type (e.g. a gem asteroid) instead of a free grid point.
+        public TowerNode Node { get; set; }
+        public virtual bool UsesNode => false;
+        public virtual NodeType RequiredNode => NodeType.Generic;
+
+        public float BaseAttack => Data.attack + Data.attackPerLevel * (Level - 1);
+        public float BaseAttackSpeed => Data.attackSpeed + Data.attackSpeedPerLevel * (Level - 1);
         public float BaseRange => Data.range + Data.rangePerLevel * (Level - 1);
         public float Attack => BaseAttack * Buff.AttackMultiplier * AttackBonus;
         public float AttackSpeed => BaseAttackSpeed * Buff.SpeedMultiplier;
@@ -47,6 +53,11 @@ namespace Brian
         protected virtual void OnEnable() => All.Add(this);
 
         protected virtual void OnDisable() => All.Remove(this);
+
+        protected virtual void OnDestroy()
+        {
+            if (Node != null && Node.Occupant == this) Node.Occupant = null;
+        }
 
         public void Init(TowerData data, Vector3Int cell)
         {

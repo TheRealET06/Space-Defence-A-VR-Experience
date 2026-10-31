@@ -113,6 +113,13 @@ public class TowerGridSpawner : MonoBehaviour
             tower.root = go;           // so Sell destroys the whole spawned object
         }
 
+        TowerNode node = go.GetComponentInChildren<TowerNode>();
+        if (node != null)
+        {
+            node.cell = cell;
+            grid.RegisterNode(cell, node);
+        }
+
         grid.SetOccupied(cell, true);   // hides the marker too, if one exists
         spawned.Add(go);
         return true;
