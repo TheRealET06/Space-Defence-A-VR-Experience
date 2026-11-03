@@ -49,6 +49,7 @@ GameObject:
   - component: {fileID: 6020104313709640795}
   - component: {fileID: 7798341301904212359}
   - component: {fileID: 7929373099023613046}
+  - component: {fileID: 1918093671161213400}
   m_Layer: 0
   m_Name: Crystal Asteroid
   m_TagString: Untagged
@@ -85,6 +86,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea5da8ffc7dd43c43bd4404f3562825e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CrystalAsteroid
+  gems: 10
+  depleated: 0
+  gemsGone:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 4430954519766637106}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!135 &7929373099023613046
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -106,6 +124,21 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.13
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1918093671161213400
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6297167743783780973}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e4438fc313129df4794cc6246e34c957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TowerNode
+  nodeType: 1
+  snapPoint: {fileID: 6020104313709640795}
+  cell: {x: 0, y: 0, z: 0}
 --- !u!1001 &250279786957502266
 PrefabInstance:
   m_ObjectHideFlags: 0

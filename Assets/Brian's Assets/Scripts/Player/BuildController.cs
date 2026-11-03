@@ -10,6 +10,7 @@ namespace Brian
         [SerializeField] Material ghostMaterial;
         [SerializeField] RangeIndicator rangePrefab;
         [SerializeField] float pickRadius = 0.15f;
+        [SerializeField] float nodePickRadius = 0.4f;   // asteroids/nodes are bigger than grid points
         [SerializeField] float maxDistance = 15f;
 
         TowerData selected;
@@ -17,6 +18,8 @@ namespace Brian
         RangeIndicator range;
         Vector3Int cell;
         Vector3 point;
+        Quaternion rotation;
+        TowerNode node;                 // set when building a node tower (e.g. gem extractor)
         bool valid;
         int ignoreUntilFrame;
 
@@ -37,7 +40,7 @@ namespace Brian
             if (data == null || data.prefab == null) return;
             selected = data;
             ghost = MakeGhost(data.prefab.gameObject, ghostMaterial);
-            if (rangePrefab != null)
+            if (rangePrefab != null && !data.prefab.UsesNode)
             {
                 range = Instantiate(rangePrefab);
                 range.SetRange(data.range);
@@ -50,6 +53,7 @@ namespace Brian
         {
             selected = null;
             valid = false;
+            node = null;
             if (ghost != null) Destroy(ghost);
             if (range != null) Destroy(range.gameObject);
         }
@@ -64,12 +68,29 @@ namespace Brian
             }
 
             Ray ray = PlayerControls.Instance != null ? PlayerControls.Instance.AimRay : new Ray(Vector3.zero, Vector3.forward);
-            valid = grid != null && grid.TryGetFreePointAlongRay(ray, pickRadius, maxDistance, out cell, out point);
+            if (selected.prefab.UsesNode)
+            {
+                // Node towers can only go on a free node of the matching type
+                valid = grid != null && grid.TryGetFreeNodeAlongRay(ray, nodePickRadius, maxDistance,
+                                                                    selected.prefab.RequiredNode, out node);
+                if (valid)
+                {
+                    point = node.SnapPoint;
+                    rotation = grid.transform.rotation;   // upright like grid towers, not tumbling with the asteroid
+                    cell = new Vector3Int(-1, -1, -1);   // not a grid cell; TowerGrid ignores it
+                }
+            }
+            else
+            {
+                node = null;
+                valid = grid != null && grid.TryGetFreePointAlongRay(ray, pickRadius, maxDistance, out cell, out point);
+                if (valid) rotation = grid.transform.rotation;
+            }
 
             ghost.SetActive(valid);
             if (range != null) range.gameObject.SetActive(valid);
             if (!valid) return;
-            ghost.transform.SetPositionAndRotation(point, grid.transform.rotation);
+            ghost.transform.SetPositionAndRotation(point, rotation);
             if (range != null) range.transform.position = point;
         }
 
@@ -77,13 +98,25 @@ namespace Brian
         {
             if (selected == null || !valid || Time.frameCount < ignoreUntilFrame) return;
             var eco = Economy.Instance;
-            if (eco == null || !eco.TrySpend(selected.cost)) return;
+            int gemCost = selected.gemCost;
+            if (eco == null || !eco.CanAfford(selected.cost) || !eco.CanAffordGems(gemCost)) return;
+            eco.TrySpend(selected.cost);
+            eco.TrySpendGems(gemCost);
 
-            Tower tower = Instantiate(selected.prefab, point, grid.transform.rotation);
+            Tower tower = Instantiate(selected.prefab, point, rotation);
             tower.Init(selected, cell);
-            grid.SetOccupied(cell, true);
+            if (selected.prefab.UsesNode && node != null)
+            {
+                tower.Node = node;
+                node.Occupant = tower;
+                tower.transform.SetParent(node.transform, true);   // follows/dies with the node, as TowerPlacer did
+            }
+            else
+            {
+                grid.SetOccupied(cell, true);
+            }
 
-            if (!eco.CanAfford(selected.cost)) Cancel();
+            if (!eco.CanAfford(selected.cost) || !eco.CanAffordGems(gemCost)) Cancel();
         }
 
         static GameObject MakeGhost(GameObject prefab, Material material)
