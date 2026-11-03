@@ -24,7 +24,7 @@ namespace Brian
     {
         public string name = "Wave";
         public float delayBefore = 8f;    // countdown before this wave starts
-        public float duration = 30f;
+        public float duration = 60f;
         [TextArea(2, 4)] public string description;
         public List<SpawnGroup> groups = new List<SpawnGroup>();
     }
@@ -298,7 +298,7 @@ namespace Brian
 
         Wave BuildGeneratedWave(int waveNumber, int generatedIndex)
         {
-            var wave = new Wave { name = $"Wave {waveNumber}", delay = generatedWaveDelay, duration = 30f };
+            var wave = new Wave { name = $"Wave {waveNumber}", delay = generatedWaveDelay, duration = 60f };
             var rng = new System.Random(seed + waveNumber * 104729);   // per-wave seed: editing one wave doesn't reshuffle the others
 
             float budget = baseBudget + budgetPerWave * generatedIndex;

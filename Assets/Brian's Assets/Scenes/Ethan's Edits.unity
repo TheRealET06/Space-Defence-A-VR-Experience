@@ -396,7 +396,7 @@ MonoBehaviour:
       healthMultiplier: 1
   - name: Wave 2
     delayBefore: 0
-    duration: 30
+    duration: 60
     description: A bigger swarm with the first Red asteroids. Bioship is now available.
     groups:
     - enemy: {fileID: 11400000, guid: 8e882006910642445a7e9dfc0a43ef24, type: 2}
@@ -422,7 +422,7 @@ MonoBehaviour:
       healthMultiplier: 1
   - name: Wave 3
     delayBefore: 0
-    duration: 30
+    duration: 60
     description: 'A heavy swarm with more Reds. Prism Ark is now available: its bursts
       shred swarms.'
     groups:
@@ -449,7 +449,7 @@ MonoBehaviour:
       healthMultiplier: 1
   - name: Wave 4
     delayBefore: 0
-    duration: 30
+    duration: 60
     description: 'Reds and the first Purple. Ophanim is now available: build your
       towers around it.'
     groups:
@@ -483,7 +483,7 @@ MonoBehaviour:
       healthMultiplier: 1
   - name: Wave 5
     delayBefore: 0
-    duration: 30
+    duration: 60
     description: 'BOSS: Suns. Each Sun has 325 HP and costs 8 base health if it gets
       through. Leviathan is now available.'
     groups:
@@ -503,7 +503,7 @@ MonoBehaviour:
       healthMultiplier: 1
   - name: Wave 6
     delayBefore: 0
-    duration: 30
+    duration: 60
     description: A wall of Purple asteroids.
     groups:
     - enemy: {fileID: 11400000, guid: 86c22478abc6ffb4c8476024bb5d70d5, type: 2}
@@ -529,7 +529,7 @@ MonoBehaviour:
       healthMultiplier: 1
   - name: Wave 7
     delayBefore: 0
-    duration: 30
+    duration: 60
     description: Purples and twenty-four Suns.
     groups:
     - enemy: {fileID: 11400000, guid: 878db55996721b445b39bb414012624b, type: 2}
@@ -548,7 +548,7 @@ MonoBehaviour:
       healthMultiplier: 1
   - name: Wave 8
     delayBefore: 0
-    duration: 30
+    duration: 60
     description: 'The biggest wave: 126 enemies, mostly Suns.'
     groups:
     - enemy: {fileID: 11400000, guid: 878db55996721b445b39bb414012624b, type: 2}
@@ -567,7 +567,7 @@ MonoBehaviour:
       healthMultiplier: 1
   - name: Wave 9
     delayBefore: 0
-    duration: 30
+    duration: 60
     description: 'Black Holes arrive: 3500 HP each, and one reaching your base ends
       the game.'
     groups:
@@ -587,7 +587,7 @@ MonoBehaviour:
       healthMultiplier: 1
   - name: Wave 10
     delayBefore: 0
-    duration: 30
+    duration: 60
     description: 'FINAL BOSS: 18 Black Holes, one every few seconds.'
     groups:
     - enemy: {fileID: 11400000, guid: 2da1867940dd8fb46ab1ec62d290f0d3, type: 2}
